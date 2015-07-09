@@ -11,14 +11,12 @@
 @stop
 
 @section('content')
-      <div class="container video-area">
+      <div class="container mt80">
         <div class="row">
           <div class="col-sm-12">
             <center>
-              <h3><strong>Tifoziwar Introduction Teaser</strong></h3>
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/IV878LDRbQU" frameborder="0" allowfullscreen></iframe>
+              <h3><strong>My Posts</strong></h3>
             </center>
-            <br><br>
           </div>
         </div>
       </div>
@@ -32,7 +30,7 @@
 
           <div class="row">
             <div class="col-sm-12">
-              <a href="{{url('next/fresh/1')}}">next page</a>
+              <a href="{{url('next/mine/1')}}">next page</a>
             </div>
           </div>
           

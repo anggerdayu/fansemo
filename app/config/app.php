@@ -121,6 +121,8 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
+		'Artdarek\OAuth\OAuthServiceProvider',
+		'Intervention\Image\ImageServiceProvider'
 
 	),
 
@@ -188,6 +190,8 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+		'OAuth' 			=> 'Artdarek\OAuth\Facade\OAuth',
+		'Image' 			=> 'Intervention\Image\Facades\Image'
 
 	),
 

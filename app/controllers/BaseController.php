@@ -15,4 +15,16 @@ class BaseController extends Controller {
 		}
 	}
 
+	public function changeLanguage()
+	{
+		$lang = Session::get('language');
+		if($lang == 'id'){ 
+			Session::set('language','en');
+			return 'en';
+		}else{ 
+			Session::set('language','id');
+			return 'id';
+		}
+	}
+
 }

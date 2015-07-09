@@ -43,7 +43,7 @@ Route::filter('auth', function()
 		}
 		else
 		{
-			return Redirect::guest('login');
+			return Redirect::guest('/');
 		}
 	}
 });
@@ -68,6 +68,16 @@ Route::filter('auth.basic', function()
 Route::filter('guest', function()
 {
 	if (Auth::check()) return Redirect::to('/');
+});
+
+Route::filter('lang', function()
+{
+	if(Session::has('language')){
+		App::setLocale(Session::get('language'));
+	}else{
+		Session::put('language', 'en');
+		App::setLocale('en');
+	}
 });
 
 /*
