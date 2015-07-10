@@ -23,9 +23,9 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'fansemo',
+			'database'  => 'tifozi_staging',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'tifozi8715',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
