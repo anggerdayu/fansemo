@@ -27,6 +27,22 @@
           @foreach($images as $img)        
           <div class="box">
             <img src="{{asset('imgpost/'.$img->user_id.'/'.$img->image)}}" title="{{ $img->title }}" class="img-content">
+
+            <div class="overlay-mask" style="display:none"></div>
+            <a href="{{url('post/'.$img->slug)}}">
+            <div class="overlay-content" style="display:none">
+              <div class="overlay-text">
+                {{str_limit($img->title, $limit = 50, $end = '...')}}<br><br>
+                1,000 likes<br>
+                200 dislikes<br><br>
+                attack : 500 points<br>
+                defense : 200 points<br>
+                assists : 150 points<br><br>
+                <button class="btn btn-success like"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                <button class="btn btn-danger dislike"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+              </div>
+            </div>
+          </a>
           </div>
           @endforeach
 

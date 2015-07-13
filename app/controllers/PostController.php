@@ -44,9 +44,15 @@ class PostController extends BaseController {
 			}
 			$newname = date('YmdHis').'_'.str_random(40).'.'.$extension;
 			File::move('files/'.$image, 'usr/'.$user.'/'.$newname);
+
+			$slug = str_random(10);
+			do{
+				$check = Post::where('slug',$slug)->first();
+			}while(!empty($check));
 			// insert
 			$post = new Post;
 			$post->user_id = $user;
+			$post->slug = $slug;
 			$post->title = $title;
 			$post->image = $newname;
 			$post->save();
@@ -85,6 +91,14 @@ class PostController extends BaseController {
 			$result = $result.'<div class="row"><div class="col-sm-12"><a href="'.url('next/fresh/'.$nextpage).'">next page</a></div></div>';
 		}
 		return $result;
+	}
+
+	public function post($slug){
+		$post = Post::where('slug',$slug)->first();
+		$data = array(
+				'post' => $post
+			);
+		return View::make('post')->with($data);
 	}
 
 }

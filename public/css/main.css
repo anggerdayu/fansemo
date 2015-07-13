@@ -114,6 +114,31 @@ li.small-search {
     text-align: right;
   }
 
+.overlay-mask{
+   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.overlay-content{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+}
+
+.overlay-text{
+  margin-top: 20px;
+  text-align: center;
+  color: white;
+}
+
 @media only screen and (max-width : 768px) {
   li.small-search{
       display: block;
@@ -135,6 +160,10 @@ li.small-search {
       
       background-color: yellow;
       position: relative;
+   }
+
+   .overlay-mask{
+      width: 51%;
    }
 }
 
@@ -160,7 +189,7 @@ li.small-search {
       margin-bottom: 10px;
       margin-right: 14px;
       float:left;
-      width: 31%;
+      width: 29%;
       position: relative;
    }
 

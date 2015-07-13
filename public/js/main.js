@@ -53,4 +53,19 @@ $(document).ready(function(){
           }
         });
     });
+
+  $(document).on("click", ".like", function(e) {
+      e.preventDefault();
+      console.log('test');
+  }).on("click", ".dislike", function(e) {
+      e.preventDefault();
+      console.log('testa');
+  }).on("mouseover", ".box", function(e) {
+    $(this).find('.overlay-mask').show();
+    $(this).find('.overlay-content').show();
+  }).on("mouseout", ".box", function(e) {
+    $(this).find('.overlay-mask').hide();
+    $(this).find('.overlay-content').hide();
+  });
+
 });

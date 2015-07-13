@@ -43,12 +43,12 @@
             </li>
           </ul>
 
-          <form class="navbar-form navbar-left" role="search">
+          {{-- <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Search">
             </div>
             <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-          </form>
+          </form> --}}
 
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" data-action="{{url('chlang')}}" id="chlang"><img src="@if(Lang::get('home.otherflag')=='ID'){{asset('images/indonesia.jpg')}}@else{{asset('images/usflag.png')}}@endif" width="23"></a></li>

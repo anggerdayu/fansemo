@@ -1,72 +1,20 @@
+@extends('layout.base')
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+@section('scripts')
+@stop
 
-    <title>@lang('home.toptitle')</title>
-    <!-- Bootstrap core CSS -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
-  </head>
-
-  <body>
-    <div class="site-wrapper">
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#"><img src="{{asset('images/dummy/logo.png')}}" width="120" style="margin-top:10px"></a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Fresh</a></li>
-            <li><a href="#trending">Trending</a></li>
-            <li><a href="#battle">Battle</a></li>
-            <li><a href="#hof">Hall of Fame</a></li>
-          </ul>
-
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-          </form>
-
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" data-action="{{url('chlang')}}" id="chlang"><img src="@if(Lang::get('home.otherflag')=='ID'){{asset('images/indonesia.jpg')}}@else{{asset('images/usflag.png')}}@endif" width="23"></a></li>
-            <li><a href="#">Sign In</a></li>
-            <li><a href="#">Sign up</a></li>
-          </ul>
-
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-
+@section('content')
       <div class="container mt80 mb80">
         <div class="row">
         <div class="col-sm-8">
-          <h1><strong>Eat Them Suarez</strong></h1>
+          <h1><strong>{{$post->title}}</strong></h1>
           <p style="color:#999;">1100 attack, 500 assist, 300 defence</p>
           <a href=""><img src="{{asset('images/fb share.png')}}"></a>
           <a href=""><img src="{{asset('images/twitter share.jpg')}}"></a>
           <button class="btn btn-default"><i class="glyphicon glyphicon-thumbs-up"></i></button>
           <button class="btn btn-default"><i class="glyphicon glyphicon-thumbs-down"></i></button>
           <br><br>
-          <img src="{{asset('images/dummy/big1.jpg')}}">
+          <img src="{{asset('usr/'.$post->user_id.'/'.$post->image)}}">
           <br><br>
           
           <button type="button" class="btn btn-primary">Share on Facebook</button>
@@ -160,12 +108,4 @@
       </div>
 
     </div><!-- /.container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-  </body>
-</html>
+@stop

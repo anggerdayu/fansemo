@@ -13,7 +13,7 @@
 Route::group(array('before' => 'lang'), function()
 {
     Route::get('/', 'HomeController@index');
-    Route::get('/post', 'HomeController@post');
+    Route::get('/post/{id}', 'PostController@post');
     Route::get('/halloffame', 'HomeController@hof');
     Route::post('/ajaxupload', 'PostController@ajaxupload');
 
