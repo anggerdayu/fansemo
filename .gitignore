@@ -11,3 +11,5 @@ Thumbs.db
 /public/usr/1
 /public/images/dummy
 /public/files
+/public/assets/vendor
+/.bowerrc

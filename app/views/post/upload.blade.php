@@ -6,15 +6,15 @@
 
 @section('scripts')
 <script type="text/javascript" src="{{asset('js/jquery.charactercounter.js')}}"></script>
-<script src="{{ asset('../bower_components/blueimp-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
-<script src="{{ asset('../bower_components/blueimp-load-image/js/load-image.all.min.js') }}"></script>
-<script src="{{ asset('../bower_components/blueimp-canvas-to-blob/js/canvas-to-blob.js') }}"></script>
-<script src="{{ asset('../bower_components/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
-<script src="{{ asset('../bower_components/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
-<script src="{{ asset('../bower_components/blueimp-file-upload/js/jquery.fileupload-process.js') }}"></script>
-<script src="{{ asset('../bower_components/blueimp-file-upload/js/jquery.fileupload-image.js') }}"></script>
-<script src="{{ asset('../bower_components/blueimp-file-upload/js/jquery.fileupload-validate.js') }}"></script>
-<script src="{{ asset('../bower_components/blueimp-tmpl/js/tmpl.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-load-image/js/load-image.all.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-canvas-to-blob/js/canvas-to-blob.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-process.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-image.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-validate.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-tmpl/js/tmpl.min.js') }}"></script>
 
 <script>
 $("#title").characterCounter({
