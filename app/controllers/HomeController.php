@@ -18,7 +18,14 @@ class HomeController extends BaseController {
 	public function index()
 	{
 		// latest / fresh
-		$data['images'] = Post::orderBy('created_at','desc')->take(12)->get();
+		$data['images'] = Post::orderBy('created_at','desc');
+		if(Auth::user()){
+			$data['images'] = $data['images']->with(array('votes' => function($query){
+														$query->where('user_id', Auth::id());
+    												}))->take(12)->get();
+		}else{
+			$data['images'] = $data['images']->take(12)->get();
+		}
 		return View::make('main')->with($data);
 	}
 

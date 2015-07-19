@@ -71,7 +71,13 @@ class PostController extends BaseController {
 		$skip = $page * 12;
 		switch ($type) {
 			case 'fresh':
-				$images = Post::orderBy('created_at','desc')->skip($skip)->take(12)->get();
+				if(Auth::user()){
+					$images = Post::orderBy('created_at','desc')->with(array('votes' => function($query){
+														$query->where('user_id', Auth::id());
+    												}))->skip($skip)->take(12)->get();
+				}else{
+					$images = Post::orderBy('created_at','desc')->skip($skip)->take(12)->get();
+				}
 				break;
 
 			case 'mine':
@@ -85,7 +91,34 @@ class PostController extends BaseController {
 		$result = '';
 		if($images){
 			foreach ($images as $img) {
-				$result = $result.'<div class="box"><img src="'.asset('imgpost/'.$img->user_id.'/'.$img->image).'" title="'.$img->title.'" class="img-content"></div>'; 
+				if(isset($img->votes)){
+					if(!empty($img->votes->first()) && $img->votes->first()->type == "like") $classlike = 'btn-success disabledlike';
+					else $classlike = 'btn-default like';
+
+					if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike') $classdislike = 'btn-danger disabledlike'; 
+					else $classdislike = 'btn-default dislike';
+					$buttons = '<button class="btn '.$classlike.'" data-id="'.$img->id.'"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                			<button class="btn '.$classdislike.'" data-id="'.$img->id.'"><i class="glyphicon glyphicon-thumbs-down"></i></button>';
+				}else{
+					$buttons = '<button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>';
+				}
+				$result = $result.'<div class="box">
+				<img src="'.asset('imgpost/'.$img->user_id.'/'.$img->image).'" title="'.$img->title.'" class="img-content">
+				<div class="overlay-mask" style="display:none"></div>
+				<a href="'.url('post/'.$img->slug).'">
+            		<div class="overlay-content" style="display:none">
+              		<div class="overlay-text">
+              		'.str_limit($img->title, $limit = 50, $end = '...').'<br><br>
+              		1,000 likes<br>
+	                200 dislikes<br><br>
+	                attack : 500 points<br>
+	                defense : 200 points<br>
+	                assists : 150 points<br><br>
+	                '.$buttons.'
+	                </div>
+	                </div>
+				</div>'; 
 			}
 			$nextpage = $page + 1;
 			$result = $result.'<div class="row"><div class="col-sm-12"><a href="'.url('next/fresh/'.$nextpage).'">next page</a></div></div>';

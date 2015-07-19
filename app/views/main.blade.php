@@ -24,7 +24,7 @@
       </div>
 
       <div class="container mainbox">
-          @foreach($images as $img)        
+          @foreach($images as $img)      
           <div class="box">
             <img src="{{asset('imgpost/'.$img->user_id.'/'.$img->image)}}" title="{{ $img->title }}" class="img-content">
 
@@ -38,8 +38,13 @@
                 attack : 500 points<br>
                 defense : 200 points<br>
                 assists : 150 points<br><br>
-                <button class="btn btn-success like"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                <button class="btn btn-danger dislike"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                @if(isset($img->votes))
+                <button class="btn @if(!empty($img->votes->first()) && $img->votes->first()->type == 'like'){{'btn-success disabledlike'}}@else{{'btn-default like'}}@endif" data-id="{{$img->id}}"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                <button class="btn @if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike'){{'btn-danger disabledlike'}}@else{{'btn-default dislike'}}@endif" data-id="{{$img->id}}"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                @else
+                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                @endif
               </div>
             </div>
           </a>

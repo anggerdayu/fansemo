@@ -54,18 +54,40 @@ $(document).ready(function(){
         });
     });
 
-  $(document).on("click", ".like", function(e) {
-      e.preventDefault();
-      console.log('test');
-  }).on("click", ".dislike", function(e) {
-      e.preventDefault();
-      console.log('testa');
-  }).on("mouseover", ".box", function(e) {
+  $(document).on("mouseover", ".box", function(e) {
     $(this).find('.overlay-mask').show();
     $(this).find('.overlay-content').show();
   }).on("mouseout", ".box", function(e) {
     $(this).find('.overlay-mask').hide();
     $(this).find('.overlay-content').hide();
+  }).on("click", ".like", function(e) {
+    e.preventDefault();
+    var obj = $(this); 
+    var id = obj.data('id');
+    $.ajax({
+      type: "POST",
+      url: 'like',
+      data: {id: id},
+      success: function(data){
+        obj.removeClass("btn-default").addClass("btn-success");
+        obj.parent().find('.btn-danger').removeClass('btn-danger').addClass('btn-default');
+      }
+    });
+  }).on("click", ".dislike", function(e) {
+    e.preventDefault();
+    var obj = $(this);
+    var id = obj.data('id');
+    $.ajax({
+      type: "POST",
+      url: 'dislike',
+      data: {id: id},
+      success: function(data){
+        obj.removeClass("btn-default").addClass("btn-danger");
+        obj.parent().find('.btn-success').removeClass('btn-success').addClass('btn-default');
+      }
+    });
+  }).on("click", ".disabledlike", function(e) {
+    e.preventDefault();
   });
 
 });
