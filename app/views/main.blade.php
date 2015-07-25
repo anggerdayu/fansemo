@@ -33,11 +33,8 @@
             <div class="overlay-content" style="display:none">
               <div class="overlay-text">
                 {{str_limit($img->title, $limit = 50, $end = '...')}}<br><br>
-                1,000 likes<br>
-                200 dislikes<br><br>
-                attack : 500 points<br>
-                defense : 200 points<br>
-                assists : 150 points<br><br>
+                <small>Posted at {{date('d F Y,H:i')}}</small><br>
+                {{Vote::where('post_id',$img->id)->where('type','like')->count()}} likes, {{Vote::where('post_id',$img->id)->where('type','dislike')->count()}} dislikes<br><br>
                 @if(isset($img->votes))
                 <button class="btn @if(!empty($img->votes->first()) && $img->votes->first()->type == 'like'){{'btn-success disabledlike'}}@else{{'btn-default like'}}@endif" data-id="{{$img->id}}"><i class="glyphicon glyphicon-thumbs-up"></i></button>
                 <button class="btn @if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike'){{'btn-danger disabledlike'}}@else{{'btn-default dislike'}}@endif" data-id="{{$img->id}}"><i class="glyphicon glyphicon-thumbs-down"></i></button>
@@ -45,6 +42,13 @@
                 <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
                 <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
                 @endif
+                <br><br>
+                <?php 
+                  $attack = Comment::where('post_id',$img->id)->where('type','attack')->count();
+                  $assist = Comment::where('post_id',$img->id)->where('type','assist')->count();
+                  $defense = Comment::where('post_id',$img->id)->where('type','defense')->count();
+                ?>
+                ATT : {{$attack}} points,<br>DF : {{$defense}} points,<br>ASS : {{$assist}} points
               </div>
             </div>
           </a>

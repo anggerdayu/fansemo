@@ -63,7 +63,14 @@ class PostController extends BaseController {
 
 	public function myPosts()
 	{
-		$data['images'] = Post::where('user_id',Auth::id())->orderBy('created_at','desc')->take(12)->get();
+		$data['images'] = Post::where('user_id',Auth::id())->orderBy('created_at','desc');
+		if(Auth::user()){
+			$data['images'] = $data['images']->with(array('votes' => function($query){
+														$query->where('user_id', Auth::id());
+    												}))->take(12)->get();
+		}else{
+			$data['images'] = $data['images']->take(12)->get();
+		}
 		return View::make('post.mypost')->with($data);
 	}
 
@@ -71,23 +78,23 @@ class PostController extends BaseController {
 		$skip = $page * 12;
 		switch ($type) {
 			case 'fresh':
-				if(Auth::user()){
-					$images = Post::orderBy('created_at','desc')->with(array('votes' => function($query){
-														$query->where('user_id', Auth::id());
-    												}))->skip($skip)->take(12)->get();
-				}else{
-					$images = Post::orderBy('created_at','desc')->skip($skip)->take(12)->get();
-				}
+				$images = Post::orderBy('created_at','desc');
 				break;
 
 			case 'mine':
-				$images = Post::where('user_id',Auth::id())->orderBy('created_at','desc')->skip($skip)->take(12)->get();
+				$images = Post::where('user_id',Auth::id())->orderBy('created_at','desc');
 				break;
 			
 			default:
 				# code...
 				break;
 		}
+		if(Auth::user()){ 
+			$images = $images->with(array('votes' => function($query){
+														$query->where('user_id', Auth::id());
+    												}));
+		}
+		$images = $images->skip($skip)->take(12)->get();
 		$result = '';
 		if($images){
 			foreach ($images as $img) {
@@ -103,6 +110,10 @@ class PostController extends BaseController {
 					$buttons = '<button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
                 <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>';
 				}
+				$attack = Comment::where('post_id',$img->id)->where('type','attack')->count();
+                  $assist = Comment::where('post_id',$img->id)->where('type','assist')->count();
+                  $defense = Comment::where('post_id',$img->id)->where('type','defense')->count();
+
 				$result = $result.'<div class="box">
 				<img src="'.asset('imgpost/'.$img->user_id.'/'.$img->image).'" title="'.$img->title.'" class="img-content">
 				<div class="overlay-mask" style="display:none"></div>
@@ -110,12 +121,11 @@ class PostController extends BaseController {
             		<div class="overlay-content" style="display:none">
               		<div class="overlay-text">
               		'.str_limit($img->title, $limit = 50, $end = '...').'<br><br>
-              		1,000 likes<br>
-	                200 dislikes<br><br>
-	                attack : 500 points<br>
-	                defense : 200 points<br>
-	                assists : 150 points<br><br>
+              		<small>Posted at '.date('d F Y,H:i').'</small><br>
+              		'.Vote::where('post_id',$img->id)->where('type','like')->count().' likes, '.Vote::where('post_id',$img->id)->where('type','dislike')->count().' dislikes<br><br>
 	                '.$buttons.'
+	                <br><br>
+	                ATT : '.$attack.' points,<br>DF : '.$defense.' points,<br>ASS : '.$assist.' points
 	                </div>
 	                </div>
 				</div>'; 

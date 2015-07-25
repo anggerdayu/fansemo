@@ -32,8 +32,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#"><i class="glyphicon glyphicon-fire"></i> Fresh</a></li>
-            <li><a href="#trending"><i class="glyphicon glyphicon-star"></i> Trending</a></li>
+            <li class="active"><a href="{{url('/')}}"><i class="glyphicon glyphicon-fire"></i> Fresh</a></li>
+            <li><a href="{{url('trending')}}"><i class="glyphicon glyphicon-star"></i> Trending</a></li>
             <li><a href="#battle"><i class="glyphicon glyphicon-knight"></i> Battle</a></li>
             <li><a href="#hof"><i class="glyphicon glyphicon-sunglasses"></i> Hall of Fame</a></li>
             <li class="small-search">
