@@ -162,9 +162,9 @@ $(function () {
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
-                    <span>Add files...</span>
+                    <span>Add image...</span>
                     <!-- The file input field used as target for the file upload widget -->
-                    <input id="fileupload" type="file" name="files[]" multiple>
+                    <input id="fileupload" type="file" name="files">
                 </span>
                 <br><br>
                 <!-- The global progress bar -->

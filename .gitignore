@@ -13,3 +13,6 @@ Thumbs.db
 /public/files
 /public/assets/vendor
 /.bowerrc
+/public/comments
+/public/custom.log
+/public/error.log

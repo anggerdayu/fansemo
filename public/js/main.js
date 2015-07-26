@@ -66,7 +66,7 @@ $(document).ready(function(){
     var id = obj.data('id');
     $.ajax({
       type: "POST",
-      url: 'like',
+      url: '/like',
       data: {id: id},
       success: function(data){
         obj.removeClass("btn-default").addClass("btn-success");
@@ -79,7 +79,7 @@ $(document).ready(function(){
     var id = obj.data('id');
     $.ajax({
       type: "POST",
-      url: 'dislike',
+      url: '/dislike',
       data: {id: id},
       success: function(data){
         obj.removeClass("btn-default").addClass("btn-danger");

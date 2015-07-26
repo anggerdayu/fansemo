@@ -138,10 +138,93 @@ class PostController extends BaseController {
 
 	public function post($slug){
 		$post = Post::where('slug',$slug)->first();
+		if(empty($post)) App::abort(404);
+		$comments = Comment::where('post_id',$post->id)->get();
+		$post->load(array('votes' => function($query){
+										$query->where('user_id', Auth::id());
+    				}));
 		$data = array(
-				'post' => $post
+				'post' => $post,
+				'comments' => $comments
 			);
 		return View::make('post')->with($data);
+	}
+
+	public function insertcomment(){
+		$rules = array(
+		    	'text' => 'required|min:10|max:300'
+    		);
+    	$validator = Validator::make(Input::all(),$rules);
+    	if ($validator->fails()){
+		    $messages = $validator->messages();
+		    foreach ($messages->all() as $message) {
+		    	$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
+				            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				            '.$message.'
+				          </div>';
+		    	return $alert;
+		    }
+		}else{
+			$image = Input::get('img');
+			$type = Input::get('type');
+			$postid = Input::get('post_id');
+			$text = Input::get('text');
+			if(empty($type) && !empty($image)){
+				$message = 'Please choose the comment type at the icons belows';
+				$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
+				            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				            '.$message.'
+				          </div>';
+		    	return $alert;
+			}else if(!empty($type) && empty($image)){
+				$message = 'If you want to attack, assist or defense please upload an image';
+				$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
+				            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				            '.$message.'
+				          </div>';
+		    	return $alert;	
+			}else{
+				if(!empty($image)){ 
+					$image = explode('/',$image);
+					$image = urldecode(end($image));
+					$extension = explode(".", $image);
+					$extension = end($extension);
+
+					list($width, $height) = getimagesize('files/'.$image);
+					if($width > 500){
+						$img = Image::make('files/'.$image);
+						$img->resize(400, null, function ($constraint) {
+						    $constraint->aspectRatio();
+						});
+						$img->save('files/'.$image);
+					}else if($height > 500){
+						$img = Image::make('files/'.$image);
+						$img->resize(null, 400, function ($constraint) {
+						    $constraint->aspectRatio();
+						});
+						$img->save('files/'.$image);
+					}
+
+					// create directory
+					if(!File::exists('comments/'.$postid)){
+						File::makeDirectory('comments/'.$postid,0775,true);
+					}
+					$newname = date('YmdHis').'_'.str_random(40).'.'.$extension;
+					File::move('files/'.$image, 'comments/'.$postid.'/'.$newname);
+				}
+
+				// insert
+				$comment = new Comment;
+				$comment->user_id = Auth::id();
+				$comment->post_id = $postid;
+				$comment->type = $type;
+				$comment->text = $text;
+				$comment->upload_type = !empty($image) ? 'image' : 'none';
+				if(!empty($image)) $comment->image = $newname;
+				$comment->save();
+				return 'success';
+			}
+		}
 	}
 
 }

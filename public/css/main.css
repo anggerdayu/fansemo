@@ -139,6 +139,49 @@ li.small-search {
   color: white;
 }
 
+.comment-type{
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-right: 11px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.attack-bg{
+  background: url('../images/attack.png');
+  background-size: contain;
+}
+
+.assist-bg{
+  background: url('../images/assist.png');
+  background-size: contain;
+}
+
+.defense-bg{
+  background: url('../images/defense.png');
+  background-size: contain;
+}
+
+.attack-bg-hover{
+  background: url('../images/attack_hover.png');
+  background-size: contain;
+}
+
+.assist-bg-hover{
+  background: url('../images/assist_hover.png');
+  background-size: contain;
+}
+
+.defense-bg-hover{
+  background: url('../images/defense_hover.png');
+  background-size: contain;
+}
+
+.commentbox{
+  margin-bottom: 20px;
+}
+
 @media only screen and (max-width : 768px) {
   li.small-search{
       display: block;
