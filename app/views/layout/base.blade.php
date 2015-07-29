@@ -32,10 +32,10 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{{url('/')}}"><i class="glyphicon glyphicon-fire"></i> Fresh</a></li>
-            <li><a href="{{url('trending')}}"><i class="glyphicon glyphicon-star"></i> Trending</a></li>
-            <li><a href="#battle"><i class="glyphicon glyphicon-knight"></i> Battle</a></li>
-            <li><a href="#hof"><i class="glyphicon glyphicon-sunglasses"></i> Hall of Fame</a></li>
+            <li @if($page=='home'){{'class="active"'}}@endif><a href="{{url('/')}}"><i class="glyphicon glyphicon-fire"></i> Fresh</a></li>
+            <li @if($page=='trending'){{'class="active"'}}@endif><a href="{{url('trending')}}"><i class="glyphicon glyphicon-star"></i> Trending</a></li>
+            <li @if($page=='battle'){{'class="active"'}}@endif><a href="#battle"><i class="glyphicon glyphicon-knight"></i> Battle</a></li>
+            <li @if($page=='halloffame'){{'class="active"'}}@endif><a href="#hof"><i class="glyphicon glyphicon-sunglasses"></i> Hall of Fame</a></li>
             <li class="small-search">
               <form action="" method="get">
               <input class="small-search-box" type="text" name="q" placeholder="Search"><button type="submit" class="small-button-search"><i class="glyphicon glyphicon-search small-search-icon"></i></button>

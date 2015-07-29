@@ -18,6 +18,7 @@ class HomeController extends BaseController {
 	public function index()
 	{
 		// latest / fresh
+		$data['page'] = 'home';
 		$data['images'] = Post::orderBy('created_at','desc');
 		if(Auth::user()){
 			$data['images'] = $data['images']->with(array('votes' => function($query){
@@ -27,6 +28,20 @@ class HomeController extends BaseController {
 			$data['images'] = $data['images']->take(12)->get();
 		}
 		return View::make('main')->with($data);
+	}
+
+	public function trending(){
+		$data['page'] = 'trending';
+		$data['images'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
+							->groupBy('posts.id')->orderBy('total','desc');
+		if(Auth::user()){
+			$data['images'] = $data['images']->with(array('votes' => function($query){
+														$query->where('user_id', Auth::id());
+    												}))->take(12)->get();
+		}else{
+			$data['images'] = $data['images']->take(12)->get();
+		}
+		return View::make('trending')->with($data);	
 	}
 
 	public function post()

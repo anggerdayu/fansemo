@@ -13,6 +13,7 @@
 Route::group(array('before' => 'lang'), function()
 {
     Route::get('/', 'HomeController@index');
+    Route::get('/trending', 'HomeController@trending');
     Route::get('/post/{id}', 'PostController@post');
     Route::get('/halloffame', 'HomeController@hof');
 
