@@ -154,6 +154,7 @@ class PostController extends BaseController {
 										$query->where('user_id', Auth::id());
     				}));
 		$data = array(
+				'page' => 'page',
 				'post' => $post,
 				'comments' => $comments,
 				'attacks' => $attack_comments,
