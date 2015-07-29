@@ -182,9 +182,9 @@ $(function () {
           <br><br>
           <ul class="nav nav-tabs">
             <li role="presentation" class="comment-tab active"><a href="#">All</a></li>
-            <li role="presentation" class="comment-tab"><a href="#">Attack</a></li>
-            <li role="presentation" class="comment-tab"><a href="#">Assist</a></li>
-            <li role="presentation" class="comment-tab"><a href="#">Defense</a></li>
+            <li role="presentation" class="comment-tab"><a href="#">Attack ({{$attacks->count()}})</a></li>
+            <li role="presentation" class="comment-tab"><a href="#">Assist ({{$assists->count()}})</a></li>
+            <li role="presentation" class="comment-tab"><a href="#">Defense ({{$defenses->count()}})</a></li>
           </ul>
           <br>
 
@@ -199,9 +199,23 @@ $(function () {
                   <img src="{{asset('images/user.jpg')}}">
                 </div>
                 <div class="col-sm-9">
-                  <b>{{$comment->user->username}}</b> &nbsp;&nbsp;<font color="#888">20 likes, 2 dislikes</font>
-                  <div class="pull-right"><button class="btn btn-default"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-              <button class="btn btn-default"><i class="glyphicon glyphicon-thumbs-down"></i></button>&nbsp;&nbsp;<a href=""><img src="{{asset('images/attack.png')}}" width="30"></a></div>
+                  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <b>{{$comment->user->username}}</b> &nbsp;&nbsp;
+                      <br><font color="#888">20 likes, 2 dislikes</font>
+                      <br><small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="pull-right">
+                        @if(!empty($comment->image))
+                        <img src="{{asset('images/'.$comment->type.'.png')}}" width="30"> {{ucfirst($comment->type)}}&nbsp;&nbsp;
+                        @endif
+                        <button class="btn btn-default"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn btn-default"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                      </div>
+                    </div>
+                  </div>
                   <br><br>
                   <p>{{$comment->text}}</p>
                   @if(!empty($comment->image))

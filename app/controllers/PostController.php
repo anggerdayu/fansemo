@@ -139,13 +139,19 @@ class PostController extends BaseController {
 	public function post($slug){
 		$post = Post::where('slug',$slug)->first();
 		if(empty($post)) App::abort(404);
-		$comments = Comment::where('post_id',$post->id)->get();
+		$comments = Comment::where('post_id',$post->id)->orderBy('created_at','desc')->get();
+		$attack_comments = Comment::where('post_id',$post->id)->where('type','attack')->orderBy('created_at','desc')->get();
+		$assist_comments = Comment::where('post_id',$post->id)->where('type','assist')->orderBy('created_at','desc')->get();
+		$defense_comments = Comment::where('post_id',$post->id)->where('type','defense')->orderBy('created_at','desc')->get();
 		$post->load(array('votes' => function($query){
 										$query->where('user_id', Auth::id());
     				}));
 		$data = array(
 				'post' => $post,
-				'comments' => $comments
+				'comments' => $comments,
+				'attacks' => $attack_comments,
+				'assists' => $assist_comments,
+				'defenses' => $defense_comments
 			);
 		return View::make('post')->with($data);
 	}
