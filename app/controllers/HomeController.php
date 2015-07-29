@@ -51,7 +51,8 @@ class HomeController extends BaseController {
 
 	public function hof()
 	{
-		return View::make('hof');
+		$data['page'] = 'halloffame';
+		return View::make('hof')->with($data);
 	}
 
 	public function loginWithFacebook() {

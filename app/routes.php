@@ -16,6 +16,7 @@ Route::group(array('before' => 'lang'), function()
     Route::get('/trending', 'HomeController@trending');
     Route::get('/post/{id}', 'PostController@post');
     Route::get('/halloffame', 'HomeController@hof');
+    Route::get('/me', 'UserController@mypage');
 
     Route::get('/next/{type}/{page}','PostController@ajaxGetNextPage');
     Route::post('/like','VoteController@likePost');

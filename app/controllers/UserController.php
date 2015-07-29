@@ -58,6 +58,11 @@ class UserController extends BaseController {
 		}
     }
 
+    public function mypage(){
+    	$data['page'] = 'me';
+    	return View::make('user.profile')->with($data);
+    }
+
     public function doLogout(){
     	Auth::logout();
     	return 'true';

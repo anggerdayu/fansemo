@@ -182,6 +182,10 @@ li.small-search {
   margin-bottom: 20px;
 }
 
+.navbar-right li a.active{
+  color: #fff;
+}
+
 @media only screen and (max-width : 768px) {
   li.small-search{
       display: block;

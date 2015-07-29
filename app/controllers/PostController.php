@@ -63,6 +63,7 @@ class PostController extends BaseController {
 
 	public function myPosts()
 	{
+		$data['page'] = 'myposts';
 		$data['images'] = Post::where('user_id',Auth::id())->orderBy('created_at','desc');
 		if(Auth::user()){
 			$data['images'] = $data['images']->with(array('votes' => function($query){
