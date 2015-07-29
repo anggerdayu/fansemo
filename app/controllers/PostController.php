@@ -120,7 +120,7 @@ class PostController extends BaseController {
                   $defense = Comment::where('post_id',$img->id)->where('type','defense')->count();
 
 				$result = $result.'<div class="box">
-				<img src="'.asset('imgpost/'.$img->user_id.'/'.$img->image).'" title="'.$img->title.'" class="img-content">
+				<img src="'.url('imgpost/'.$img->user_id.'/'.$img->image).'" title="'.$img->title.'" class="img-content">
 				<div class="overlay-mask" style="display:none"></div>
 				<a href="'.url('post/'.$img->slug).'">
             		<div class="overlay-content" style="display:none">
