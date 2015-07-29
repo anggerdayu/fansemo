@@ -55,7 +55,7 @@ html,body{
 
 .video-area{
   margin-top:80px; 
-  background: url('../images/dummy/banner.png');
+  background: url('../images/banner.png');
   background-position: center top;
   background-size: 100% auto;
   text-shadow: 2px 2px #888;

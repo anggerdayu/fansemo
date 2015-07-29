@@ -3,7 +3,8 @@
 class PostController extends BaseController {
 
 	public function upload(){
-		return View::make('post.upload');
+		$data['page'] = 'upload';
+		return View::make('post.upload')->with($data);
 	}
 
 	public function ajaxupload(){
