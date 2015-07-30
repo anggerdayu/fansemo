@@ -53,7 +53,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" data-action="{{url('chlang')}}" id="chlang"><img src="@if(Lang::get('home.otherflag')=='ID'){{asset('images/indonesia.jpg')}}@else{{asset('images/usflag.png')}}@endif" width="23"></a></li>
             @if(Auth::check())
-            <li><a @if($page=='me'){{'class="active"'}}@endif href="{{url('me')}}">Me</a></li>
+            <li><a @if($page=='me'){{'class="active"'}}@endif href="{{url('me')}}">{{Auth::user()->username}}</a></li>
             <li><a @if($page=='myposts'){{'class="active"'}}@endif href="{{url('myposts')}}">@lang('home.topbarpost')</a></li>
             <li><a @if($page=='upload'){{'class="active"'}}@endif href="{{url('upload')}}">@lang('home.topbarupload')</a></li>
             <li><a href="#" id="logout" data-action="{{url('logout')}}">Logout</a></li>

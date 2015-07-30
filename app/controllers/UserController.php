@@ -63,6 +63,33 @@ class UserController extends BaseController {
     	return View::make('user.profile')->with($data);
     }
 
+    public function chpass(){
+    	$rules = array(
+    			'oldpass' => 'required|match_old_pass', 
+    			'newpass' => 'required|confirmed',
+		    	'newpass_confirmation' => 'required|alpha_num|min:6' 
+    		);
+    	$messages = array(
+		    'match_old_pass' => 'Wrong old password'
+		);
+
+		Validator::extend('match_old_pass', function($attribute, $value, $parameters)
+		{
+		    return Hash::check(Input::get('oldpass'),Auth::user()->password);
+		});
+    	$validator = Validator::make(Input::all(),$rules,$messages);
+    	
+    	if ($validator->fails()){
+	    	return Redirect::to('me')->withErrors($validator)->withInput();
+	    }else{
+	    	$user = User::find(Auth::user()->id);
+		    $user->password = Hash::make(Input::get('newpass'));
+		    $user->save();
+	    	Session::flash('success','success');
+	    	return Redirect::to('me');
+	    }
+    }
+
     public function doLogout(){
     	Auth::logout();
     	return 'true';

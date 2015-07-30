@@ -16,7 +16,6 @@ Route::group(array('before' => 'lang'), function()
     Route::get('/trending', 'HomeController@trending');
     Route::get('/post/{id}', 'PostController@post');
     Route::get('/halloffame', 'HomeController@hof');
-    Route::get('/me', 'UserController@mypage');
 
     Route::get('/next/{type}/{page}','PostController@ajaxGetNextPage');
     Route::post('/like','VoteController@likePost');
@@ -41,5 +40,7 @@ Route::group(array('before' => 'lang'), function()
         Route::post('ajaxupload', 'PostController@ajaxupload');
         Route::get('myposts','PostController@myPosts');
         Route::post('insertcomment','PostController@insertcomment');
+        Route::get('me', 'UserController@mypage');
+        Route::post('chpassword','UserController@chpass');
     });
 });
