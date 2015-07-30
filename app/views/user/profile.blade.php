@@ -1,5 +1,22 @@
 @extends('layout.base')
 
+@section('css')
+ <link href="{{asset('assets/vendor/select2/dist/css/select2.min.css')}}" rel="stylesheet">
+@stop
+
+@section('scripts')
+<script src="{{asset('assets/vendor/select2/dist/js/select2.min.js')}}" type="text/javascript"></script>
+<script>
+$(".team-autocomplete").select2({
+  	ajax: {
+	    url: "{{url('getteams')}}",
+	    dataType: 'json',
+	    cache: "false",
+	  }
+});
+</script>
+@stop
+
 @section('content')
 	<div class="container mt80">
         
@@ -53,18 +70,25 @@
 				  </div>
 				  <button type="submit" name="submit" class="btn btn-default">Submit</button>
 				</form>
+
 				<br><br>
 				<p>Favourite Team</p>
-				<form role="form">
-				  <div class="form-group">
+				<form role="form" method="post" action="{{url('chteam')}}">
+				  <div class="form-group @if($errors->first('team')){{'has-error'}}@endif">
 				    <label>Choose Team:</label>
-				    <select name="team" class="form-control" id="teams">
-				    	<option>Choose</option>
+				    <select name="team" class="form-control team-autocomplete" id="teams">
+				    	<option value="">Choose</option>
 				    </select>
+				     @if($errors->first('team'))
+				    <p class="text-danger">{{$errors->first('team')}}</p>
+				    @endif
 				  </div>
-				  <div class="form-group">
+				  <div class="form-group @if($errors->first('jersey')){{'has-error'}}@endif">
 				    <label>Choose Jersey Number:</label>
 				    <input type="text" name="jersey" class="form-control" id="jersey">
+				     @if($errors->first('jersey'))
+				    <p class="text-danger">{{$errors->first('jersey')}}</p>
+				    @endif
 				  </div>
 					<button type="submit" name="submit" class="btn btn-default">Submit</button>
 				</form>

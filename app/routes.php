@@ -42,5 +42,7 @@ Route::group(array('before' => 'lang'), function()
         Route::post('insertcomment','PostController@insertcomment');
         Route::get('me', 'UserController@mypage');
         Route::post('chpassword','UserController@chpass');
+        Route::post('chteam','TeamController@chteam');
+        Route::get('getteams','TeamController@getteams');
     });
 });
