@@ -35,6 +35,12 @@ html,body{
 .mt80{
   margin-top: 80px;
 }
+.mb10{
+  margin-bottom: 10px;
+}
+.mb20{
+  margin-bottom: 20px;
+}
 .mb80{
   margin-bottom: 80px;
 }
@@ -184,6 +190,15 @@ li.small-search {
 
 .navbar-right li a.active{
   color: #fff;
+}
+
+.admin-msg{
+    text-align: center;
+    font-weight: bolder;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    background-color: rgba(106, 241, 54, 0.56);
+    border-radius: 10px;
 }
 
 @media only screen and (max-width : 768px) {

@@ -30,6 +30,11 @@ class HomeController extends BaseController {
 		return View::make('main')->with($data);
 	}
 
+	public function test(){
+		$data['page'] = 'home';
+		return View::make('main2')->with($data);	
+	}
+
 	public function trending(){
 		$data['page'] = 'trending';
 		$data['images'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
@@ -84,10 +89,10 @@ class HomeController extends BaseController {
 	    }
 	}
 
-	public function test(){
-		echo File::exists('usr/1'); die();
-		$test = explode('/', 'http://localhost/fansemo/public/files/test.jpg');
-		File::move('files/'.end($test), 'aaa.jpg');
-	}
+	// public function test(){
+	// 	echo File::exists('usr/1'); die();
+	// 	$test = explode('/', 'http://localhost/fansemo/public/files/test.jpg');
+	// 	File::move('files/'.end($test), 'aaa.jpg');
+	// }
 
 }
