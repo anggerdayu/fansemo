@@ -21,6 +21,8 @@ Route::group(array('before' => 'lang'), function()
     Route::get('/next/{type}/{page}','PostController@ajaxGetNextPage');
     Route::post('/like','VoteController@likePost');
     Route::post('/dislike','VoteController@dislikePost');
+    Route::post('/commentlike','VoteController@likeCommentPost');
+    Route::post('/commentdislike','VoteController@dislikeCommentPost');
 
     Route::post('/chlang', 'BaseController@changeLanguage');
     Route::post('/register', 'UserController@register');

@@ -14,107 +14,10 @@
 <script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-image.js') }}"></script>
 <script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-validate.js') }}"></script>
 <script src="{{ asset('assets/vendor/blueimp-tmpl/js/tmpl.min.js') }}"></script>
-<script src="{{ asset('js/post.js') }}"></script>
 <script>
-$(function () {
-    'use strict';
-
-    var url = '{{url("ajaxupload")}}',
-        uploadButton = $('<button/>')
-            .addClass('btn btn-primary')
-            .prop('disabled', true)
-            .text('Processing...')
-            .on('click', function () {
-                var $this = $(this),
-                    data = $this.data();
-                $this
-                    .off('click')
-                    .text('Abort')
-                    .on('click', function () {
-                        $this.remove();
-                        data.abort();
-                    });
-                data.submit().always(function () {
-                    $this.remove();
-                });
-            });
-    $('#fileupload').fileupload({
-        url: url,
-        dataType: 'json',
-        autoUpload: false,
-        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-        maxFileSize: 999000,
-        // Enable image resizing, except for Android and Opera,
-        // which actually support image resizing, but fail to
-        // send Blob objects via XHR requests:
-        disableImageResize: /Android(?!.*Chrome)|Opera/
-            .test(window.navigator.userAgent),
-        previewMaxWidth: 100,
-        previewMaxHeight: 100,
-        previewCrop: true
-    }).on('fileuploadadd', function (e, data) {
-        data.context = $('<div/>').appendTo('#files');
-        $.each(data.files, function (index, file) {
-            var node = $('<p/>')
-                    .append($('<span/>').text(file.name));
-            if (!index) {
-                node
-                    .append('<br>')
-                    .append(uploadButton.clone(true).data(data));
-            }
-            node.appendTo(data.context);
-        });
-    }).on('fileuploadprocessalways', function (e, data) {
-        var index = data.index,
-            file = data.files[index],
-            node = $(data.context.children()[index]);
-        if (file.preview) {
-            node
-                .prepend('<br>')
-                .prepend(file.preview);
-        }
-        if (file.error) {
-            node
-                .append('<br>')
-                .append($('<span class="text-danger"/>').text(file.error));
-        }
-        if (index + 1 === data.files.length) {
-            data.context.find('button')
-                .text('Upload')
-                .prop('disabled', !!data.files.error);
-        }
-    }).on('fileuploadprogressall', function (e, data) {
-        var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('#progress .progress-bar').css(
-            'width',
-            progress + '%'
-        );
-    }).on('fileuploaddone', function (e, data) {
-        $.each(data.result.files, function (index, file) {
-            if (file.url) {
-                var link = $('<a>')
-                    .attr('target', '_blank')
-                    .prop('href', file.url);
-            } else if (file.error) {
-                var error = $('<span class="text-danger"/>').text(file.error);
-                $(data.context.children()[index])
-                    .append('<br>')
-                    .append(error);
-            }
-            $('#imgurl').val(file.url);
-        });
-    }).on('fileuploadfail', function (e, data) {
-        $.each(data.files, function (index) {
-            var error = $('<span class="text-danger"/>').text('File upload failed.');
-            $(data.context.children()[index])
-                .append('<br>')
-                .append(error);
-        });
-    }).prop('disabled', !$.support.fileInput)
-        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-
-});
+    var url = '{{url("ajaxupload")}}';
 </script>
+<script src="{{ asset('js/post.js') }}"></script>
 @stop
 
 @section('content')
@@ -203,7 +106,7 @@ $(function () {
                   <div class="row">
                     <div class="col-sm-6">
                       <b>{{$comment->user->username}}</b> &nbsp;&nbsp;
-                      <br><font color="#888">20 likes, 2 dislikes</font>
+                      <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font>
                       <br><small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
                     </div>
                     <div class="col-sm-6">
@@ -211,8 +114,16 @@ $(function () {
                         @if(!empty($comment->image))
                         <img src="{{asset('images/'.$comment->type.'.png')}}" width="30"> {{ucfirst($comment->type)}}&nbsp;&nbsp;
                         @endif
-                        <button class="btn btn-default"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                        <button class="btn btn-default"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @if(Auth::user())
+                        <?php $comment->load(array('votes'=> function($query){
+                            $query->where('user_id',Auth::id());
+                        })); ?>
+                        <button class="btn @if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'like'){{'btn-success disabledlike'}}@else{{'btn-default clike'}}@endif" data-id="{{$comment->id}}"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn @if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'dislike'){{'btn-danger disabledlike'}}@else{{'btn-default cdislike'}}@endif" data-id="{{$comment->id}}"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @else
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @endif
                       </div>
                     </div>
                   </div>
@@ -221,6 +132,55 @@ $(function () {
                   @if(!empty($comment->image))
                   <img src="{{asset('comments/'.$post->id.'/'.$comment->image)}}">
                   @endif
+                  
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <p class="mt10"><button class="reply-comment">Reply this comment</button></p>
+                    </div>
+                    <div class="col-sm-12 hidden">
+                      <span class="btn btn-success fileinput-button">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Add image...</span>
+                          <!-- The file input field used as target for the file upload widget -->
+                          <input class="commentupload" data-id="{{$comment->id}}" type="file" name="files">
+                      </span>
+                      <br><br>
+                      <!-- The global progress bar -->
+                      <div id="progress{{$comment->id}}" class="progress">
+                          <div class="progress-bar progress-bar-success"></div>
+                      </div>
+                      <!-- The container for the uploaded files -->
+                      <div id="files{{$comment->id}}" class="files"></div>
+
+                      <form role="form" class="form-reply-comment" action="{{url('insertcomment')}}">
+                      <div class="errormsg"></div>
+                      <div class="form-group">
+                        <input type="hidden" name="post_id" value="{{$post->id}}">
+                        <input type="hidden" name="comment_id" value="{{$comment->id}}">
+                        <input type="hidden" name="img" id="imgurl{{$comment->id}}">
+                        <textarea name="text" class="comment-textarea"></textarea>
+                      </div>
+                      <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
+                      </form>
+                    </div>
+                  </div>
+                  <?php $childs = Comment::where('parent_comment_id',$comment->id)->get(); ?>
+                  @if($childs)
+                  @foreach($childs as $cmt)
+                  <div class="row mb10 mt30">
+                    <div class="col-sm-3">
+                      <img src="{{asset('images/user.jpg')}}" width="50">
+                    </div>
+                    <div class="col-sm-9">
+                      <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                      @if($cmt->image)
+                      <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                      @endif
+                    </div>
+                  </div>
+                  @endforeach
+                  @endif
+
                 </div>
               </div>
               @endforeach

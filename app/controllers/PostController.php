@@ -146,10 +146,10 @@ class PostController extends BaseController {
 	public function post($slug){
 		$post = Post::where('slug',$slug)->first();
 		if(empty($post)) App::abort(404);
-		$comments = Comment::where('post_id',$post->id)->orderBy('created_at','desc')->get();
-		$attack_comments = Comment::where('post_id',$post->id)->where('type','attack')->orderBy('created_at','desc')->get();
-		$assist_comments = Comment::where('post_id',$post->id)->where('type','assist')->orderBy('created_at','desc')->get();
-		$defense_comments = Comment::where('post_id',$post->id)->where('type','defense')->orderBy('created_at','desc')->get();
+		$comments = Comment::where('post_id',$post->id)->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
+		$attack_comments = Comment::where('post_id',$post->id)->where('type','attack')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
+		$assist_comments = Comment::where('post_id',$post->id)->where('type','assist')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
+		$defense_comments = Comment::where('post_id',$post->id)->where('type','defense')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
 		$post->load(array('votes' => function($query){
 										$query->where('user_id', Auth::id());
     				}));
@@ -182,22 +182,56 @@ class PostController extends BaseController {
 			$image = Input::get('img');
 			$type = Input::get('type');
 			$postid = Input::get('post_id');
+			$commentid = Input::get('comment_id');
 			$text = Input::get('text');
-			if(empty($type) && !empty($image)){
-				$message = 'Please choose the comment type at the icons belows';
-				$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
-				            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				            '.$message.'
-				          </div>';
-		    	return $alert;
-			}else if(!empty($type) && empty($image)){
-				$message = 'If you want to attack, assist or defense please upload an image';
-				$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
-				            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				            '.$message.'
-				          </div>';
-		    	return $alert;	
+			
+			if(!$commentid){
+				if(empty($type) && !empty($image)){
+					$message = 'Please choose the comment type at the icons belows';
+					$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
+					            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					            '.$message.'
+					          </div>';
+			    	return $alert;
+				}else if(!empty($type) && empty($image)){
+					$message = 'If you want to attack, assist or defense please upload an image';
+					$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
+					            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					            '.$message.'
+					          </div>';
+			    	return $alert;	
+				}else{
+					if(!empty($image)){ 
+						$image = explode('/',$image);
+						$image = urldecode(end($image));
+						$extension = explode(".", $image);
+						$extension = end($extension);
+
+						list($width, $height) = getimagesize('files/'.$image);
+						if($width > 500){
+							$img = Image::make('files/'.$image);
+							$img->resize(400, null, function ($constraint) {
+							    $constraint->aspectRatio();
+							});
+							$img->save('files/'.$image);
+						}else if($height > 500){
+							$img = Image::make('files/'.$image);
+							$img->resize(null, 400, function ($constraint) {
+							    $constraint->aspectRatio();
+							});
+							$img->save('files/'.$image);
+						}
+
+						// create directory
+						if(!File::exists('comments/'.$postid)){
+							File::makeDirectory('comments/'.$postid,0775,true);
+						}
+						$newname = date('YmdHis').'_'.str_random(40).'.'.$extension;
+						File::move('files/'.$image, 'comments/'.$postid.'/'.$newname);
+					}
+				}	
 			}else{
+				// ada comment id
 				if(!empty($image)){ 
 					$image = explode('/',$image);
 					$image = urldecode(end($image));
@@ -226,19 +260,21 @@ class PostController extends BaseController {
 					$newname = date('YmdHis').'_'.str_random(40).'.'.$extension;
 					File::move('files/'.$image, 'comments/'.$postid.'/'.$newname);
 				}
+			} //end comment id
 
-				// insert
-				$comment = new Comment;
-				$comment->user_id = Auth::id();
-				$comment->post_id = $postid;
-				$comment->type = $type;
-				$comment->text = $text;
-				$comment->upload_type = !empty($image) ? 'image' : 'none';
-				if(!empty($image)) $comment->image = $newname;
-				$comment->save();
-				return 'success';
-			}
-		}
+			// insert
+			$comment = new Comment;
+			$comment->user_id = Auth::id();
+			if($postid) $comment->post_id = $postid;
+			if($commentid) $comment->parent_comment_id = $commentid;
+			if($type) $comment->type = $type; else $comment->type = 'none';
+			$comment->text = $text;
+			$comment->upload_type = !empty($image) ? 'image' : 'none';
+			if(!empty($image)) $comment->image = $newname;
+			$comment->save();
+			return 'success';
+		} //end else
+
 	}
 
 }

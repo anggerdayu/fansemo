@@ -35,6 +35,12 @@ html,body{
 .mt80{
   margin-top: 80px;
 }
+.mt30{
+  margin-top: 30px;
+}
+.mt10{
+  margin-top: 10px;
+}
 .mb10{
   margin-bottom: 10px;
 }
@@ -186,6 +192,11 @@ li.small-search {
 
 .commentbox{
   margin-bottom: 20px;
+}
+
+.comment-textarea{
+    width: 100%;
+    height: 80px;
 }
 
 .navbar-right li a.active{
