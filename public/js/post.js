@@ -109,6 +109,22 @@ $('.comment-tab').click(function(e){
 	$(this).addClass('active');
 });
 
+$('#morecomments').click(function(){
+    var type = $(this).data('type');
+    var count = $(this).data('count');
+    $("#showmore").hide();
+    $("#loading").show();
+    $("#commentpart-all").append("<b>Appended text</b>");
+    // $.ajax({
+    //   type: "POST",
+    //   url: '/getnextcomments',
+    //   data: {count: count, type: type},
+    //   success: function(data){
+    //     $("#commentpart").append("<b>Appended text</b>");
+    //   }
+    // });
+});
+
 var uploadButton = $('<button/>')
             .addClass('btn btn-primary')
             .prop('disabled', true)
@@ -191,6 +207,7 @@ var uploadButton = $('<button/>')
                     .append(error);
             }
             $('#imgurl').val(file.url);
+            $('#files').find('span').text('upload success').wrap('<font color="red"></font>');
         });
     }).on('fileuploadfail', function (e, data) {
         $.each(data.files, function (index) {
@@ -218,7 +235,8 @@ var uploadButton = $('<button/>')
         previewCrop: true
     }).on('fileuploadadd', function (e, data) {
         var commentid = $(this).data('id');
-        data.context = $('<div/>').appendTo('#files'+commentid);
+        var commenttype = $(this).data('type');
+        data.context = $('<div/>').appendTo('#files'+commentid+'-'+commenttype);
         $.each(data.files, function (index, file) {
             var node = $('<p/>')
                     .append($('<span/>').text(file.name));
@@ -250,13 +268,15 @@ var uploadButton = $('<button/>')
         }
     }).on('fileuploadprogressall', function (e, data) {
         var commentid = $(this).data('id');
+        var commenttype = $(this).data('type');
         var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('#progress'+commentid+' .progress-bar').css(
+        $('#progress'+commentid+'-'+commenttype+' .progress-bar').css(
             'width',
             progress + '%'
         );
     }).on('fileuploaddone', function (e, data) {
         var commentid = $(this).data('id');
+        var commenttype = $(this).data('type');
         $.each(data.result.files, function (index, file) {
             if (file.url) {
                 var link = $('<a>')
@@ -268,7 +288,8 @@ var uploadButton = $('<button/>')
                     .append('<br>')
                     .append(error);
             }
-            $('#imgurl'+commentid).val(file.url);
+            $('#imgurl'+commentid+'-'+commenttype).val(file.url);
+            $('#files'+commentid+'-'+commenttype).find('span').text('upload success').wrap('<font color="red"></font>');
         });
     }).on('fileuploadfail', function (e, data) {
         $.each(data.files, function (index) {
@@ -279,3 +300,37 @@ var uploadButton = $('<button/>')
         });
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+
+    $('#commentpart-all,#morecomments-all').show();
+    $('#commentpart-attack,#morecomments-attack').hide();
+    $('#commentpart-assist,#morecomments-assist').hide();
+    $('#commentpart-defense,#morecomments-defense').hide();
+
+$('.tab-all').click(function(){
+    $('#commentpart-all,#morecomments-all').show();
+    $('#commentpart-attack,#morecomments-attack').hide();
+    $('#commentpart-assist,#morecomments-assist').hide();
+    $('#commentpart-defense,#morecomments-defense').hide();
+});
+
+$('.tab-attack').click(function(){
+    $('#commentpart-all,#morecomments-all').hide();
+    $('#commentpart-attack,#morecomments-attack').show();
+    $('#commentpart-assist,#morecomments-assist').hide();
+    $('#commentpart-defense,#morecomments-defense').hide();
+});
+
+$('.tab-assist').click(function(){
+    $('#commentpart-all,#morecomments-all').hide();
+    $('#commentpart-attack,#morecomments-attack').hide();
+    $('#commentpart-assist,#morecomments-assist').show();
+    $('#commentpart-defense,#morecomments-defense').hide();
+});
+
+$('.tab-defense').click(function(){
+    $('#commentpart-all,#morecomments-all').hide();
+    $('#commentpart-attack,#morecomments-attack').hide();
+    $('#commentpart-assist,#morecomments-assist').hide();
+    $('#commentpart-defense,#morecomments-defense').show();
+});

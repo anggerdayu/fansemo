@@ -146,7 +146,7 @@ class PostController extends BaseController {
 	public function post($slug){
 		$post = Post::where('slug',$slug)->first();
 		if(empty($post)) App::abort(404);
-		$comments = Comment::where('post_id',$post->id)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->get();
+		$comments = Comment::where('post_id',$post->id)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip(3)->get();
 		$attack_comments = Comment::where('post_id',$post->id)->where('type','attack')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
 		$assist_comments = Comment::where('post_id',$post->id)->where('type','assist')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
 		$defense_comments = Comment::where('post_id',$post->id)->where('type','defense')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();

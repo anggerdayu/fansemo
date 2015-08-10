@@ -86,18 +86,20 @@
           @endif
           <br><br>
           <ul class="nav nav-tabs">
-            <li role="presentation" class="comment-tab active"><a href="#">All</a></li>
-            <li role="presentation" class="comment-tab"><a href="#">Attack ({{$attacks->count()}})</a></li>
-            <li role="presentation" class="comment-tab"><a href="#">Assist ({{$assists->count()}})</a></li>
-            <li role="presentation" class="comment-tab"><a href="#">Defense ({{$defenses->count()}})</a></li>
+            <li role="presentation" class="comment-tab active tab-all"><a href="#">All</a></li>
+            <li role="presentation" class="comment-tab tab-attack"><a href="#">Attack ({{$attacks->count()}})</a></li>
+            <li role="presentation" class="comment-tab tab-assist"><a href="#">Assist ({{$assists->count()}})</a></li>
+            <li role="presentation" class="comment-tab tab-defense"><a href="#">Defense ({{$defenses->count()}})</a></li>
           </ul>
           <br>
 
           <!-- comment -->
-          <div id="commentpart">
             @if(empty($comments[0]))
-            <p>No comment right now</p>
+            <div id="commentpart-all">
+              <p>No comment right now</p>
+            </div>
             @else
+            <div id="commentpart-all">
               @foreach($comments as $comment)
               <div class="row commentbox">
                 <div class="col-sm-3">
@@ -146,22 +148,22 @@
                           <i class="glyphicon glyphicon-plus"></i>
                           <span>Add image...</span>
                           <!-- The file input field used as target for the file upload widget -->
-                          <input class="commentupload" data-id="{{$comment->id}}" type="file" name="files">
+                          <input class="commentupload" data-id="{{$comment->id}}" data-type="all" type="file" name="files">
                       </span>
                       <br><br>
                       <!-- The global progress bar -->
-                      <div id="progress{{$comment->id}}" class="progress">
+                      <div id="progress{{$comment->id}}-all" class="progress">
                           <div class="progress-bar progress-bar-success"></div>
                       </div>
                       <!-- The container for the uploaded files -->
-                      <div id="files{{$comment->id}}" class="files"></div>
+                      <div id="files{{$comment->id}}-all" class="files"></div>
 
                       <form role="form" class="form-reply-comment" action="{{url('insertcomment')}}">
                       <div class="errormsg"></div>
                       <div class="form-group">
                         <input type="hidden" name="post_id" value="{{$post->id}}">
                         <input type="hidden" name="comment_id" value="{{$comment->id}}">
-                        <input type="hidden" name="img" id="imgurl{{$comment->id}}">
+                        <input type="hidden" name="img" id="imgurl{{$comment->id}}-all">
                         <textarea name="text" class="comment-textarea"></textarea>
                       </div>
                       <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
@@ -188,11 +190,309 @@
                 </div>
               </div>
               @endforeach
+              </div>
+              <button class="btn btn-default btn-block" id="morecomments-all" data-count="1" data-type="all"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
             @endif
-          </div>
 
-        <button class="btn btn-default btn-block"> Show more comments</button>
+            @if(empty($attacks[0]))
+            <div id="commentpart-attack">
+              <p>No comment right now</p>
+            </div>
+            @else
+            <div id="commentpart-attack">
+              @foreach($attacks as $comment)
+              <div class="row commentbox">
+                <div class="col-sm-3">
+                  <img src="{{asset('images/user.jpg')}}">
+                </div>
+                <div class="col-sm-9">
+                  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <b>{{$comment->user->username}}</b> &nbsp;&nbsp;
+                      <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font>
+                      <br><small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="pull-right">
+                        @if(!empty($comment->image))
+                        <img src="{{asset('images/'.$comment->type.'.png')}}" width="30"> {{ucfirst($comment->type)}}&nbsp;&nbsp;
+                        @endif
+                        @if(Auth::user())
+                        <?php $comment->load(array('votes'=> function($query){
+                            $query->where('user_id',Auth::id());
+                        })); ?>
+                        <button class="btn @if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'like'){{'btn-success disabledlike'}}@else{{'btn-default clike'}}@endif" data-id="{{$comment->id}}"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn @if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'dislike'){{'btn-danger disabledlike'}}@else{{'btn-default cdislike'}}@endif" data-id="{{$comment->id}}"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @else
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @endif
+                      </div>
+                    </div>
+                  </div>
+                  <br><br>
+                  <p>{{$comment->text}}</p>
+                  @if(!empty($comment->image))
+                  <img src="{{asset('comments/'.$post->id.'/'.$comment->image)}}">
+                  @endif
+                  
+                  <div class="row">
+                    @if(Auth::user())
+                    <div class="col-sm-12">
+                      <p class="mt10"><button class="reply-comment">Reply this comment</button></p>
+                    </div>
+                    @endif
+                    <div class="col-sm-12 hidden">
+                      <span class="btn btn-success fileinput-button">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Add image...</span>
+                          <!-- The file input field used as target for the file upload widget -->
+                          <input class="commentupload" data-id="{{$comment->id}}" data-type="attack" type="file" name="files">
+                      </span>
+                      <br><br>
+                      <!-- The global progress bar -->
+                      <div id="progress{{$comment->id}}-attack" class="progress">
+                          <div class="progress-bar progress-bar-success"></div>
+                      </div>
+                      <!-- The container for the uploaded files -->
+                      <div id="files{{$comment->id}}-attack" class="files"></div>
 
+                      <form role="form" class="form-reply-comment" action="{{url('insertcomment')}}">
+                      <div class="errormsg"></div>
+                      <div class="form-group">
+                        <input type="hidden" name="post_id" value="{{$post->id}}">
+                        <input type="hidden" name="comment_id" value="{{$comment->id}}">
+                        <input type="hidden" name="img" id="imgurl{{$comment->id}}-attack">
+                        <textarea name="text" class="comment-textarea"></textarea>
+                      </div>
+                      <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
+                      </form>
+                    </div>
+                  </div>
+                  <?php $childs = Comment::where('parent_comment_id',$comment->id)->get(); ?>
+                  @if($childs)
+                  @foreach($childs as $cmt)
+                  <div class="row mb10 mt30">
+                    <div class="col-sm-3">
+                      <img src="{{asset('images/user.jpg')}}" width="50">
+                    </div>
+                    <div class="col-sm-9">
+                      <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                      @if($cmt->image)
+                      <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                      @endif
+                    </div>
+                  </div>
+                  @endforeach
+                  @endif
+
+                </div>
+              </div>
+              @endforeach
+              </div>
+              <button class="btn btn-default btn-block" id="morecomments-attack" data-count="1" data-type="attack"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
+            @endif
+
+            @if(empty($assists[0]))
+            <div id="commentpart-assist">
+              <p>No comment right now</p>
+            </div>
+            @else
+            <div id="commentpart-assist">
+              @foreach($assists as $comment)
+              <div class="row commentbox">
+                <div class="col-sm-3">
+                  <img src="{{asset('images/user.jpg')}}">
+                </div>
+                <div class="col-sm-9">
+                  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <b>{{$comment->user->username}}</b> &nbsp;&nbsp;
+                      <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font>
+                      <br><small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="pull-right">
+                        @if(!empty($comment->image))
+                        <img src="{{asset('images/'.$comment->type.'.png')}}" width="30"> {{ucfirst($comment->type)}}&nbsp;&nbsp;
+                        @endif
+                        @if(Auth::user())
+                        <?php $comment->load(array('votes'=> function($query){
+                            $query->where('user_id',Auth::id());
+                        })); ?>
+                        <button class="btn @if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'like'){{'btn-success disabledlike'}}@else{{'btn-default clike'}}@endif" data-id="{{$comment->id}}"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn @if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'dislike'){{'btn-danger disabledlike'}}@else{{'btn-default cdislike'}}@endif" data-id="{{$comment->id}}"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @else
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @endif
+                      </div>
+                    </div>
+                  </div>
+                  <br><br>
+                  <p>{{$comment->text}}</p>
+                  @if(!empty($comment->image))
+                  <img src="{{asset('comments/'.$post->id.'/'.$comment->image)}}">
+                  @endif
+                  
+                  <div class="row">
+                    @if(Auth::user())
+                    <div class="col-sm-12">
+                      <p class="mt10"><button class="reply-comment">Reply this comment</button></p>
+                    </div>
+                    @endif
+                    <div class="col-sm-12 hidden">
+                      <span class="btn btn-success fileinput-button">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Add image...</span>
+                          <!-- The file input field used as target for the file upload widget -->
+                          <input class="commentupload" data-id="{{$comment->id}}" data-type="assist" type="file" name="files">
+                      </span>
+                      <br><br>
+                      <!-- The global progress bar -->
+                      <div id="progress{{$comment->id}}-assist" class="progress">
+                          <div class="progress-bar progress-bar-success"></div>
+                      </div>
+                      <!-- The container for the uploaded files -->
+                      <div id="files{{$comment->id}}-assist" class="files"></div>
+
+                      <form role="form" class="form-reply-comment" action="{{url('insertcomment')}}">
+                      <div class="errormsg"></div>
+                      <div class="form-group">
+                        <input type="hidden" name="post_id" value="{{$post->id}}">
+                        <input type="hidden" name="comment_id" value="{{$comment->id}}">
+                        <input type="hidden" name="img" id="imgurl{{$comment->id}}-assist">
+                        <textarea name="text" class="comment-textarea"></textarea>
+                      </div>
+                      <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
+                      </form>
+                    </div>
+                  </div>
+                  <?php $childs = Comment::where('parent_comment_id',$comment->id)->get(); ?>
+                  @if($childs)
+                  @foreach($childs as $cmt)
+                  <div class="row mb10 mt30">
+                    <div class="col-sm-3">
+                      <img src="{{asset('images/user.jpg')}}" width="50">
+                    </div>
+                    <div class="col-sm-9">
+                      <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                      @if($cmt->image)
+                      <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                      @endif
+                    </div>
+                  </div>
+                  @endforeach
+                  @endif
+
+                </div>
+              </div>
+              @endforeach
+              </div>
+              <button class="btn btn-default btn-block" id="morecomments-assist" data-count="1" data-type="assist"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
+            @endif
+
+            @if(empty($defenses[0]))
+            <div id="commentpart-defense">
+              <p>No comment right now</p>
+            </div>
+            @else
+            <div id="commentpart-defense">
+              @foreach($defenses as $comment)
+              <div class="row commentbox">
+                <div class="col-sm-3">
+                  <img src="{{asset('images/user.jpg')}}">
+                </div>
+                <div class="col-sm-9">
+                  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <b>{{$comment->user->username}}</b> &nbsp;&nbsp;
+                      <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font>
+                      <br><small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="pull-right">
+                        @if(!empty($comment->image))
+                        <img src="{{asset('images/'.$comment->type.'.png')}}" width="30"> {{ucfirst($comment->type)}}&nbsp;&nbsp;
+                        @endif
+                        @if(Auth::user())
+                        <?php $comment->load(array('votes'=> function($query){
+                            $query->where('user_id',Auth::id());
+                        })); ?>
+                        <button class="btn @if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'like'){{'btn-success disabledlike'}}@else{{'btn-default clike'}}@endif" data-id="{{$comment->id}}"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn @if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'dislike'){{'btn-danger disabledlike'}}@else{{'btn-default cdislike'}}@endif" data-id="{{$comment->id}}"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @else
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+                        @endif
+                      </div>
+                    </div>
+                  </div>
+                  <br><br>
+                  <p>{{$comment->text}}</p>
+                  @if(!empty($comment->image))
+                  <img src="{{asset('comments/'.$post->id.'/'.$comment->image)}}">
+                  @endif
+                  
+                  <div class="row">
+                    @if(Auth::user())
+                    <div class="col-sm-12">
+                      <p class="mt10"><button class="reply-comment">Reply this comment</button></p>
+                    </div>
+                    @endif
+                    <div class="col-sm-12 hidden">
+                      <span class="btn btn-success fileinput-button">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Add image...</span>
+                          <!-- The file input field used as target for the file upload widget -->
+                          <input class="commentupload" data-id="{{$comment->id}}" data-type="defense" type="file" name="files">
+                      </span>
+                      <br><br>
+                      <!-- The global progress bar -->
+                      <div id="progress{{$comment->id}}-defense" class="progress">
+                          <div class="progress-bar progress-bar-success"></div>
+                      </div>
+                      <!-- The container for the uploaded files -->
+                      <div id="files{{$comment->id}}-defense" class="files"></div>
+
+                      <form role="form" class="form-reply-comment" action="{{url('insertcomment')}}">
+                      <div class="errormsg"></div>
+                      <div class="form-group">
+                        <input type="hidden" name="post_id" value="{{$post->id}}">
+                        <input type="hidden" name="comment_id" value="{{$comment->id}}">
+                        <input type="hidden" name="img" id="imgurl{{$comment->id}}-defense">
+                        <textarea name="text" class="comment-textarea"></textarea>
+                      </div>
+                      <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
+                      </form>
+                    </div>
+                  </div>
+                  <?php $childs = Comment::where('parent_comment_id',$comment->id)->get(); ?>
+                  @if($childs)
+                  @foreach($childs as $cmt)
+                  <div class="row mb10 mt30">
+                    <div class="col-sm-3">
+                      <img src="{{asset('images/user.jpg')}}" width="50">
+                    </div>
+                    <div class="col-sm-9">
+                      <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                      @if($cmt->image)
+                      <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                      @endif
+                    </div>
+                  </div>
+                  @endforeach
+                  @endif
+
+                </div>
+              </div>
+              @endforeach
+              </div>
+              <button class="btn btn-default btn-block" id="morecomments-defense" data-count="1" data-type="defense"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
+            @endif
         
         </div>
       </div>
