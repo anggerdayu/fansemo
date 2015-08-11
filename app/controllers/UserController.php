@@ -63,6 +63,11 @@ class UserController extends BaseController {
     	return View::make('user.profile')->with($data);
     }
 
+    public function chpasspage(){
+    	$data['page'] = 'me';
+    	return View::make('user.changepass')->with($data);	
+    }
+
     public function chpass(){
     	$rules = array(
     			'oldpass' => 'required|match_old_pass', 
@@ -80,14 +85,38 @@ class UserController extends BaseController {
     	$validator = Validator::make(Input::all(),$rules,$messages);
     	
     	if ($validator->fails()){
-	    	return Redirect::to('me')->withErrors($validator)->withInput();
+	    	return Redirect::to('changepassword')->withErrors($validator)->withInput();
 	    }else{
 	    	$user = User::find(Auth::user()->id);
 		    $user->password = Hash::make(Input::get('newpass'));
 		    $user->save();
 	    	Session::flash('success','success');
-	    	return Redirect::to('me');
+	    	return Redirect::to('changepassword');
 	    }
+    }
+
+    public function changepp(){
+    	$image = explode('/',Input::get('img'));
+		$image = urldecode(end($image));
+		$extension = explode(".", $image);
+		$extension = end($extension);
+
+		// intervention
+		list($width, $height) = getimagesize('files/'.$image);
+		$img = Image::make('files/'.$image);
+		$img->resize(160, null, function ($constraint) {
+		    $constraint->aspectRatio();
+		});
+		$img->save('files/'.$image);
+		$newname = date('YmdHis').'_'.Auth::id().'.'.$extension;
+		File::move('files/'.$image, 'usr/pp/'.$newname);
+
+		// change db
+		$user = User::find(Auth::id());
+		$user->profile_pic = $newname;
+		$user->save();
+		Session::flash('success', true);
+		return 'success';
     }
 
     public function doLogout(){

@@ -41,6 +41,10 @@
           <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
           <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
           @endif
+
+          @if($nextpost)
+          <a href="{{url('post/'.$nextpost->slug)}}" class="btn btn-default">Next Page >></a>
+          @endif
           <br><br>
           <img src="{{asset('usr/'.$post->user_id.'/'.$post->image)}}">
           <br><br>
@@ -103,7 +107,11 @@
               @foreach($comments as $comment)
               <div class="row commentbox">
                 <div class="col-sm-3">
+                  @if(!empty($comment->user->profile_pic))
+                  <img src="{{asset('usr/pp/'.$comment->user->profile_pic)}}">
+                  @else
                   <img src="{{asset('images/user.jpg')}}">
+                  @endif
                 </div>
                 <div class="col-sm-9">
                   
@@ -175,7 +183,11 @@
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
                     <div class="col-sm-3">
+                      @if(!empty($cmt->user->profile_pic))
+                      <img src="{{asset('usr/pp/'.$cmt->user->profile_pic)}}" width="50">
+                      @else
                       <img src="{{asset('images/user.jpg')}}" width="50">
+                      @endif
                     </div>
                     <div class="col-sm-9">
                       <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
@@ -203,7 +215,11 @@
               @foreach($attacks as $comment)
               <div class="row commentbox">
                 <div class="col-sm-3">
+                  @if(!empty($comment->user->profile_pic))
+                  <img src="{{asset('usr/pp/'.$comment->user->profile_pic)}}">
+                  @else
                   <img src="{{asset('images/user.jpg')}}">
+                  @endif
                 </div>
                 <div class="col-sm-9">
                   
@@ -275,7 +291,11 @@
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
                     <div class="col-sm-3">
+                      @if(!empty($cmt->user->profile_pic))
+                      <img src="{{asset('usr/pp/'.$cmt->user->profile_pic)}}" width="50">
+                      @else
                       <img src="{{asset('images/user.jpg')}}" width="50">
+                      @endif
                     </div>
                     <div class="col-sm-9">
                       <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
@@ -303,7 +323,11 @@
               @foreach($assists as $comment)
               <div class="row commentbox">
                 <div class="col-sm-3">
+                  @if(!empty($comment->user->profile_pic))
+                  <img src="{{asset('usr/pp/'.$comment->user->profile_pic)}}">
+                  @else
                   <img src="{{asset('images/user.jpg')}}">
+                  @endif
                 </div>
                 <div class="col-sm-9">
                   
@@ -375,7 +399,11 @@
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
                     <div class="col-sm-3">
+                      @if(!empty($cmt->user->profile_pic))
+                      <img src="{{asset('usr/pp/'.$cmt->user->profile_pic)}}" width="50">
+                      @else
                       <img src="{{asset('images/user.jpg')}}" width="50">
+                      @endif
                     </div>
                     <div class="col-sm-9">
                       <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
@@ -403,7 +431,11 @@
               @foreach($defenses as $comment)
               <div class="row commentbox">
                 <div class="col-sm-3">
+                  @if(!empty($comment->user->profile_pic))
+                  <img src="{{asset('usr/pp/'.$comment->user->profile_pic)}}">
+                  @else
                   <img src="{{asset('images/user.jpg')}}">
+                  @endif
                 </div>
                 <div class="col-sm-9">
                   
@@ -475,7 +507,11 @@
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
                     <div class="col-sm-3">
+                      @if(!empty($cmt->user->profile_pic))
+                      <img src="{{asset('usr/pp/'.$cmt->user->profile_pic)}}" width="50">
+                      @else
                       <img src="{{asset('images/user.jpg')}}" width="50">
+                      @endif
                     </div>
                     <div class="col-sm-9">
                       <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>

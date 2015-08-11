@@ -145,6 +145,7 @@ class PostController extends BaseController {
 
 	public function post($slug){
 		$post = Post::where('slug',$slug)->first();
+		$nextpost = Post::where('id','<',$post->id)->orderBy('id','desc')->first();
 		if(empty($post)) App::abort(404);
 		$comments = Comment::where('post_id',$post->id)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->get();
 		$attack_comments = Comment::where('post_id',$post->id)->where('type','attack')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->get();
@@ -156,6 +157,7 @@ class PostController extends BaseController {
 		$data = array(
 				'page' => 'page',
 				'post' => $post,
+				'nextpost' => $nextpost,
 				'comments' => $comments,
 				'attacks' => $attack_comments,
 				'assists' => $assist_comments,
@@ -326,9 +328,12 @@ class PostController extends BaseController {
               if(!empty($comment->image)) $image = '<img src="'.asset('comments/'.$postid.'/'.$comment->image).'">';
               else $image = '';
 
+              if(!empty($comment->user->profile_pic)) $pp = '<img src="'.asset('usr/pp/'.$comment->user->profile_pic).'">'; 
+              else $pp = '<img src="'.asset('images/user.jpg').'">'; 
+              	
               $result.= '<div class="row commentbox">
                 <div class="col-sm-3">
-                  <img src="'.asset('images/user.jpg').'">
+                  '.$pp.'
                 </div>
                 <div class="col-sm-9">
                   
@@ -382,11 +387,14 @@ class PostController extends BaseController {
                   $childs = Comment::where('parent_comment_id',$comment->id)->get();
                   if($childs){
 	                  foreach($childs as $cmt){
+	                  	  if(!empty($cmt->user->profile_pic)) $pp = '<img src="'.asset('usr/pp/'.$cmt->user->profile_pic).'" width="50">'; 
+	                  	  else $pp = '<img src="'.asset('images/user.jpg').'" width="50">';
+
 	                  	  if($cmt->image) $commentImage = '<img src="'.asset('comments/'.$postid.'/'.$cmt->image).'">';
 	                      else $commentImage = '';
 		                  $result.= '<div class="row mb10 mt30">
 		                    <div class="col-sm-3">
-		                      <img src="'.asset('images/user.jpg').'" width="50">
+		                      '.$pp.'
 		                    </div>
 		                    <div class="col-sm-9">
 		                      <p><b>'.$cmt->user->username.' commented :</b><br> '.$cmt->text.'</p>
