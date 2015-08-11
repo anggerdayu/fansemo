@@ -109,20 +109,116 @@ $('.comment-tab').click(function(e){
 	$(this).addClass('active');
 });
 
-$('#morecomments').click(function(){
+$('#morecomments-all').click(function(){
     var type = $(this).data('type');
     var count = $(this).data('count');
+    var postid = $(this).data('id');
     $("#showmore").hide();
     $("#loading").show();
-    $("#commentpart-all").append("<b>Appended text</b>");
-    // $.ajax({
-    //   type: "POST",
-    //   url: '/getnextcomments',
-    //   data: {count: count, type: type},
-    //   success: function(data){
-    //     $("#commentpart").append("<b>Appended text</b>");
-    //   }
-    // });
+    $.ajax({
+      type: "POST",
+      url: '/getnextcomments',
+      data: {count: count, type: type, postid: postid},
+      success: function(data){
+        if(data){
+            // console.log(data);
+            $("#commentpart-all").append(data);
+            $('#loading').hide();
+            $('#showmore').show();
+            $('#morecomments-all').data('count',count+1);
+        }else{
+            $('#morecomments-all').hide();
+        }
+      },
+      error: function(errors){
+        $('#loading').hide();
+        $('#showmore').show();
+      }
+    });
+});
+
+$('#morecomments-attack').click(function(){
+    var type = $(this).data('type');
+    var count = $(this).data('count');
+    var postid = $(this).data('id');
+    $("#showmore").hide();
+    $("#loading").show();
+    $.ajax({
+      type: "POST",
+      url: '/getnextcomments',
+      data: {count: count, type: type, postid: postid},
+      success: function(data){
+        if(data){
+            // console.log(data);
+            $("#commentpart-attack").append(data);
+            $('#loading').hide();
+            $('#showmore').show();
+            $('#morecomments-attack').data('count',count+1);
+        }else{
+            $('#morecomments-attack').hide();
+        }
+      },
+      error: function(errors){
+        $('#loading').hide();
+        $('#showmore').show();
+      }
+    });
+});
+
+$('#morecomments-assist').click(function(){
+    var type = $(this).data('type');
+    var count = $(this).data('count');
+    var postid = $(this).data('id');
+    $("#showmore").hide();
+    $("#loading").show();
+    $.ajax({
+      type: "POST",
+      url: '/getnextcomments',
+      data: {count: count, type: type, postid: postid},
+      success: function(data){
+        if(data){
+            // console.log(data);
+            $("#commentpart-assist").append(data);
+            $('#loading').hide();
+            $('#showmore').show();
+            $('#morecomments-assist').data('count',count+1);
+        }else{
+            $('#morecomments-assist').hide();
+        }
+      },
+      error: function(errors){
+        $('#loading').hide();
+        $('#showmore').show();
+      }
+    });
+});
+
+$('#morecomments-defense').click(function(){
+    var type = $(this).data('type');
+    var count = $(this).data('count');
+    var postid = $(this).data('id');
+    $("#showmore").hide();
+    $("#loading").show();
+    $.ajax({
+      type: "POST",
+      url: '/getnextcomments',
+      data: {count: count, type: type, postid: postid},
+      success: function(data){
+        if(data){
+            // console.log(data);
+            $("#commentpart-defense").append(data);
+            $('#loading').hide();
+            $('#showmore').show();
+            $('#morecomments-defense').data('count',count+1);
+        }else{
+            $('#morecomments-defense').hide();
+        }
+      },
+      error: function(errors){
+        $('#loading').hide();
+        $('#showmore').show();
+      }
+    });
 });
 
 var uploadButton = $('<button/>')
@@ -219,7 +315,8 @@ var uploadButton = $('<button/>')
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
-    $('.commentupload').fileupload({
+
+$('.commentupload').fileupload({
         url: url,
         dataType: 'json',
         autoUpload: false,
@@ -233,7 +330,9 @@ var uploadButton = $('<button/>')
         previewMaxWidth: 100,
         previewMaxHeight: 100,
         previewCrop: true
-    }).on('fileuploadadd', function (e, data) {
+    });
+
+$(document).on('fileuploadadd', '.commentupload', function (e, data) {
         var commentid = $(this).data('id');
         var commenttype = $(this).data('type');
         data.context = $('<div/>').appendTo('#files'+commentid+'-'+commenttype);
@@ -247,7 +346,7 @@ var uploadButton = $('<button/>')
             }
             node.appendTo(data.context);
         });
-    }).on('fileuploadprocessalways', function (e, data) {
+    }).on('fileuploadprocessalways', '.commentupload', function (e, data) {
         var index = data.index,
             file = data.files[index],
             node = $(data.context.children()[index]);
@@ -266,7 +365,7 @@ var uploadButton = $('<button/>')
                 .text('Upload')
                 .prop('disabled', !!data.files.error);
         }
-    }).on('fileuploadprogressall', function (e, data) {
+    }).on('fileuploadprogressall', '.commentupload', function (e, data) {
         var commentid = $(this).data('id');
         var commenttype = $(this).data('type');
         var progress = parseInt(data.loaded / data.total * 100, 10);
@@ -274,7 +373,7 @@ var uploadButton = $('<button/>')
             'width',
             progress + '%'
         );
-    }).on('fileuploaddone', function (e, data) {
+    }).on('fileuploaddone', '.commentupload', function (e, data) {
         var commentid = $(this).data('id');
         var commenttype = $(this).data('type');
         $.each(data.result.files, function (index, file) {
@@ -291,7 +390,7 @@ var uploadButton = $('<button/>')
             $('#imgurl'+commentid+'-'+commenttype).val(file.url);
             $('#files'+commentid+'-'+commenttype).find('span').text('upload success').wrap('<font color="red"></font>');
         });
-    }).on('fileuploadfail', function (e, data) {
+    }).on('fileuploadfail', '.commentupload', function (e, data) {
         $.each(data.files, function (index) {
             var error = $('<span class="text-danger"/>').text('File upload failed.');
             $(data.context.children()[index])

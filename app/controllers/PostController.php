@@ -146,10 +146,10 @@ class PostController extends BaseController {
 	public function post($slug){
 		$post = Post::where('slug',$slug)->first();
 		if(empty($post)) App::abort(404);
-		$comments = Comment::where('post_id',$post->id)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip(3)->get();
-		$attack_comments = Comment::where('post_id',$post->id)->where('type','attack')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
-		$assist_comments = Comment::where('post_id',$post->id)->where('type','assist')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
-		$defense_comments = Comment::where('post_id',$post->id)->where('type','defense')->where('parent_comment_id',0)->orderBy('created_at','desc')->get();
+		$comments = Comment::where('post_id',$post->id)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->get();
+		$attack_comments = Comment::where('post_id',$post->id)->where('type','attack')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->get();
+		$assist_comments = Comment::where('post_id',$post->id)->where('type','assist')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->get();
+		$defense_comments = Comment::where('post_id',$post->id)->where('type','defense')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->get();
 		$post->load(array('votes' => function($query){
 										$query->where('user_id', Auth::id());
     				}));
@@ -275,6 +275,151 @@ class PostController extends BaseController {
 			return 'success';
 		} //end else
 
+	}
+
+	public function ajaxloadcomment(){
+		$type = Input::get('type');
+		$counter = Input::get('count');
+		$postid = Input::get('postid');
+		$skip = $counter * 3;
+		switch ($type) {
+			case 'all':
+				$comments = Comment::where('post_id',$postid)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($skip)->get();
+				break;
+			case 'attack':
+				$comments = Comment::where('post_id',$postid)->where('type','attack')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($skip)->get();
+				break;
+			case 'assist':
+				$comments = Comment::where('post_id',$postid)->where('type','assist')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($skip)->get();
+				break;
+			case 'defense':
+				$comments = Comment::where('post_id',$postid)->where('type','defense')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($skip)->get();
+				break;
+		}
+		$result = '';
+		if(!empty($comments)){
+			foreach($comments as $comment){
+			  $commentVotesLike = CommentVote::where('type','like')->where('comment_id',$comment->id)->count();
+              $commentVotesDislike = CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count();
+              if(!empty($comment->image)) $commenttype = '<img src="'.asset('images/'.$comment->type.'.png').'" width="30"> '.ucfirst($comment->type).'&nbsp;&nbsp;'; 
+              else $commenttype = '';
+
+              if(Auth::user()){
+              	$comment->load(array('votes'=> function($query){
+                            $query->where('user_id',Auth::id());
+                        }));
+              	if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'like') $likeButtonClass = 'btn-success disabledlike';
+              	else $likeButtonClass = 'btn-default clike';
+              	if(!empty($comment->votes->first()) && $comment->votes->first()->type == 'dislike') $dislikeButtonClass = 'btn-danger disabledlike';
+              	else $dislikeButtonClass = 'btn-default cdislike';
+              	$likeButton = '<button class="btn '.$likeButtonClass.'" data-id="'.$comment->id.'"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn '.$dislikeButtonClass.'" data-id="'.$comment->id.'"><i class="glyphicon glyphicon-thumbs-down"></i></button>';
+              	$buttonReplyComment = '<div class="col-sm-12">
+                      <p class="mt10"><button class="reply-comment">Reply this comment</button></p>
+                    </div>';
+
+              }else{
+              	$likeButton = '<button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+                        <button class="btn disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>';
+              	$buttonReplyComment = '';
+              }
+              if(!empty($comment->image)) $image = '<img src="'.asset('comments/'.$postid.'/'.$comment->image).'">';
+              else $image = '';
+
+              $result.= '<div class="row commentbox">
+                <div class="col-sm-3">
+                  <img src="'.asset('images/user.jpg').'">
+                </div>
+                <div class="col-sm-9">
+                  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <b>'.$comment->user->username.'</b> &nbsp;&nbsp;
+                      <br><font color="#888">'.$commentVotesLike.' likes, '.$commentVotesDislike.' dislikes</font>
+                      <br><small class="text-muted">posted at '.date('d F Y,H:i',strtotime($comment->created_at)).'</small>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="pull-right">
+                        '.$commenttype.'
+                        '.$likeButton.'
+                      </div>
+                    </div>
+                  </div>
+                  <br><br>
+                  <p>'.$comment->text.'</p>
+                  '.$image.'
+                  
+                  <div class="row">
+                   '.$buttonReplyComment.'
+                    <div class="col-sm-12 hidden">
+                      <span class="btn btn-success fileinput-button">
+                          <i class="glyphicon glyphicon-plus"></i>
+                          <span>Add image...</span>
+                          <!-- The file input field used as target for the file upload widget -->
+                          <input class="commentupload" data-id="'.$comment->id.'" data-type="'.$type.'" type="file" name="files">
+                      </span>
+                      <br><br>
+                      <!-- The global progress bar -->
+                      <div id="progress'.$comment->id.'-'.$type.'" class="progress">
+                          <div class="progress-bar progress-bar-success"></div>
+                      </div>
+                      <!-- The container for the uploaded files -->
+                      <div id="files'.$comment->id.'-'.$type.'" class="files"></div>
+
+                      <form role="form" class="form-reply-comment" action="'.url('insertcomment').'">
+                      <div class="errormsg"></div>
+                      <div class="form-group">
+                        <input type="hidden" name="post_id" value="'.$postid.'">
+                        <input type="hidden" name="comment_id" value="'.$comment->id.'">
+                        <input type="hidden" name="img" id="imgurl'.$comment->id.'-'.$type.'">
+                        <textarea name="text" class="comment-textarea"></textarea>
+                      </div>
+                      <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
+                      </form>
+                    </div>
+                  </div>';
+
+                  $childs = Comment::where('parent_comment_id',$comment->id)->get();
+                  if($childs){
+	                  foreach($childs as $cmt){
+	                  	  if($cmt->image) $commentImage = '<img src="'.asset('comments/'.$postid.'/'.$cmt->image).'">';
+	                      else $commentImage = '';
+		                  $result.= '<div class="row mb10 mt30">
+		                    <div class="col-sm-3">
+		                      <img src="'.asset('images/user.jpg').'" width="50">
+		                    </div>
+		                    <div class="col-sm-9">
+		                      <p><b>'.$cmt->user->username.' commented :</b><br> '.$cmt->text.'</p>
+		                      '.$commentImage.'
+		                    </div>
+		                  </div>';
+	                  }
+                  }
+
+                  $result.= "</div></div>
+                  				<script>
+                  				$('.commentupload').fileupload({
+							        url: url,
+							        dataType: 'json',
+							        autoUpload: false,
+							        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+							        maxFileSize: 999000,
+							        // Enable image resizing, except for Android and Opera,
+							        // which actually support image resizing, but fail to
+							        // send Blob objects via XHR requests:
+							        disableImageResize: /Android(?!.*Chrome)|Opera/
+							            .test(window.navigator.userAgent),
+							        previewMaxWidth: 100,
+							        previewMaxHeight: 100,
+							        previewCrop: true
+							    });
+                  				</script>
+                  			";
+              } //endforeach
+              return $result;
+		}else{
+			return 'null';
+		}
 	}
 
 }

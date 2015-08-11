@@ -23,6 +23,7 @@ Route::group(array('before' => 'lang'), function()
     Route::post('/dislike','VoteController@dislikePost');
     Route::post('/commentlike','VoteController@likeCommentPost');
     Route::post('/commentdislike','VoteController@dislikeCommentPost');
+    Route::post('/getnextcomments','PostController@ajaxloadcomment');
 
     Route::post('/chlang', 'BaseController@changeLanguage');
     Route::post('/register', 'UserController@register');

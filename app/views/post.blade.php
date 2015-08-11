@@ -191,7 +191,7 @@
               </div>
               @endforeach
               </div>
-              <button class="btn btn-default btn-block" id="morecomments-all" data-count="1" data-type="all"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
+              <button class="btn btn-default btn-block" id="morecomments-all" data-id="{{$post->id}}" data-count="1" data-type="all"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
             @endif
 
             @if(empty($attacks[0]))
