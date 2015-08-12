@@ -60,6 +60,7 @@ class UserController extends BaseController {
 
     public function mypage(){
     	$data['page'] = 'me';
+    	$data['team'] = Team::find(Auth::user()->team_id);
     	return View::make('user.profile')->with($data);
     }
 

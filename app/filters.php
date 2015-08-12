@@ -48,6 +48,13 @@ Route::filter('auth', function()
 	}
 });
 
+Route::filter('isadmin', function()
+{
+	if(Auth::user()->status !='management')
+	{
+		return Response::make('Unauthorized', 401);
+	}
+});
 
 Route::filter('auth.basic', function()
 {

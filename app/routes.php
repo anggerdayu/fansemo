@@ -50,5 +50,9 @@ Route::group(array('before' => 'lang'), function()
         Route::post('changepp','UserController@changepp');
         Route::post('chteam','TeamController@chteam');
         Route::get('getteams','TeamController@getteams');
+
+        Route::get('admin/teams','TeamController@adminTeamPage')->before('isadmin');
+        Route::get('admin/addteam','TeamController@adminAddTeam')->before('isadmin');
+        Route::get('admin/editteam/{id}','TeamController@adminEditTeam')->before('isadmin');
     });
 });

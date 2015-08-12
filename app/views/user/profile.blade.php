@@ -160,7 +160,7 @@ $(function () {
         <div class="row">
         	@include('user.leftnav')
         	<div class="col-sm-9">
-        		<p>Change Profile Picture</p>
+        		<h3>Change Profile Picture</h3>
 
         		@if(Session::get('success'))
         		<div class="alert alert-success alert-dismissible" role="alert">
@@ -169,7 +169,14 @@ $(function () {
 				</div>
 				@endif
 
-        		<div class="row mb20">
+                @if(Session::get('success2'))
+                <div class="alert alert-success alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      Your favourite team and personalization updated
+                </div>
+                @endif
+
+        		<div class="row mb40">
         			<div class="col-sm-3">
         				@if(Auth::user()->profile_pic)
         				<img src="{{asset('usr/pp/'.Auth::user()->profile_pic)}}" width="160">
@@ -199,9 +206,16 @@ $(function () {
         			</div>
         		</div>
 
-				<p>Favourite Team</p>
-				<form role="form" method="post" action="{{url('chteam')}}">
-				  <div class="form-group @if($errors->first('team')){{'has-error'}}@endif">
+				<h3>Favourite Team</h3>
+				<form role="form" method="post" action="{{url('chteam')}}" class="mb40">
+                
+                @if($team)
+                <p>Current Team : {{$team->name}}</p>
+                <img src="{{asset('jerseys/'.$team->jersey_image)}}" width="150" class="mb20">
+                <img src="{{asset('teams/'.$team->logo_image)}}" width="150" class="mb20">
+                @endif
+
+                  <div class="form-group @if($errors->first('team')){{'has-error'}}@endif">
 				    <label>Choose Team:</label>
 				    <select name="team" class="form-control team-autocomplete" id="teams">
 				    	<option value="">Choose</option>
@@ -212,7 +226,7 @@ $(function () {
 				  </div>
 				  <div class="form-group @if($errors->first('jersey')){{'has-error'}}@endif">
 				    <label>Choose Jersey Number:</label>
-				    <input type="text" name="jersey" class="form-control" id="jersey">
+				    <input type="text" name="jersey" class="form-control" id="jersey" @if(!empty(Auth::user()->jersey_no)) value="{{Auth::user()->jersey_no}}" @endif>
 				     @if($errors->first('jersey'))
 				    <p class="text-danger">{{$errors->first('jersey')}}</p>
 				    @endif
