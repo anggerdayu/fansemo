@@ -2,6 +2,7 @@
 
 @section('css')
  <link href="{{ asset('css/jquery.fileupload.css') }}" rel="stylesheet">
+ <link href="{{ asset('assets/vendor/fancybox/source/jquery.fancybox.css') }}" rel="stylesheet">
 @stop
 
 @section('scripts')
@@ -14,6 +15,8 @@
 <script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-image.js') }}"></script>
 <script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-validate.js') }}"></script>
 <script src="{{ asset('assets/vendor/blueimp-tmpl/js/tmpl.min.js') }}"></script>
+
+<script src="{{ asset('assets/vendor/fancybox/source/jquery.fancybox.pack.js') }}"></script>
 <script>
     var url = '{{url("ajaxupload")}}';
 </script>
@@ -25,6 +28,20 @@
 
         <div class="row">
         <div class="col-sm-8">
+          @if(Session::get('success'))
+            <div class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              {{Session::get('success')}}
+          </div>
+          @endif
+
+          @if(Session::get('warning'))
+            <div class="alert alert-warning alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              {{Session::get('warning')}}
+          </div>
+          @endif
+
           <h1><strong>{{$post->title}}</strong></h1>
           <?php 
             $attack = Comment::where('post_id',$post->id)->where('type','attack')->count();
@@ -45,8 +62,11 @@
           @if($nextpost)
           <a href="{{url('post/'.$nextpost->slug)}}" class="btn btn-default">Next Page >></a>
           @endif
+          @if(Auth::user()->status == 'management')
+          <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-success">Set as Featured Post</a>
+          @endif
           <br><br>
-          <img src="{{asset('usr/'.$post->user_id.'/'.$post->image)}}">
+          <a href="{{asset('usr/'.$post->user_id.'/'.$post->image)}}" class="fancybox"><img src="{{asset('usr/'.$post->user_id.'/'.$post->image)}}"></a>
           <br><br>
           
           <button type="button" class="btn btn-primary">Share on Facebook</button>

@@ -430,4 +430,19 @@ class PostController extends BaseController {
 		}
 	}
 
+	public function setFeatured($id)
+	{
+		$check = FeaturedPost::where('post_id',$id)->orderBy('created_at','desc')->first();
+		if($check){
+			Session::flash('warning', 'This post was already on featured post right now');
+			return Redirect::back();
+		}else{
+			$featured = new FeaturedPost;
+			$featured->post_id = $id;
+			$featured->save();
+			Session::flash('success', 'Success, this post are included into featured post');
+			return Redirect::back();
+		}
+	}
+
 }

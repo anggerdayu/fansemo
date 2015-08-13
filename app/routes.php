@@ -57,5 +57,7 @@ Route::group(array('before' => 'lang'), function()
         Route::get('admin/deleteteam/{id}','TeamController@deleteTeam')->before('isadmin');
         Route::post('admin/insertteam','TeamController@insertTeam')->before('isadmin');
         Route::post('admin/updateteam','TeamController@updateTeam')->before('isadmin');
+        Route::get('setfeaturedpost/{id}','PostController@setFeatured')->before('isadmin');
+        Route::get('admin/badges','BadgeController@index')->before('isadmin');
     });
 });

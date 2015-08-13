@@ -433,3 +433,5 @@ $('.tab-defense').click(function(){
     $('#commentpart-assist,#morecomments-assist').hide();
     $('#commentpart-defense,#morecomments-defense').show();
 });
+
+$('.fancybox').fancybox();
