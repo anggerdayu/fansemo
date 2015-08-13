@@ -213,7 +213,17 @@ $(function () {
         <div class="row">
         	@include('user.leftnav')
         	<div class="col-sm-9">
-        		<h3>Add Team</h3>
+        		<h3>{{ucfirst($mode)}} Team</h3>
+
+                <div class="mb20">
+                    <p>Current Image : </p>
+                @if(!empty($detail->logo_image))
+                <img src="{{asset('teams/'.$detail->logo_image)}}" width="160">
+                @endif
+                @if(!empty($detail->jersey_image))
+                <img src="{{asset('jerseys/'.$detail->jersey_image)}}" width="160">
+                @endif
+                </div>
 
         		 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
@@ -229,6 +239,10 @@ $(function () {
                 </div>
                 <!-- The container for the uploaded files -->
                 <div id="files" class="files"></div>
+                @if($errors->first('imglogo'))
+                    <p class="text-danger">{{$errors->first('imglogo')}}</p>
+                @endif
+
 <!-- Jersey -->
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
@@ -244,11 +258,14 @@ $(function () {
                 </div>
                 <!-- The container for the uploaded files -->
                 <div id="files2" class="files"></div>
+                @if($errors->first('imgjersey'))
+                    <p class="text-danger">{{$errors->first('imgjersey')}}</p>
+                @endif
 
-        		<form role="form" method="post" action="{{url('chpassword')}}">
+        		<form role="form" method="post" action="@if($mode=='add'){{url('admin/insertteam')}}@else{{url('admin/updateteam')}}@endif">
 				  <div class="form-group @if($errors->first('name')){{'has-error'}}@endif">
 				    <label>Team Name:</label>
-				    <input type="text" name="name" class="form-control">
+				    <input type="text" name="name" @if($mode=='edit') value="{{$detail->name}}" @endif class="form-control">
 				    @if($errors->first('name'))
 				    <p class="text-danger">{{$errors->first('name')}}</p>
 				    @endif
@@ -257,11 +274,13 @@ $(function () {
 				<div class="form-group">
 				    <label>Team Type:</label>
 				    <select name="type" class="form-control">
-				    	<option value="club">Club</option>
-				    	<option value="nationality">Nationality</option>
+				    	<option value="club" @if($mode=='edit' && $detail->type=='club'){{'selected="selected"'}}@endif>Club</option>
+				    	<option value="nationality" @if($mode=='edit' && $detail->type=='nationality'){{'selected="selected"'}}@endif>Nationality</option>
 				    </select>
 				  </div>
-
+                  @if($mode=='edit')
+                  <input type="hidden" name="id" value="{{$detail->id}}">
+                  @endif
 				  <input type="hidden" name="imglogo" id="logo">
 				  <input type="hidden" name="imgjersey" id="jersey">
 				  <button type="submit" name="submit" class="btn btn-default">Submit</button>

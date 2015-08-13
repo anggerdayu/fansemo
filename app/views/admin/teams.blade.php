@@ -18,7 +18,7 @@
         		@if(Session::get('success'))
         		<div class="alert alert-success alert-dismissible" role="alert">
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					  Change Profile Pic success
+					  {{Session::get('success')}}
 				</div>
 				@endif
 				<div class="pull-right"><a href="{{url('admin/addteam')}}" class="btn btn-success">Create New</a></div>
