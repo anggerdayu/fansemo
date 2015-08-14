@@ -13,6 +13,7 @@
         <div class="row">
           <div class="col-sm-12">
           <h3><strong>Team of the Week</strong></h3>
+          <p>Time Period: {{date('l, d F Y',strtotime('monday this week'))}} - {{date('l, d F Y',strtotime('sunday this week'))}}</p>
           </div>
         </div>
         <div class="row">
@@ -75,20 +76,25 @@
           </div>
         </div>
         <br><br>
+        @if($clubwinner)
         <div class="row">
           <div class="col-sm-3">
-            <img src="{{asset('images/realmadrid.png')}}" style="max-width:100%" width="240">
+            <img src="{{asset('teams/'.$clubwinner->logo_image)}}" style="max-width:100%" width="240">
             <br><br>
           </div>
           <div class="col-sm-6">
-            <h4><strong>Real Madrid</strong></h4>
-            <p>Total Fans : 1120 fans</p>
-            <p>Attack : 1000 posts</p>
-            <p>Assists : 850 posts</p>
-            <p>Defense : 541 posts</p>
+            <h4><strong>{{$clubwinner->name}}</strong></h4>
+            <p>Total Fans : {{User::where('team_id',$clubwinner->id)->count()}} fans</p>
+            <p>Attack : {{Comment::join('users','comments.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')->where('comments.type','attack')->count()}} posts</p>
+            <p>Assists : {{Comment::join('users','comments.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')->where('comments.type','assist')->count()}} posts</p>
+            <p>Defense : {{Comment::join('users','comments.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')->where('comments.type','defense')->count()}} posts</p>
           </div>
         </div>
-
+        @else
+        <div class="row">
+          <div class="col-sm-9">There is no best Club right now</div>
+        </div>
+        @endif
       </div>
 
   </div><!-- /.container -->

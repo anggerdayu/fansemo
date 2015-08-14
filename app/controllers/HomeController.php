@@ -57,6 +57,35 @@ class HomeController extends BaseController {
 	public function hof()
 	{
 		$data['page'] = 'halloffame';
+		$teams = array();
+		// get yg plg aktif di vote
+		$total_votes = Vote::select(DB::raw('count(votes.id) as total'),'teams.name','teams.id')->join('users','votes.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')
+							->groupBy('teams.id')->orderBy('total','desc')->take(5)->get();
+		if($total_votes){
+			foreach ($total_votes as $value) {
+				$teams[$value->id] = $value->total;
+			}
+		}
+		// get total komen aktif
+		$total_comments = Comment::select(DB::raw('count(comments.id) as total'),'teams.name','teams.id')->join('users','comments.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')
+							->groupBy('teams.id')->orderBy('total','desc')->take(5)->get();
+		if($total_comments){
+			foreach ($total_comments as $value) {
+				if(isset($teams[$value->id])) $teams[$value->id] = $teams[$value->id] + $value->total;
+				else $teams[$value->id] = $value->total;
+			}
+		}
+		// get total post
+		$total_posts = Post::select(DB::raw('count(posts.id) as total'),'teams.name','teams.id')->join('users','posts.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')
+							->groupBy('teams.id')->orderBy('total','desc')->take(5)->get();
+		if($total_posts){
+			foreach ($total_posts as $value) {
+				if(isset($teams[$value->id])) $teams[$value->id] = $teams[$value->id] + $value->total;
+				else $teams[$value->id] = $value->total;
+			}
+		}	
+		$winningteam = array_search(max($teams), $teams); 
+		$data['clubwinner'] = Team::find($winningteam);
 		return View::make('hof')->with($data);
 	}
 

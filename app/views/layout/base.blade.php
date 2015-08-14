@@ -34,7 +34,7 @@
           <ul class="nav navbar-nav">
             <li @if($page=='home'){{'class="active"'}}@endif><a href="{{url('/')}}"><i class="glyphicon glyphicon-fire"></i> Fresh</a></li>
             <li @if($page=='trending'){{'class="active"'}}@endif><a href="{{url('trending')}}"><i class="glyphicon glyphicon-star"></i> Trending</a></li>
-            <li @if($page=='battle'){{'class="active"'}}@endif><a href="#battle"><i class="glyphicon glyphicon-knight"></i> Battle</a></li>
+            
             <li @if($page=='halloffame'){{'class="active"'}}@endif><a href="{{url('halloffame')}}"><i class="glyphicon glyphicon-sunglasses"></i> Hall of Fame</a></li>
             <li class="small-search">
               <form action="" method="get">
