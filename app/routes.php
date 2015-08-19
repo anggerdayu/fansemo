@@ -64,5 +64,7 @@ Route::group(array('before' => 'lang'), function()
         Route::get('admin/deletebadge/{id}', 'BadgeController@delete')->before('isadmin');
         Route::post('admin/insertbadge', 'BadgeController@insert')->before('isadmin');
         Route::post('admin/updatebadge', 'BadgeController@update')->before('isadmin');
+        Route::get('admin/featuredvideo', 'HomeController@featuredvideo')->before('isadmin');
+        Route::post('admin/chfeaturedvideo','HomeController@chfeaturedvideo')->before('isadmin');
     });
 });

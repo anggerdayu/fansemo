@@ -246,6 +246,7 @@ $(function () {
                 @endif
 
 <!-- Jersey -->
+                <p class="text-warning">ideal image size for jersey is 90px x 120px</p>
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>

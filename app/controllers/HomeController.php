@@ -20,6 +20,7 @@ class HomeController extends BaseController {
 		// latest / fresh
 		$data['page'] = 'home';
 		$data['images'] = Post::orderBy('created_at','desc');
+		$data['video'] = Featuredvideo::find(1);
 		if(Auth::user()){
 			$data['images'] = $data['images']->with(array('votes' => function($query){
 														$query->where('user_id', Auth::id());
@@ -115,6 +116,31 @@ class HomeController extends BaseController {
 	        $url = $fb->getAuthorizationUri();
 	        // return to facebook login url
 	         return Redirect::to( (string)$url );
+	    }
+	}
+
+	public function featuredvideo()
+	{
+		$data['page'] = 'me';
+		$data['video'] = Featuredvideo::find(1);
+		return View::make('admin.featuredvideo')->with($data);
+	}
+
+	public function chfeaturedvideo(){
+		$rules = array(
+    			'title' => 'required',
+		    	'url' => 'required'
+    		);
+    	$validator = Validator::make(Input::all(),$rules);
+    	if ($validator->fails()){
+	    	return Redirect::to('admin/featuredvideo')->withErrors($validator)->withInput();
+	    }else{
+	    	$video = Featuredvideo::find(1);
+	    	$video->title = Input::get('title');
+	    	$video->url = Input::get('url');
+	    	$video->save();
+	    	Session::flash('success', true);
+	    	return Redirect::to('admin/featuredvideo');	
 	    }
 	}
 

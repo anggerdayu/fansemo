@@ -12,15 +12,17 @@
 
 @section('content')
       <div class="container video-area">
+        @if($video)
         <div class="row">
           <div class="col-sm-12">
             <center>
-              <h3><strong>Tifoziwar Introduction Teaser</strong></h3>
-              <iframe src="https://www.youtube.com/embed/IV878LDRbQU" frameborder="0" allowfullscreen></iframe>
+              <h3><strong>{{$video->title}}</strong></h3>
+              {{$video->url}}
             </center>
             <br><br>
           </div>
         </div>
+        @endif
       </div>
 
       <div class="container mainbox">
