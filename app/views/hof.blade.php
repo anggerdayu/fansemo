@@ -22,45 +22,45 @@
               <img src="{{asset('images/formation.jpg')}}" style="max-width:100%; z-index: 1;">
               <!-- back -->
               <div class="player" style="left: 10%; top: 15%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
               <div class="player" style="left: 30%; top: 13%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
               <div class="player" style="left: 55%; top: 13%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
               <div class="player" style="left: 75%; top: 15%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
 
               <div class="player" style="left: 25%; top: 35%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
               <div class="player" style="left: 43%; top: 45%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
               <div class="player" style="left: 60%; top: 35%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
 
               <div class="player" style="left: 14%; top: 65%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
               <div class="player" style="left: 43%; top: 67%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
               <div class="player" style="left: 73%; top: 65%;">
-                <img src="{{asset('jerseys/'.$clubwinner->jersey_image)}}" style="max-width:100%;">
+                <img src="{{asset('jerseys/madrid.png')}}" style="max-width:100%;">
                 <p><center>Player name</center></p>
               </div>
 
