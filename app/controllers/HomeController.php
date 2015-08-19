@@ -84,9 +84,13 @@ class HomeController extends BaseController {
 				if(isset($teams[$value->id])) $teams[$value->id] = $teams[$value->id] + $value->total;
 				else $teams[$value->id] = $value->total;
 			}
-		}	
-		$winningteam = array_search(max($teams), $teams); 
-		$data['clubwinner'] = Team::find($winningteam);
+		}
+		if(count($teams) > 0){	
+			$winningteam = array_search(max($teams), $teams); 
+			$data['clubwinner'] = Team::find($winningteam);
+		}else{
+			$data['clubwinner'] = null;
+		}
 		return View::make('hof')->with($data);
 	}
 
