@@ -146,16 +146,16 @@ class HomeController extends BaseController {
 					array_push($data['attackers'], $noplayer);
 				}
 			}
+		}else{
+			for($i=0; $i<4; $i++){
+				array_push($data['defenders'], $noplayer);
+			}
+			for($i=0; $i<3; $i++){
+				array_push($data['attackers'], $noplayer);
+				array_push($data['assisters'], $noplayer);
+			}
 		}
 		return View::make('hof')->with($data);
-	}else{
-		for($i=0; $i<4; $i++){
-			array_push($data['defenders'], $noplayer);
-		}
-		for($i=0; $i<3; $i++){
-			array_push($data['attackers'], $noplayer);
-			array_push($data['assisters'], $noplayer);
-		}
 	}
 
 	public function loginWithFacebook() {
