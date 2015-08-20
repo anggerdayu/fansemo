@@ -121,13 +121,14 @@ class HomeController extends BaseController {
 			}
 		}
 		
+		$noplayer = array('name'=>'No player', 'no'=>'0', 'pic'=>'', 'jersey_image'=>'noplayer.png', 'total'=>0);
 		if(count($startingeleven) > 0){
 			foreach($startingeleven as $se){
 				if($se['position'] == 'F') array_push($data['attackers'], $se);
 				if($se['position'] == 'M') array_push($data['assisters'], $se);
 				if($se['position'] == 'D') array_push($data['defenders'], $se);
 			}
-			$noplayer = array('name'=>'No player', 'no'=>'0', 'pic'=>'', 'jersey_image'=>'noplayer.png', 'total'=>0);
+			
 			if(count($data['defenders']) < 4){
 				$selisih = 4 - count($data['defenders']);
 				for($i=0; $i<$selisih; $i++){
