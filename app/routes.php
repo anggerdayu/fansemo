@@ -18,6 +18,7 @@ Route::group(array('before' => 'lang'), function()
     Route::get('/post/{id}', 'PostController@post');
     Route::get('/halloffame', 'HomeController@hof');
     Route::get('/fblogin', 'UserController@loginWithFacebook');
+    Route::get('/gplogin', 'UserController@loginWithGoogle');
 
     Route::get('/next/{type}/{page}','PostController@ajaxGetNextPage');
     Route::post('/like','VoteController@likePost');
