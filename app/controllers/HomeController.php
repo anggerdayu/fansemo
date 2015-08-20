@@ -91,6 +91,62 @@ class HomeController extends BaseController {
 		}else{
 			$data['clubwinner'] = null;
 		}
+
+		$startingeleven = array();
+		$data['defenders'] = array();
+		$data['assisters'] = array();
+		$data['attackers'] = array();
+		// player
+		$defenders = User::select(array('users.id','users.username','jersey_image','jersey_no','profile_pic',DB::raw('count(comments.id) as total')))->join('comments','users.id','=','comments.user_id')->join('teams','teams.id','=','users.team_id')->orderBy('total','desc')->groupBy('users.id')->where('comments.type','defense')->get();
+		$assisters = User::select(array('users.id','users.username','jersey_image','jersey_no','profile_pic',DB::raw('count(comments.id) as total')))->join('comments','users.id','=','comments.user_id')->join('teams','teams.id','=','users.team_id')->orderBy('total','desc')->groupBy('users.id')->where('comments.type','assist')->get();
+		$attackers = User::select(array('users.id','users.username','jersey_image','jersey_no','profile_pic',DB::raw('count(comments.id) as total')))->join('comments','users.id','=','comments.user_id')->join('teams','teams.id','=','users.team_id')->orderBy('total','desc')->groupBy('users.id')->where('comments.type','attack')->get();		
+		
+		if($defenders){
+			foreach ($defenders as $value) {
+				$startingeleven[$value->id] = array('name'=>$value->username,  'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'D');	
+			}
+		}
+
+		if($assisters){
+			foreach ($assisters as $value) {
+				if(isset($startingeleven[$value->id]) && ($startingeleven[$value->id]['total'] > $value->total)) $startingeleven[$value->id] = array('name'=>$value->username, 'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'M');	
+				else $startingeleven[$value->id] = array('name'=>$value->username, 'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'M');	
+			}	
+		}
+
+		if($attackers){
+			foreach ($attackers as $value) {
+				if(isset($startingeleven[$value->id]) && ($startingeleven[$value->id]['total'] > $value->total)) $startingeleven[$value->id] = array('name'=>$value->username, 'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'F');	
+				else $startingeleven[$value->id] = array('name'=>$value->username, 'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'F');	
+			}
+		}
+		
+		if(count($startingeleven) > 0){
+			foreach($startingeleven as $se){
+				if($se['position'] == 'F') array_push($data['attackers'], $se);
+				if($se['position'] == 'M') array_push($data['assisters'], $se);
+				if($se['position'] == 'D') array_push($data['defenders'], $se);
+			}
+			$noplayer = array('name'=>'No player', 'no'=>'0', 'pic'=>'', 'jersey_image'=>'noplayer.png', 'total'=>0);
+			if(count($data['defenders']) < 4){
+				$selisih = 4 - count($data['defenders']);
+				for($i=0; $i<$selisih; $i++){
+					array_push($data['defenders'], $noplayer);
+				}
+			}
+			if(count($data['assisters']) < 3){
+				$selisih = 3 - count($data['assisters']);
+				for($i=0; $i<$selisih; $i++){
+					array_push($data['assisters'], $noplayer);
+				}
+			}
+			if(count($data['attackers']) < 3){
+				$selisih = 3 - count($data['attackers']);
+				for($i=0; $i<$selisih; $i++){
+					array_push($data['attackers'], $noplayer);
+				}
+			}
+		}
 		return View::make('hof')->with($data);
 	}
 
