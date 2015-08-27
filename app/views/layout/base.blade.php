@@ -69,6 +69,53 @@
 
     @yield('content')
 
+    @if(Session::has('regSosmed'))
+   <div id="regModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Message</h4>
+      </div>
+      <form id="regSocial" action="{{url('ajaxRegSosmed')}}">
+      <div class="modal-body">
+        <p>Please input your username for this website</p>
+          <div class="form-group">
+            <input type="hidden" name="email" value="{{Session::get('regemail')}}">
+            <label class="control-label">Username:</label>
+            <input type="text" class="form-control" name="username">
+          </div>
+
+          <p class="text-danger regSocialError"></p>
+      </div>
+      <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@endif
+
+    @if(Session::has('warning'))
+    <div id="warningModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Message</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{Session::get('warning')}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+  @endif
+
     <!-- Modal -->
 <div class="modal fade" id="modalSignin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -80,7 +127,7 @@
       <div class="modal-body">
        <p>Already a member?</p>
         <p>Welcome back! We missed you.</p>
-        <a href="#"><img src="{{asset('images/loginfb_button.png')}}" width="280"></a>
+        <a href="{{url('fblogin')}}"><img src="{{asset('images/loginfb_button.png')}}" width="280"></a>
         <a href="#"><img src="{{asset('images/logingplus_button.png')}}" width="280"></a>
         <hr>
         <center>Or, login using your email</center>
@@ -117,7 +164,7 @@
       <div class="modal-body">
        <p>Join us to become a fans club member</p>
         <p>Connect through social media</p>
-        <a href="#"><img src="{{asset('images/connectfb.png')}}" width="280"></a>
+        <a href="{{url('fbsignup')}}"><img src="{{asset('images/connectfb.png')}}" width="280"></a>
         <a href="#"><img src="{{asset('images/connectgplus.png')}}" width="280"></a>
         <hr>
         <center>Or, join using your manually</center><br>

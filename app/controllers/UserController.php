@@ -120,7 +120,7 @@ class UserController extends BaseController {
 		return 'success';
     }
 
-    public function loginWithFacebook() {
+    public function registerWithFacebook() {
 	    // get data from input
 	    $code = Input::get( 'code' );
 	    // get fb service
@@ -132,11 +132,56 @@ class UserController extends BaseController {
 	        $token = $fb->requestAccessToken( $code );
 	        // Send a request with it
 	        $result = json_decode( $fb->request( '/me' ), true );
-	        $message = 'Your unique facebook user id is: ' . $result['id'] . ' and your name is ' . $result['name'];
-	        echo $message. "<br/>";
-	        //Var_dump
-	        //display whole array().
-	        dd($result);
+
+	        // check user
+	        $check = User::where('username',$result["email"])->first();
+	        if($check){
+	        	Session::flash('warning','This user was already registered');
+	        	return Redirect::to('/');
+	        }else{
+	        	Session::flash('regSosmed','true');
+	        	Session::flash('regemail', $result['email']);
+	        	return Redirect::to('/');
+	        }
+
+	        // $message = 'Your unique facebook user id is: ' . $result['id'] . ' and your name is ' . $result['name'];
+	        // echo $message. "<br/>";
+	        // //Var_dump
+	        // //display whole array().
+	        // dd($result);
+	    }
+	    // if not ask for permission first
+	    else {
+	        // get fb authorization
+	        $url = $fb->getAuthorizationUri();
+	        // return to facebook login url
+	         return Redirect::to( (string)$url );
+	    }
+	}
+
+	public function loginWithFacebook(){
+		// get data from input
+	    $code = Input::get( 'code' );
+	    // get fb service
+	    $fb = OAuth::consumer( 'Facebook' );
+	    // check if code is valid
+	    // if code is provided get user data and sign in
+	    if ( !empty( $code ) ) {
+	        // This was a callback request from facebook, get the token
+	        $token = $fb->requestAccessToken( $code );
+	        // Send a request with it
+	        $result = json_decode( $fb->request( '/me' ), true );
+
+	        // check user
+	        $check = User::where('username',$result["email"])->first();
+	        if($check){
+	        	Auth::login($check);	
+	        	return Redirect::to('/');
+	        }else{
+	        	Session::flash('warning','Oops you were not registered before using this account');
+	        	return Redirect::to('/');
+	        }
+			
 	    }
 	    // if not ask for permission first
 	    else {
@@ -173,6 +218,23 @@ class UserController extends BaseController {
 	        // return to google login url
 	        return Redirect::to( (string)$url );
 	    }
+	}
+
+	public function regSosmed(){
+		$username = Input::get('username');
+		$email = Input::get('email');
+		if(empty($username)) return 'Username is required';
+		$checkuser = User::where('username',$username)->first();
+		if(!empty($checkuser)) return 'Username was already exist, please change another username';
+
+		// insert user
+		$user = new User;
+		$user->username = $username;
+		$user->email = $email;
+		$user->status = $member;
+		$user->save();
+		Session::flash('warning','Congratulations, your username is registered');
+		return 'success';
 	}
 
     public function doLogout(){

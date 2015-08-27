@@ -20,12 +20,15 @@ Route::group(array('before' => 'lang'), function()
     Route::get('/fblogin', 'UserController@loginWithFacebook');
     Route::get('/gplogin', 'UserController@loginWithGoogle');
 
+    Route::get('/fbsignup', 'UserController@registerWithFacebook');
+
     Route::get('/next/{type}/{page}','PostController@ajaxGetNextPage');
     Route::post('/like','VoteController@likePost');
     Route::post('/dislike','VoteController@dislikePost');
     Route::post('/commentlike','VoteController@likeCommentPost');
     Route::post('/commentdislike','VoteController@dislikeCommentPost');
     Route::post('/getnextcomments','PostController@ajaxloadcomment');
+    Route::post('/ajaxRegSosmed','UserController@regSosmed');
 
     Route::post('/chlang', 'BaseController@changeLanguage');
     Route::post('/register', 'UserController@register');
