@@ -134,7 +134,7 @@ class UserController extends BaseController {
 	        $result = json_decode( $fb->request( '/me' ), true );
 
 	        // check user
-	        $check = User::where('username',$result["email"])->first();
+	        $check = User::where('email',$result["email"])->first();
 	        if($check){
 	        	Session::flash('warning','This user was already registered');
 	        	return Redirect::to('/');
@@ -173,7 +173,7 @@ class UserController extends BaseController {
 	        $result = json_decode( $fb->request( '/me' ), true );
 
 	        // check user
-	        $check = User::where('username',$result["email"])->first();
+	        $check = User::where('email',$result["email"])->first();
 	        if($check){
 	        	Auth::login($check);	
 	        	return Redirect::to('/');
@@ -231,7 +231,7 @@ class UserController extends BaseController {
 		$user = new User;
 		$user->username = $username;
 		$user->email = $email;
-		$user->status = $member;
+		$user->status = 'member';
 		$user->save();
 		Session::flash('warning','Congratulations, your username is registered');
 		return 'success';
