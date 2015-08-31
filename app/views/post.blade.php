@@ -62,7 +62,7 @@
           @if($nextpost)
           <a href="{{url('post/'.$nextpost->slug)}}" class="btn btn-default">Next Page >></a>
           @endif
-          @if(Auth::user()->status == 'management')
+          @if(Auth::user() && Auth::user()->status == 'management')
           <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-success">Set as Featured Post</a>
           @endif
           <br><br>
