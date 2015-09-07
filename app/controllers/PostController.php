@@ -274,6 +274,23 @@ class PostController extends BaseController {
 			$comment->upload_type = !empty($image) ? 'image' : 'none';
 			if(!empty($image)) $comment->image = $newname;
 			$comment->save();
+
+			$post = Post::find($postid);
+			if($type){
+				if($type=='attack') $desc = Auth::user()->username.' Attacked you at <a href="'.url('post/'.$post->slug).'">'.Str::words($post->title,3, '...').'</a> post';
+				else if($type=='assist') $desc = Auth::user()->username.' Assisted you at <a href="'.url('post/'.$post->slug).'">'.Str::words($post->title,3, '...').'</a> post';
+				else if($type=='defense') $desc = Auth::user()->username.' Defense your post at <a href="'.url('post/'.$post->slug).'">'.Str::words($post->title,3, '...').'</a>';
+			}else{
+				$desc = Auth::user()->username.' commented at your <a href="'.url('post/'.$post->slug).'">'.Str::words($post->title,3, '...').'</a> post';
+			}
+
+			$notif = new Notification;
+			$notif->receiver_id = $post->user_id;
+			$notif->sender_id = Auth::id();
+			$notif->other_id = $comment->id;
+			$notif->type = 'comment';
+			$notif->description = $desc;
+			$notif->save();
 			return 'success';
 		} //end else
 
@@ -443,6 +460,15 @@ class PostController extends BaseController {
 			Session::flash('success', 'Success, this post are included into featured post');
 			return Redirect::back();
 		}
+	}
+
+	public function deletePost()
+	{
+		$id = Input::get('id');
+		$post = Post::find($id);
+		$post->delete();
+		Session::flash('warning', 'Your post deleted successfully');
+		return 'success'
 	}
 
 }
