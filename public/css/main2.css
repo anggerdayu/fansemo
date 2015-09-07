@@ -1,0 +1,426 @@
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #000;
+}
+
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritence from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  color: #000;
+  text-align: center;
+  /*text-shadow: 0 1px 3px rgba(0,0,0,.5);*/
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+  /*-webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+          box-shadow: inset 0 0 100px rgba(0,0,0,.5);*/
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+
+
+/*
+ * Header
+ */
+.masthead-brand {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.masthead-nav > li {
+  display: table-cell;
+  width: 150px;
+  height: 100px;
+  -webkit-transform: skew(-20deg);
+     -moz-transform: skew(-20deg);
+       -o-transform: skew(-20deg);
+  border-left: #5c5d60 2px solid;
+}
+.masthead-nav > li + li {
+  margin-left: 20px;
+}
+.masthead-nav > li > a {
+  display: block;
+  padding-top: 35px;
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 15px;
+  font-weight: bold;
+  color: #000;
+  -webkit-transform: skew(20deg);
+     -moz-transform: skew(20deg);
+       -o-transform: skew(20deg);
+  text-decoration:none;
+  text-transform: uppercase;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus,
+.masthead-nav > .active > a:hover {
+  background-color: transparent;
+  color: #be1e2d;
+  text-transform: uppercase;
+}
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:focus {
+  color: #000;
+  text-transform: uppercase;
+}
+
+.masthead-nav > li > a > .glyphicon{
+  font-size: x-large;
+  color: #be1e2d;
+}
+
+.navbar-nav>li>a{
+  font-size: 15px;
+  color: #000;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.navbar-nav>li>a:hover{
+  background: transparent;
+  color: #be1e2d;
+}
+
+.extra-nav{
+  margin-top: 23px;
+}
+
+@media (min-width: 768px) {
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+    margin-top: -27px;
+  }
+}
+
+
+/*
+ * Cover
+ */
+
+.cover {
+  padding: 0 20px;
+}
+.cover .btn-lg {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+
+/*
+ * Footer
+ */
+
+.mastfoot {
+  background-color: #030000;
+  color: #fff; /* IE8 proofing */
+}
+
+.mastfoot span{
+   width: 36%;
+}
+
+.mslogo{
+  float:left;
+}
+
+.ftlogo{
+    float: left;
+    margin-bottom: 15px;
+  }
+.ftlogo img{
+    width: 170px;
+  }
+
+.availstore{
+  float:left; 
+  width:120px; 
+  margin-left:10px;
+}
+
+.mastfoot > .inner > ul{
+  float: right;
+  display: flex;
+  list-style: none;
+}
+.mastfoot > .inner > ul > li{
+  margin-right: 15px;
+}
+
+.bxslider > li{
+  width:100%; 
+  height:400px;
+}
+
+.bx-wrapper{
+  border: none;
+}
+
+.flagtitle{
+  width:248px; 
+  height:37px; 
+  background: url('../images/flagtitle.png');
+}
+
+.flagtitle span{
+    color: white;
+    font-weight: 800;
+    font-size: 17px;
+    float: left;
+    margin-top: 6px;
+    margin-left: 60px;
+}
+
+.overlay-mask{
+   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.overlay-content{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+}
+
+.overlay-text{
+  margin-top: 20px;
+  text-align: center;
+  color: white;
+}
+
+.mt80{
+  margin-top: 80px;
+}
+.mt30{
+  margin-top: 30px;
+}
+.mt10{
+  margin-top: 10px;
+}
+.mb10{
+  margin-bottom: 10px;
+}
+.mb20{
+  margin-bottom: 20px;
+}
+.mb40{
+  margin-bottom: 40px;
+}
+.mb80{
+  margin-bottom: 80px;
+}
+
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 768px) {
+  /* Pull out the header and footer */
+  .masthead {
+    z-index: 100;
+    background-color: white; 
+    border-top: #be1e2d 3px solid;
+    border-bottom: #be1e2d 1px solid; 
+    position: fixed;
+    top: 0;
+  }
+  .mastfoot {
+    height: 100%;
+    float: left;
+    /*position: fixed;
+    bottom: 0;*/
+  }
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    /*vertical-align: middle;*/
+    padding-top: 107px;
+  }
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+}
+
+@media (max-width: 768px) {
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%;
+  }
+
+  .mastfoot{
+    height: 100%;
+    float: left;
+  }
+
+  .mslogo{
+    float:left;
+    width: 100%;
+  }
+
+  .mslogo img,.ftlogo img{
+    width: 143px;
+  }
+
+  .extra-nav > li {
+    position: relative;
+    display: inline-block;
+  }
+
+  .masthead-nav > li {
+    display: table-cell;
+    height: 10px;
+    border: 0;
+    -webkit-transform: skew(0deg);
+    width: 15%;
+  }
+  .masthead-nav > li > a {
+    display: block;
+    padding-top: 0px;
+    padding-right: 0;
+    padding-left: 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+    text-decoration:none;
+    text-transform: uppercase;
+    -webkit-transform: skew(0deg);
+  }
+  .navbar-nav>li>a{
+    font-size: 13px;
+  }
+
+  .masthead-nav > li > a > .glyphicon {
+    font-size: large;
+    color: #be1e2d;
+  }
+
+  .footer-left{
+    float: left;
+    width: 100%;
+    margin-left: 19%;
+  }
+  .mastfoot > .inner > ul{
+    float: none;
+    display: flex;
+    list-style: none;
+    padding-top: 10px;
+    width: 100%;
+  }
+  .mastfoot span{
+    width: 100%;
+    text-align: center;
+  }
+
+  .bx-wrapper{
+    display: none;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 940px) {
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%;
+  }
+
+  .masthead{
+    height: 100px;
+  }
+
+  .masthead-nav {
+    float: right;
+    margin-top: 0px;
+  }
+
+  .masthead-nav > li {
+    display: table-cell;
+    height: 10px;
+  }
+
+  .masthead-nav > li {
+    display: table-cell;
+    height: 100px;
+    border: 0;
+    -webkit-transform: skew(0deg);
+    width: 98px;
+    /*width: 15%;*/
+  }
+  .masthead-nav > li > a {
+    display: block;
+    padding-top: 16px;
+    padding-right: 0;
+    padding-left: 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+    text-decoration:none;
+    text-transform: uppercase;
+    -webkit-transform: skew(0deg);
+  }
+
+  .mslogo img,.ftlogo img{
+    width: 170px;
+  }
+  
+  .navbar-nav>li>a{
+    font-size: 14px;
+  }
+  .masthead-nav > li > a > .glyphicon {
+    font-size: large;
+    color: #be1e2d;
+  }
+}
