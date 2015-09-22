@@ -4,10 +4,26 @@
 <script src="{{ asset('assets/vendor/bxslider-4/src/vendor/jquery.fitvids.js') }}"></script>
 <script src="{{ asset('assets/vendor/bxslider-4/src/js/jquery.bxslider.js') }}"></script>
 <script>
-$('.bxslider').bxSlider({
-  video: true,
-  useCSS: false
+$('.bxslider1').bxSlider({
+  minSlides: 2,
+  maxSlides: 2,
+  slideWidth: 1200,
+  slideMargin: 20,
+  pager: false,
+  auto: false,
+  speed: 1000
 });
+
+$('.bxslider2').bxSlider({
+  minSlides: 3,
+  maxSlides: 3,
+  slideWidth: 1200,
+  slideMargin: 20,
+  pager: false,
+  auto: false,
+  speed: 1000
+});
+
 </script>
 @stop
 
@@ -16,309 +32,96 @@ $('.bxslider').bxSlider({
 @stop
 
 @section('content')
-<div class="site-wrapper">
 
-      <div class="site-wrapper-inner">
+          <div id="carousel-slider" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-slider" data-slide-to="0" class="active"></li>
+              <li data-target="#carousel-slider" data-slide-to="1"></li>
+              <li data-target="#carousel-slider" data-slide-to="2"></li>
+            </ol>
 
-        <div class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <div class="mslogo">
-              	<img src="{{asset('images/newlogo.png')}}" width="177" title="tifosiwar" alt="tifosiwar">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+              <?php $i = 0; ?>
+              @foreach($banners as $banner)
+              <div class="item @if(empty($i)) active @endif">
+                <img src="{{asset($banner->image)}}" alt="slider{{$i}}">
+                <div class="carousel-caption"></div>
+                @if(empty($i))
+                <div id="videoFrame">
+                  {{$video->url}}
+                </div>
+                @endif
               </div>
-
-              <ul class="nav navbar-nav navbar-right extra-nav">
-                   	<li><a href="#" data-toggle="modal" data-target="#modalSignin">Sign In</a></li>
-            		<li><a href="#" data-toggle="modal" data-target="#modalSignup">Sign Up</a></li>
-               </ul>
-
-                <nav>
-                <ul class="nav masthead-nav">
-                  <li class="active">
-                  	<a href="#">
-                  		<i class="glyphicon glyphicon-fire"></i><br>
-                  		Fresh
-                  	</a>
-                  </li>
-                  <li>
-                  	<a href="#">
-                  		<i class="glyphicon glyphicon-star"></i><br>
-                  		Trending
-                  	</a>
-                  </li>
-                  <li>
-                  	<a href="#">
-                  		<i class="glyphicon glyphicon-tower"></i><br>
-                  		Hall of Fame
-                  	</a>
-                  </li>
-                </ul>
-              </nav>
-
+              <?php $i++; ?>
+              @endforeach
+              
             </div>
           </div>
 
-          
-          <div class="container" style="padding-bottom:100px">
-            <div class="row">
+          <div class="container pb0" style="padding-bottom:100px">
+            <div class="row mb20">
               <div class="col-sm-12">
-            
-            <ul class="bxslider">
-              <li>
-                <div style="position:absolute; width:100%"><center><img src="{{asset('images/slider/slider1.jpg')}}" style="height:100%;"/></center></div>
-                <div style=" width:400px; float: right; margin-right: 15%; margin-top: 3%;">
-                  <iframe width="560" height="315" src="https://www.youtube.com/embed/olFEpeMwgHk" frameborder="0" allowfullscreen></iframe>
-                </div>
-              </li>
-            </ul>
-
+                <div class="flagtitle"><span>Featured post</span></div>
+                <ul class="bxslider1">
+                  @foreach($featuredpost as $fp)
+                  <li>
+                    <a href="{{url('post/'.$fp->post->slug)}}">
+                    <img src="{{asset('imgpost/landscape/'.$fp->post->user_id.'/'.$fp->post->image)}}" />
+                    <div class="infoBar clearfix">
+                      <p class="mb0 pull-left">{{str_limit($fp->post->title, $limit = 50, $end = '...')}}</p>
+                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fp->post->id)->count()}}</span> </a>
+                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$fp->post->id)->count()}}</span> </a>
+                    </div>
+                    </a>
+                  </li>
+                  @endforeach
+                </ul>
               </div>
             </div>
 
             <div class="row mb20">
               <div class="col-sm-12">
-                <div class="flagtitle"><span>featured post</span></div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4 col-sm-6 mb10">
-                
-                <div class="box">
-                  <img src="http://tifozi.dev/imgpost/1/20150716071349_O57rQPcsNdGTYxu79Bn4bIPyxKn2X6hyGs2ykoF3.jpg" title="test Girlssss" class="img-content">
-
-                  <div class="overlay-mask" style="display: none;"></div>
-                  <a href="http://tifozi.dev/post/dfYPCM5k5N">
-                  <div class="overlay-content" style="display: none;">
-                    <div class="overlay-text">
-                      test Girlssss<br><br>
-                      <small>Posted at 03 September 2015,16:41</small><br>
-                      1 likes, 0 dislikes<br><br>
-                                      <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                      <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                      <br><br>
-                                      ATT : 0 points,<br>DF : 0 points,<br>ASS : 0 points
+                <div class="flagtitle"><span><i class="glyphicon glyphicon-fire"></i> Fresh &gt; &gt; </span></div>
+                <ul class="bxslider2">
+                  @foreach($freshpost as $fsp)
+                  <li>
+                    <a href="{{url('post/'.$fsp->slug)}}">
+                    <img src="{{asset('imgpost/'.$fsp->user_id.'/'.$fsp->image)}}" />
+                    <div class="infoBar clearfix">
+                      <p class="mb0 pull-left">{{str_limit($fsp->title, $limit = 50, $end = '...')}}</p>
+                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fsp->id)->count()}}</span> </a>
+                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span>{{Vote::where('type','dislike')->where('post_id',$fsp->id)->count()}}</span> </a>
                     </div>
-                  </div>
-                </a>
-                </div>
-
-              </div>
-              <div class="col-md-4 col-sm-6 mb10">
-
-                <div class="box">
-            <img src="http://tifozi.dev/imgpost/1/20150716071405_AGzNtuFj5OTQcpRjycGIvlzEzvtGbEcsTPsjAMUu.jpg" title="mana si barbeeee" class="img-content">
-
-            <div class="overlay-mask" style="display: none;"></div>
-            <a href="http://tifozi.dev/post/hYIS44d8D0">
-            <div class="overlay-content" style="display: none;">
-              <div class="overlay-text">
-                mana si barbeeee<br><br>
-                <small>Posted at 03 September 2015,16:41</small><br>
-                0 likes, 1 dislikes<br><br>
-                                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                <br><br>
-                                ATT : 0 points,<br>DF : 0 points,<br>ASS : 0 points
-              </div>
-            </div>
-          </a>
-          </div>
-
-              </div>
-              <div class="col-md-4 col-sm-6 mb10">
-              
-                <div class="box">
-            <img src="http://tifozi.dev/imgpost/1/20150729174345_pg8SqDeRex2IdGCnH1blJTRfmm1dpF1wHZOktHo3.jpg" title="Titttsssss" class="img-content">
-
-            <div class="overlay-mask" style="display: none;"></div>
-            <a href="http://tifozi.dev/post/lCg46wWkMH">
-            <div class="overlay-content" style="display: none;">
-              <div class="overlay-text">
-                Titttsssss<br><br>
-                <small>Posted at 03 September 2015,16:41</small><br>
-                1 likes, 0 dislikes<br><br>
-                                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                <br><br>
-                                ATT : 1 points,<br>DF : 0 points,<br>ASS : 0 points
-              </div>
-            </div>
-          </a>
-          </div>
-
+                    </a>
+                  </li>
+                  @endforeach
+                </ul>
               </div>
             </div>
 
-            <div class="row mt30 mb20">
+            <div class="row mb20">
               <div class="col-sm-12">
-                <div class="flagtitle"><span>fresh posts</span></div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4 col-sm-6 mb10">
-                
-                <div class="box">
-                  <img src="http://tifozi.dev/imgpost/1/20150716071349_O57rQPcsNdGTYxu79Bn4bIPyxKn2X6hyGs2ykoF3.jpg" title="test Girlssss" class="img-content">
-
-                  <div class="overlay-mask" style="display: none;"></div>
-                  <a href="http://tifozi.dev/post/dfYPCM5k5N">
-                  <div class="overlay-content" style="display: none;">
-                    <div class="overlay-text">
-                      test Girlssss<br><br>
-                      <small>Posted at 03 September 2015,16:41</small><br>
-                      1 likes, 0 dislikes<br><br>
-                                      <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                      <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                      <br><br>
-                                      ATT : 0 points,<br>DF : 0 points,<br>ASS : 0 points
+                <div class="flagtitle"><span><i class="glyphicon glyphicon-star"></i></i> Trending &gt; &gt; </span></div>
+                <ul class="bxslider2">
+                  @foreach($trendingpost as $tp)
+                  <li>
+                    <a href="{{url('post/'.$tp->slug)}}">
+                    <img src="{{asset('imgpost/'.$tp->user_id.'/'.$tp->image)}}" />
+                    <div class="infoBar clearfix">
+                      <p class="mb0 pull-left">{{str_limit($tp->title, $limit = 50, $end = '...')}}</p>
+                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('type','like')->where('post_id',$tp->id)->count()}}</span> </a>
+                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$tp->id)->count()}} </span> </a>
                     </div>
-                  </div>
-                </a>
-                </div>
-
-              </div>
-              <div class="col-md-4 col-sm-6 mb10">
-
-                <div class="box">
-            <img src="http://tifozi.dev/imgpost/1/20150716071405_AGzNtuFj5OTQcpRjycGIvlzEzvtGbEcsTPsjAMUu.jpg" title="mana si barbeeee" class="img-content">
-
-            <div class="overlay-mask" style="display: none;"></div>
-            <a href="http://tifozi.dev/post/hYIS44d8D0">
-            <div class="overlay-content" style="display: none;">
-              <div class="overlay-text">
-                mana si barbeeee<br><br>
-                <small>Posted at 03 September 2015,16:41</small><br>
-                0 likes, 1 dislikes<br><br>
-                                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                <br><br>
-                                ATT : 0 points,<br>DF : 0 points,<br>ASS : 0 points
-              </div>
-            </div>
-          </a>
-          </div>
-
-              </div>
-              <div class="col-md-4 col-sm-6 mb10">
-              
-                <div class="box">
-            <img src="http://tifozi.dev/imgpost/1/20150729174345_pg8SqDeRex2IdGCnH1blJTRfmm1dpF1wHZOktHo3.jpg" title="Titttsssss" class="img-content">
-
-            <div class="overlay-mask" style="display: none;"></div>
-            <a href="http://tifozi.dev/post/lCg46wWkMH">
-            <div class="overlay-content" style="display: none;">
-              <div class="overlay-text">
-                Titttsssss<br><br>
-                <small>Posted at 03 September 2015,16:41</small><br>
-                1 likes, 0 dislikes<br><br>
-                                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                <br><br>
-                                ATT : 1 points,<br>DF : 0 points,<br>ASS : 0 points
-              </div>
-            </div>
-          </a>
-          </div>
-
-              </div>
-            
-              <div class="col-md-4 col-sm-6 mb10">
-                
-                <div class="box">
-                  <img src="http://tifozi.dev/imgpost/1/20150716071349_O57rQPcsNdGTYxu79Bn4bIPyxKn2X6hyGs2ykoF3.jpg" title="test Girlssss" class="img-content">
-
-                  <div class="overlay-mask" style="display: none;"></div>
-                  <a href="http://tifozi.dev/post/dfYPCM5k5N">
-                  <div class="overlay-content" style="display: none;">
-                    <div class="overlay-text">
-                      test Girlssss<br><br>
-                      <small>Posted at 03 September 2015,16:41</small><br>
-                      1 likes, 0 dislikes<br><br>
-                                      <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                      <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                      <br><br>
-                                      ATT : 0 points,<br>DF : 0 points,<br>ASS : 0 points
-                    </div>
-                  </div>
-                </a>
-                </div>
-
-              </div>
-              <div class="col-md-4 col-sm-6 mb10">
-
-                <div class="box">
-            <img src="http://tifozi.dev/imgpost/1/20150716071405_AGzNtuFj5OTQcpRjycGIvlzEzvtGbEcsTPsjAMUu.jpg" title="mana si barbeeee" class="img-content">
-
-            <div class="overlay-mask" style="display: none;"></div>
-            <a href="http://tifozi.dev/post/hYIS44d8D0">
-            <div class="overlay-content" style="display: none;">
-              <div class="overlay-text">
-                mana si barbeeee<br><br>
-                <small>Posted at 03 September 2015,16:41</small><br>
-                0 likes, 1 dislikes<br><br>
-                                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                <br><br>
-                                ATT : 0 points,<br>DF : 0 points,<br>ASS : 0 points
-              </div>
-            </div>
-          </a>
-          </div>
-
-              </div>
-              <div class="col-md-4 col-sm-6 mb10">
-              
-                <div class="box">
-            <img src="http://tifozi.dev/imgpost/1/20150729174345_pg8SqDeRex2IdGCnH1blJTRfmm1dpF1wHZOktHo3.jpg" title="Titttsssss" class="img-content">
-
-            <div class="overlay-mask" style="display: none;"></div>
-            <a href="http://tifozi.dev/post/lCg46wWkMH">
-            <div class="overlay-content" style="display: none;">
-              <div class="overlay-text">
-                Titttsssss<br><br>
-                <small>Posted at 03 September 2015,16:41</small><br>
-                1 likes, 0 dislikes<br><br>
-                                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-                                <br><br>
-                                ATT : 1 points,<br>DF : 0 points,<br>ASS : 0 points
-              </div>
-            </div>
-          </a>
-          </div>
-
+                    </a>
+                  </li>
+                  @endforeach
+                </ul>
               </div>
             </div>
 
-          </div>
+          </div><!-- container -->
 
-          <div class="mastfoot">
-            <div class="inner">
-              
-              <div class="footer-left">
-                <div class="ftlogo">
-                  <img src="{{asset('images/bwlogo.png')}}" title="tifosiwar" alt="tifosiwar">
-                </div>
-                <div class="availstore">
-                  <img src="{{asset('images/avail.png')}}" title="tifosiwar" alt="tifosiwar">
-                </div>
-              </div>
-
-              <ul>
-                <li><img src="{{asset('images/fbadd.png')}}" width="25" title="facebook" alt="facebook"> tifosiwar</li>
-                <li><img src="{{asset('images/twadd.png')}}" width="25" title="twitter" alt="twitter"> @tifosiwar</li>
-                <li><img src="{{asset('images/igadd.png')}}" width="25" title="instagram" alt="instagram"> tifosiwar</li>
-              </ul>
-              <span class="pull-right">Copyright&copy; 2015</span>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
+          
 @stop

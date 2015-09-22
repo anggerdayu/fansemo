@@ -2,7 +2,7 @@
 
 return array(
 	'otherflag' => 'ID',
-	'toptitle' => 'fansemo.com - english',
+	'toptitle' => 'Tifosiwar.com - english',
 	'topbarsignin' => 'Sign In',
 	'topbarsignup' => 'Sign Up',
 	'topbarupload' => 'Upload',

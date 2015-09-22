@@ -71,6 +71,7 @@ $('#uploadimg').click(function(e){
 $('#form-comment').submit(function(e){
 	e.preventDefault();
 	var datastring = $("#form-comment").serialize();
+    console.log(datastring);
 	$.ajax({
           type: "POST",
           url: $("#form-comment").attr('action'),
@@ -315,6 +316,12 @@ var uploadButton = $('<button/>')
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
+$('#commentBtn').click(function(e){
+    e.preventDefault();
+    $(this).toggleClass('activeAct');
+    $('#commentarea').toggle();
+});
+
 
 $('.commentupload').fileupload({
         url: url,
@@ -401,37 +408,37 @@ $(document).on('fileuploadadd', '.commentupload', function (e, data) {
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
 
-    $('#commentpart-all,#morecomments-all').show();
-    $('#commentpart-attack,#morecomments-attack').hide();
-    $('#commentpart-assist,#morecomments-assist').hide();
-    $('#commentpart-defense,#morecomments-defense').hide();
+    $('#morecomments-all').show();
+    $('#morecomments-attack').hide();
+    $('#morecomments-assist').hide();
+    $('#morecomments-defense').hide();
 
-$('.tab-all').click(function(){
-    $('#commentpart-all,#morecomments-all').show();
-    $('#commentpart-attack,#morecomments-attack').hide();
-    $('#commentpart-assist,#morecomments-assist').hide();
-    $('#commentpart-defense,#morecomments-defense').hide();
-});
+// $('.tab-all').click(function(){
+//     $('#commentpart-all,#morecomments-all').show();
+//     $('#commentpart-attack,#morecomments-attack').hide();
+//     $('#commentpart-assist,#morecomments-assist').hide();
+//     $('#commentpart-defense,#morecomments-defense').hide();
+// });
 
-$('.tab-attack').click(function(){
-    $('#commentpart-all,#morecomments-all').hide();
-    $('#commentpart-attack,#morecomments-attack').show();
-    $('#commentpart-assist,#morecomments-assist').hide();
-    $('#commentpart-defense,#morecomments-defense').hide();
-});
+// $('.tab-attack').click(function(){
+//     $('#commentpart-all,#morecomments-all').hide();
+//     $('#commentpart-attack,#morecomments-attack').show();
+//     $('#commentpart-assist,#morecomments-assist').hide();
+//     $('#commentpart-defense,#morecomments-defense').hide();
+// });
 
-$('.tab-assist').click(function(){
-    $('#commentpart-all,#morecomments-all').hide();
-    $('#commentpart-attack,#morecomments-attack').hide();
-    $('#commentpart-assist,#morecomments-assist').show();
-    $('#commentpart-defense,#morecomments-defense').hide();
-});
+// $('.tab-assist').click(function(){
+//     $('#commentpart-all,#morecomments-all').hide();
+//     $('#commentpart-attack,#morecomments-attack').hide();
+//     $('#commentpart-assist,#morecomments-assist').show();
+//     $('#commentpart-defense,#morecomments-defense').hide();
+// });
 
-$('.tab-defense').click(function(){
-    $('#commentpart-all,#morecomments-all').hide();
-    $('#commentpart-attack,#morecomments-attack').hide();
-    $('#commentpart-assist,#morecomments-assist').hide();
-    $('#commentpart-defense,#morecomments-defense').show();
-});
+// $('.tab-defense').click(function(){
+//     $('#commentpart-all,#morecomments-all').hide();
+//     $('#commentpart-attack,#morecomments-attack').hide();
+//     $('#commentpart-assist,#morecomments-assist').hide();
+//     $('#commentpart-defense,#morecomments-defense').show();
+// });
 
 $('.fancybox').fancybox();

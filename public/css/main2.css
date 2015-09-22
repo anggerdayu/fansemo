@@ -1,6 +1,9 @@
-/*
- * Globals
- */
+
+
+
+/* ========================================== */
+/*              by alan                       */
+/* ========================================== */
 
 /* Links */
 a,
@@ -9,16 +12,16 @@ a:hover {
   color: #000;
 }
 
-/* Custom default button */
+/* Custom default button 
 .btn-default,
 .btn-default:hover,
 .btn-default:focus {
   color: #333;
-  text-shadow: none; /* Prevent inheritence from `body` */
+  text-shadow: none; /* Prevent inheritence from `body` 
   background-color: #fff;
   border: 1px solid #fff;
 }
-
+*/
 
 /*
  * Base structure
@@ -27,6 +30,7 @@ a:hover {
 html,
 body {
   height: 100%;
+  font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif;
 }
 body {
   color: #000;
@@ -34,61 +38,55 @@ body {
   /*text-shadow: 0 1px 3px rgba(0,0,0,.5);*/
 }
 
-/* Extra markup and styles for table-esque vertical and horizontal centering */
-.site-wrapper {
-  display: table;
-  width: 100%;
-  height: 100%; /* For at least Firefox */
-  min-height: 100%;
-  /*-webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-          box-shadow: inset 0 0 100px rgba(0,0,0,.5);*/
-}
-.site-wrapper-inner {
-  display: table-cell;
-  vertical-align: top;
-}
-.cover-container {
-  margin-right: auto;
-  margin-left: auto;
+/* ========================================= modal =======================================*/
+
+.modalTitleBorder{ padding: 10px 0; border-top: 2px solid #a9abad; border-bottom: 2px solid #a9abad; }
+.modal-content { 
+  background: url('../images/modal-bg.jpg'); 
+  background-repeat: no-repeat;  
+  background-color: #fff;  
+  background-position: bottom right; 
+  border-right: 10px solid #be1e2d;
+  border-radius: 50px 15px 50px 15px;
+  border-top: 10px solid #be1e2d;  
 }
 
-/* Padding for spacing */
-.inner {
-  padding: 30px;
-}
-
-
-/*
- * Header
- */
-.masthead-brand {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
+/* ========================================= header =======================================*/
+nav.navbar { border-top: 10px solid #be1e2d; }
 
 .masthead-nav > li {
   display: table-cell;
   width: 150px;
   height: 100px;
-  -webkit-transform: skew(-20deg);
-     -moz-transform: skew(-20deg);
-       -o-transform: skew(-20deg);
+  -webkit-transform: skew(-30deg);
+     -moz-transform: skew(-30deg);
+       -o-transform: skew(-30deg);
   border-left: #5c5d60 2px solid;
 }
+.masthead-nav > li:first-child { border-left: none; }
+
+
 .masthead-nav > li + li {
-  margin-left: 20px;
+/*   margin-left: 20px; */
 }
+
+.masthead-nav > li.activeRed, .masthead-nav > li:hover,
+.extra-nav > li.activeRed, .extra-nav > li:hover { background-color: #be1e2d; }
+.masthead-nav > li.activeRed a, .masthead-nav > li:hover a,
+.extra-nav > li.activeRed a, .extra-nav > li:hover a { color: #fff !important; }
+.masthead-nav > li.activeRed a i, .masthead-nav > li:hover a i { color: #fff; }
+
 .masthead-nav > li > a {
   display: block;
   padding-top: 35px;
-  padding-right: 0;
+  padding-right: 10px;
   padding-left: 0;
   font-size: 15px;
   font-weight: bold;
   color: #000;
-  -webkit-transform: skew(20deg);
-     -moz-transform: skew(20deg);
-       -o-transform: skew(20deg);
+  -webkit-transform: skew(30deg);
+     -moz-transform: skew(30deg);
+       -o-transform: skew(30deg);
   text-decoration:none;
   text-transform: uppercase;
 }
@@ -99,6 +97,8 @@ body {
   color: #be1e2d;
   text-transform: uppercase;
 }
+
+
 .masthead-nav > .active > a,
 .masthead-nav > .active > a:focus {
   color: #000;
@@ -122,49 +122,155 @@ body {
 }
 
 .extra-nav{
-  margin-top: 23px;
+  margin-top: 49px;
 }
 
-@media (min-width: 768px) {
-  .masthead-brand {
+.unloginNav li:last-child{
+  margin-left: 40px;
+}
+
+      @media (min-width: 768px) {
+        /* Pull out the header and footer */
+        .masthead {
+          z-index: 100;
+          background-color: white; 
+          border-top: #be1e2d 10px solid;
+          border-bottom: #be1e2d 1px solid; 
+          position: fixed;
+          top: 0;
+        }
+
+        .masthead-nav {
+          float: left;
+          margin-top: 0;
+          margin-left: 10%;
+        }
+
+        .masthead-nav li a img { max-width: 30px; margin-bottom: 5px; }
+
+        .extra-nav { float: right; }
+
+        .mastfoot {
+          height: 100%;
+          float: left;
+          /*position: fixed;
+          bottom: 0;*/
+        }
+
+        /* Handle the widths */
+        .masthead,
+        .mastfoot,
+        .cover-container {
+          width: 100%; /* Must be percentage or pixels for horizontal alignment */
+        }
+      }
+      @media (max-width: 1210px) and (min-width: 768px) {
+        .masthead-nav { margin-left: 0; }
+
+
+      }
+
+      @media (max-width: 1022px) and (min-width: 768px) {
+        .masthead-nav {
+          margin-top: 28px;
+          float: right;
+        }
+        .extra-nav{
+          margin-top: 23px;
+        }
+        .navbar-header.loginNav { max-width: 120px; }
+        .navbar-header.loginNav img { width: 100%; height: auto; margin-top: 10px; }
+      }
+
+      @media (max-width: 767px) {
+        .extra-nav{
+          margin-top: 0;
+        }
+      }
+
+      @media (max-width: 1022px) {
+        .extra-nav > li { display: block; }
+        .unloginNav li:last-child{
+          margin-left: 0;
+        }        
+        .masthead-nav > li {
+          display: block;
+          width: auto;
+          height: auto;
+          -webkit-transform: none;
+          -moz-transform: none;
+          -o-transform: none;
+          border-left: none;
+        }
+        .masthead-nav > li > a { 
+          -webkit-transform: none;
+          -moz-transform: none;
+          -o-transform: none;
+          padding: 10px 15px;
+        }
+        .masthead-nav li a img { display: none; }
+        .masthead-nav > li > a > i, .masthead-nav > li > a > br { display: none; }
+        .nav > li > a { text-align: center; }
+        .masthead-nav > li + li { margin-left: 0; }
+      }
+
+/* ========================================= carousel n video =======================================*/
+
+#videoFrame {
+  width: auto;
+  position: absolute;
+  top: 10%;
+  right: 5%;
+}
+@media (max-width: 768px) {
+  #videoFrame { display: none; }
+}
+
+/* ========================================= content web =======================================*/
+.container { margin-top: 40px; }
+.flagtitle{
+  width:248px; 
+  height:37px; 
+  margin-bottom: 10px;
+  background: url('../images/flagtitle.png');
+}
+
+.flagtitle span{
+    color: white;
+    font-weight: 800;
+    font-size: 17px;
     float: left;
-  }
-  .masthead-nav {
-    float: right;
-    margin-top: -27px;
-  }
+    margin-top: 9px;
+    margin-left: 60px;
 }
 
-
-/*
- * Cover
- */
-
-.cover {
-  padding: 0 20px;
+.infoBar { 
+  background-color: #000; 
+  padding: 5px 10px;
 }
-.cover .btn-lg {
-  padding: 10px 20px;
-  font-weight: bold;
-}
+.infoBar p { color: #fff; font-size: 1em; text-align: left;}
+.infoBar a { color: #fff; cursor: pointer; }
 
 
-/*
- * Footer
- */
 
-.mastfoot {
-  background-color: #030000;
-  color: #fff; /* IE8 proofing */
-}
+/* ========================================= footer Block =======================================*/
+.footerBlock .socmed_icon { margin-top: 30px; }
+.footerBlock .socmed_icon ul { text-align: right; }
+      @media (min-width: 1200px) {
+        .footerBlock .socmed_icon ul { text-align: left; }
+      }
+      @media (max-width: 1199px) {
+        .footerBlock .socmed_icon { margin-top: 0; }
+      }
 
-.mastfoot span{
-   width: 36%;
-}
 
-.mslogo{
-  float:left;
-}
+
+.footerBlock .socmed_icon li { display: inline-block; margin-left: 15px; }
+.footerBlock .socmed_icon li:first-child { margin-left: 0; }
+
+.footerBlock .socmed_icon li a { color: #fff; }
+
+.copyR { color: #fff; margin-top: 30px; text-align: right; }
 
 .ftlogo{
     float: left;
@@ -180,72 +286,93 @@ body {
   margin-left:10px;
 }
 
-.mastfoot > .inner > ul{
-  float: right;
-  display: flex;
-  list-style: none;
+      @media (min-width: 769px) and (max-width: 940px) {
+      .ftlogo img{
+          width: 170px;
+        }
+      }
+      @media (max-width: 768px) {
+      .ftlogo img{
+        width: 143px;
+      }
 }
-.mastfoot > .inner > ul > li{
-  margin-right: 15px;
+/* ========================================== */
+/*              extend bootstrap              */
+/* ========================================== */
+
+.modal-content { padding: 0 50px; font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif; }
+.modal-footer, .modal-header { border: none; }
+.modal-body { padding-top: 0; }
+
+.navbar,.navbar-header { min-height: 90px; }
+.navbar-brand { height: auto; }
+.navbar { margin-bottom: 0; }
+
+#carousel-slider {  margin-top: 110px; }
+      @media (max-width: 920px) {
+        #carousel-slider {  margin-top: 105px; }
+      }
+
+#carousel-slider .carousel-inner .item img { width: 100%; max-height: 480px; }
+.carousel-indicators li {
+  background-color: #fff;
+  border: 1px solid #fff;
 }
 
-.bxslider > li{
-  width:100%; 
-  height:400px;
+.carousel-indicators .active{  
+  background-color: #be1e2d;
+  border: 1px solid #be1e2d;
 }
 
-.bx-wrapper{
-  border: none;
-}
+/* ========================================== */
+/*              extend bxslider              */
+/* ========================================== */
 
-.flagtitle{
-  width:248px; 
-  height:37px; 
-  background: url('../images/flagtitle.png');
-}
+.bx-wrapper .bx-controls-direction a { z-index: 999 !important; }
+ul.bxslider li { width: 50%; }
+ul.bxslider li img { width: 100%; }
 
-.flagtitle span{
-    color: white;
-    font-weight: 800;
-    font-size: 17px;
-    float: left;
-    margin-top: 6px;
-    margin-left: 60px;
-}
+.bx-wrapper { background: #fff !important; box-shadow: none !important; -webkit-box-shadow: none !important;  }
+.bxslider1 > li, .bxslider2 > li { overflow: hidden; }
+.bxslider1 > li > .infoBar > a, .bxslider2 > li > .infoBar > a { position: relative; bottom: -50px; transition: all 0.8s; }
 
-.overlay-mask{
-   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  background-color: rgba(0,0,0,0.5);
-}
+.bxslider1 > li:hover .infoBar > a, .bxslider2 > li:hover .infoBar > a { bottom: 0; }
 
-.overlay-content{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 20;
-}
 
-.overlay-text{
-  margin-top: 20px;
-  text-align: center;
-  color: white;
-}
+/* ========================================== */
+/*              css additional:               */
+/* ========================================== */
 
-.mt80{
-  margin-top: 80px;
+.bgBlack { background-color: #000; }
+
+.clr-red{ color: #be1e2d; }
+.clr-white { color: #fff; }
+.inlineB { display: inline-block; }
+
+
+
+.mt0{
+  margin-top: 0;
+}
+.mt10{
+  margin-top: 10px;
+}
+.mt15{
+  margin-top: 15px;
 }
 .mt30{
   margin-top: 30px;
 }
-.mt10{
-  margin-top: 10px;
+.mt80{
+  margin-top: 80px;
+}
+.mt150{
+  margin-top: 150px !important;
+}
+
+
+.mb0{
+  margin-bottom: 0;
 }
 .mb10{
   margin-bottom: 10px;
@@ -260,167 +387,62 @@ body {
   margin-bottom: 80px;
 }
 
+.ml0 { margin-left: 0; }
+.ml10 { margin-left: 10px; }
+.ml15 { margin-left: 15px; }
+.ml50 { margin-left: 50px !important; }
 
-/*
- * Affix and center
- */
+.pb0 { padding-bottom: 0 !important; }
+.pt0 { padding-top: 0; }
+.p15 { padding: 15px !important; }
 
-@media (min-width: 768px) {
-  /* Pull out the header and footer */
-  .masthead {
-    z-index: 100;
-    background-color: white; 
-    border-top: #be1e2d 3px solid;
-    border-bottom: #be1e2d 1px solid; 
-    position: fixed;
-    top: 0;
-  }
-  .mastfoot {
-    height: 100%;
-    float: left;
-    /*position: fixed;
-    bottom: 0;*/
-  }
-  /* Start the vertical centering */
-  .site-wrapper-inner {
-    /*vertical-align: middle;*/
-    padding-top: 107px;
-  }
-  /* Handle the widths */
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    width: 100%; /* Must be percentage or pixels for horizontal alignment */
-  }
+.pl0 { padding-left: 0; }
+.pr0 { padding-right: 0; }
+.bgBlack { background-color: #000; }
+
+.success > .glyphicon-thumbs-up{
+  color: green;
 }
 
-@media (max-width: 768px) {
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    width: 100%;
-  }
-
-  .mastfoot{
-    height: 100%;
-    float: left;
-  }
-
-  .mslogo{
-    float:left;
-    width: 100%;
-  }
-
-  .mslogo img,.ftlogo img{
-    width: 143px;
-  }
-
-  .extra-nav > li {
-    position: relative;
-    display: inline-block;
-  }
-
-  .masthead-nav > li {
-    display: table-cell;
-    height: 10px;
-    border: 0;
-    -webkit-transform: skew(0deg);
-    width: 15%;
-  }
-  .masthead-nav > li > a {
-    display: block;
-    padding-top: 0px;
-    padding-right: 0;
-    padding-left: 0;
-    font-size: 13px;
-    font-weight: bold;
-    color: #000;
-    text-decoration:none;
-    text-transform: uppercase;
-    -webkit-transform: skew(0deg);
-  }
-  .navbar-nav>li>a{
-    font-size: 13px;
-  }
-
-  .masthead-nav > li > a > .glyphicon {
-    font-size: large;
-    color: #be1e2d;
-  }
-
-  .footer-left{
-    float: left;
-    width: 100%;
-    margin-left: 19%;
-  }
-  .mastfoot > .inner > ul{
-    float: none;
-    display: flex;
-    list-style: none;
-    padding-top: 10px;
-    width: 100%;
-  }
-  .mastfoot span{
-    width: 100%;
-    text-align: center;
-  }
-
-  .bx-wrapper{
-    display: none;
-  }
+.actionRow a{
+  cursor: pointer;
 }
 
-@media (min-width: 769px) and (max-width: 940px) {
-  .masthead,
-  .mastfoot,
-  .cover-container {
-    width: 100%;
-  }
-
-  .masthead{
-    height: 100px;
-  }
-
-  .masthead-nav {
-    float: right;
-    margin-top: 0px;
-  }
-
-  .masthead-nav > li {
-    display: table-cell;
-    height: 10px;
-  }
-
-  .masthead-nav > li {
-    display: table-cell;
-    height: 100px;
-    border: 0;
-    -webkit-transform: skew(0deg);
-    width: 98px;
-    /*width: 15%;*/
-  }
-  .masthead-nav > li > a {
-    display: block;
-    padding-top: 16px;
-    padding-right: 0;
-    padding-left: 0;
-    font-size: 13px;
-    font-weight: bold;
-    color: #000;
-    text-decoration:none;
-    text-transform: uppercase;
-    -webkit-transform: skew(0deg);
-  }
-
-  .mslogo img,.ftlogo img{
-    width: 170px;
-  }
-  
-  .navbar-nav>li>a{
-    font-size: 14px;
-  }
-  .masthead-nav > li > a > .glyphicon {
-    font-size: large;
-    color: #be1e2d;
-  }
+.comment-type{
+  width: 25px;
+  height: 25px;
+  float: left;
+  margin-right: 11px;
+  margin-bottom: 15px;
+  cursor: pointer;
 }
+
+.attack-bg{
+  background: url('../images/icon_attack_grey.png');
+  background-size: contain;
+}
+
+.assist-bg{
+  background: url('../images/icon_assist_grey.png');
+  background-size: contain;
+}
+
+.defense-bg{
+  background: url('../images/icon_defense_grey.png');
+  background-size: contain;
+}
+
+.attack-bg-hover{
+  background: url('../images/icon_attack.jpg');
+  background-size: contain;
+}
+
+.assist-bg-hover{
+  background: url('../images/icon_assist.jpg');
+  background-size: contain;
+}
+
+.defense-bg-hover{
+  background: url('../images/icon_defense.jpg');
+  background-size: contain;
+} 

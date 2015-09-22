@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('layout.base2')
 
 @section('css')
  <link href="{{ asset('css/jquery.fileupload.css') }}" rel="stylesheet">
@@ -121,8 +121,10 @@ $(function () {
 @stop
 
 @section('content')
-<div class="container mt80">
-        
+<div class="container mt150 mb80">
+        <div class="row">
+            @include('user.leftnav')
+            <div class="col-sm-6 col-sm-offset-1 col-lg-5 col-lg-offset-2">
         <div class="row">
           <div class="col-sm-12">
             <center>
@@ -130,10 +132,6 @@ $(function () {
             </center>
           </div>
         </div>
-
-        <div class="row">
-            @include('user.leftnav')
-            <div class="col-sm-9">
                 <h3>{{ucfirst($mode)}} Badge</h3>
 
                 @if($mode=='edit')

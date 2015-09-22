@@ -1,0 +1,64 @@
+
+
+
+/* ========================================== */
+/*          trending page only                */
+/* ========================================== */
+.imageBox { max-width: 600px; }
+.imageBox img { width: 100%; height: auto; }
+
+.actionRow a {   
+  padding: 5px 8px;
+  color: #ccc;
+  border: 1px solid #ccc;
+  border-radius: 5px; 
+  font-size: 22px;
+}
+
+.actionRow .activeAct { color: #be1e2d; }
+.clrGrey { color: #414142; text-transform: uppercase; }
+
+.infoBarTrend { max-width: 630px; }
+.rightBarTrend p { color: #be1e2d; border-bottom: 1px solid #ccc;  padding-bottom: 5px; }
+.rightBarTrend p:last-child { border: none; }
+.imageBox2 { text-align: left; }
+.imageBox2 img { width: 100%; height: auto; max-width: 300px; }
+
+.infoBar2 { 
+  background-color: #000; 
+  padding: 5px 10px;
+  max-width: 300px;
+}
+.infoBar2 p { color: #fff; font-size: 1em; text-align: left;}
+.infoBar2 a { color: #fff; cursor: pointer; }
+
+.rightColumn .columnBlock .infoBar2 > a { position: relative; bottom: -50px; transition: all 0.8s; }
+.rightColumn .columnBlock:hover .infoBar2 > a { bottom: 0; }
+.rightColumn .columnBlock { overflow: hidden; margin-bottom: 30px; }
+
+
+/* ========================================= responsive =======================================*/
+
+      @media (max-width: 920px) and (min-width: 768px) {
+ 
+       }
+
+      @media (max-width: 767px) {
+        .rightBarTrend { margin-top: 30px; }
+      }
+
+      @media (max-width: 920px) {
+ 
+      }
+
+
+/* ========================================= content web =======================================*/
+
+/* ========================================= footer Block =======================================*/
+
+
+
+/* ========================================== */
+/*              extend bootstrap              */
+/* ========================================== */
+

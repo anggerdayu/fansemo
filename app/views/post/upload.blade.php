@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('layout.base2')
 
 @section('css')
  <link href="{{ asset('css/jquery.fileupload.css') }}" rel="stylesheet">
@@ -144,7 +144,7 @@ $(function () {
 @stop
 
 @section('content')
-	<div class="container mt80">
+	<div class="container mt150 mb80">
 		<h1>Upload your Image</h1>
          <br><br>
         @if(Session::has('success')) 
@@ -155,10 +155,10 @@ $(function () {
         @endif
          <p class="text-danger text-center" id="alert"></p>
         <div class="row">
-            <div class="col-md-2 title-image">
+            <div class="col-md-8 col-md-offset-2 title-image">
                 Image
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-8 col-md-offset-2">
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
@@ -179,14 +179,14 @@ $(function () {
 		<form class="form-horizontal mt80" id="form-upload" data-to="{{url('upload')}}">
             <input type="hidden" name="img" id="imgurl">
 		  <div class="form-group">
-		    <label class="control-label col-sm-2">Title</label>
-		    <div class="col-sm-4"> 
+		    <label class="control-label col-sm-4 col-sm-offset-4" style="text-align:left">Title</label>
+		    <div class="col-sm-4 col-sm-offset-4"> 
 		      <textarea id="title" name="title" rows="6" class="form-control"></textarea>
 		    </div>
 		  </div>
 		  
 		  <div class="form-group"> 
-		    <div class="col-sm-offset-2 col-sm-4">
+		    <div class="col-sm-4 col-sm-offset-4">
 		      <button type="submit" id="submit" class="btn btn-default">Submit</button>
 		    </div>
 		  </div>

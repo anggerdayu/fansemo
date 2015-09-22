@@ -10,21 +10,46 @@
     <link rel="icon" href="favicon.ico">
 
     <title>@lang('home.toptitle')</title>
-    <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main2.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/components-font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     @yield('css')
   </head>
 
   <body>
-     @yield('content')
-<!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    @include('layout.modal')
+    @include('layout.header')
+    
+    @yield('content')
+    
+    @include('layout.footer')
+     
     <script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/jscroll/jquery.jscroll.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/jscroll/jquery.jscroll.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+
+@if(isset($page) && $page != 'halloffame')
+<script>
+  $('.masthead-nav > li').on("mouseenter", function(){
+    var thisImg = $(this).find('a img');
+    var oriSrc = thisImg.attr('src');
+    var pathStart = oriSrc.slice(0, (oriSrc.length)-4);
+    var whiteSrc = pathStart + "_white.png";
+    //alert (whiteSrc);
+    thisImg.attr('src', whiteSrc);
+  });
+
+  $('.masthead-nav > li').on("mouseleave", function(){
+    var thisImg = $(this).find('a img');
+    var whiteSrc = thisImg.attr('src');
+    var pathStart = whiteSrc.slice(0, (whiteSrc.length)-10);
+    var oriSrc = pathStart + ".png";
+    //alert (whiteSrc);
+    thisImg.attr('src', oriSrc);
+  });
+</script>
+@endif
     @yield('scripts')
     
   </body>

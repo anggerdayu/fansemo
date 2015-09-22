@@ -1,19 +1,18 @@
-@extends('layout.base')
+@extends('layout.base2')
 
 @section('content')
-<div class="container mt80">
+<div class="container mt150 mb80">
+
+        <div class="row">
+        	@include('user.leftnav')
+        	<div class="col-sm-6 col-sm-offset-1 col-lg-5 col-lg-offset-2">
 	<div class="row">
           <div class="col-sm-12">
             <center>
               <h1><i class="glyphicon glyphicon-user"></i> Change Password</h1>
             </center>
           </div>
-        </div>
-
-        <div class="row">
-        	@include('user.leftnav')
-        	<div class="col-sm-9">
-        		<p>Change Password</p>
+		        </div>        	
         		@if(Session::get('success'))
         		<div class="alert alert-success alert-dismissible" role="alert">
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

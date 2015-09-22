@@ -1,8 +1,10 @@
-@extends('layout.base')
+@extends('layout.base2')
 
 @section('content')
-	<div class="container mt80">
-        
+	<div class="container mt150 mb80">
+        <div class="row">
+        	@include('user.leftnav')
+        	<div class="col-sm-9">
         <div class="row">
           <div class="col-sm-12">
             <center>
@@ -10,11 +12,6 @@
             </center>
           </div>
         </div>
-
-        <div class="row">
-        	@include('user.leftnav')
-        	<div class="col-sm-9">
-
         		@if(Session::get('success'))
         		<div class="alert alert-success alert-dismissible" role="alert">
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

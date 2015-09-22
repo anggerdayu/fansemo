@@ -2,7 +2,7 @@
 
 return array(
 	'otherflag' => 'EN',
-	'toptitle' => 'fansemo.com - indonesia',
+	'toptitle' => 'Tifosiwar.com - indonesia',
 	'topbarsignin' => 'Masuk',
 	'topbarsignup' => 'Daftar',
 	'topbarupload' => 'Unggah',

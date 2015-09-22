@@ -15,10 +15,24 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function index()
+	public function index(){
+		// latest / fresh
+		$data['page'] = '';
+		$data['video'] = Featuredvideo::find(1);
+		$data['banners'] = Banner::orderBy('id')->get();
+		$data['freshpost'] = Post::orderBy('created_at','desc')->take(5)->get();
+		$data['featuredpost'] = FeaturedPost::orderBy('id','desc')->take(6)->with('post')->get();
+		$data['trendingpost'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
+							->groupBy('posts.id')->orderBy('total','desc')->take(6)->get();
+
+		return View::make('main2')->with($data);	
+	}
+
+	public function fresh()
 	{
 		// latest / fresh
 		$data['page'] = 'home';
+		$data['pagetype'] = 'fresh';
 		$data['images'] = Post::orderBy('created_at','desc');
 		$data['video'] = Featuredvideo::find(1);
 		if(Auth::user()){
@@ -28,16 +42,13 @@ class HomeController extends BaseController {
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
 		}
-		return View::make('main')->with($data);
-	}
-
-	public function test(){
-		$data['page'] = 'home';
-		return View::make('main2')->with($data);	
+		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(3)->get();
+		return View::make('scrollpost')->with($data);
 	}
 
 	public function trending(){
 		$data['page'] = 'trending';
+		$data['pagetype'] = 'trending';
 		$data['images'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
 							->groupBy('posts.id')->orderBy('total','desc');
 		if(Auth::user()){
@@ -47,7 +58,8 @@ class HomeController extends BaseController {
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
 		}
-		return View::make('trending')->with($data);	
+		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(3)->get();
+		return View::make('scrollpost')->with($data);	
 	}
 
 	public function post()
@@ -55,7 +67,7 @@ class HomeController extends BaseController {
 		return View::make('post');
 	}
 
-	public function hof()
+	public function hof2()
 	{
 		$data['page'] = 'halloffame';
 		$teams = array();
@@ -157,6 +169,110 @@ class HomeController extends BaseController {
 			}
 		}
 		return View::make('hof')->with($data);
+	}
+
+	public function hof()
+	{
+		$data['page'] = 'halloffame';
+		$teams = array();
+		// get yg plg aktif di vote
+		$total_votes = Vote::select(DB::raw('count(votes.id) as total'),'teams.name','teams.id')->join('users','votes.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')
+							->groupBy('teams.id')->orderBy('total','desc')->take(5)->get();
+		if($total_votes){
+			foreach ($total_votes as $value) {
+				$teams[$value->id] = $value->total;
+			}
+		}
+		// get total komen aktif
+		$total_comments = Comment::select(DB::raw('count(comments.id) as total'),'teams.name','teams.id')->join('users','comments.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')
+							->groupBy('teams.id')->orderBy('total','desc')->take(5)->get();
+		if($total_comments){
+			foreach ($total_comments as $value) {
+				if(isset($teams[$value->id])) $teams[$value->id] = $teams[$value->id] + $value->total;
+				else $teams[$value->id] = $value->total;
+			}
+		}
+		// get total post
+		$total_posts = Post::select(DB::raw('count(posts.id) as total'),'teams.name','teams.id')->join('users','posts.user_id','=','users.id')->join('teams','users.team_id','=','teams.id')
+							->groupBy('teams.id')->orderBy('total','desc')->take(5)->get();
+		if($total_posts){
+			foreach ($total_posts as $value) {
+				if(isset($teams[$value->id])) $teams[$value->id] = $teams[$value->id] + $value->total;
+				else $teams[$value->id] = $value->total;
+			}
+		}
+		if(count($teams) > 0){	
+			$winningteam = array_search(max($teams), $teams); 
+			$data['clubwinner'] = Team::find($winningteam);
+		}else{
+			$data['clubwinner'] = null;
+		}
+
+		$startingeleven = array();
+		$data['defenders'] = array();
+		$data['assisters'] = array();
+		$data['attackers'] = array();
+		// player
+		$defenders = User::select(array('users.id','users.username','jersey_image','jersey_no','profile_pic',DB::raw('count(comments.id) as total')))->join('comments','users.id','=','comments.user_id')->join('teams','teams.id','=','users.team_id')->orderBy('total','desc')->groupBy('users.id')->where('comments.type','defense')->take(5)->get();
+		$assisters = User::select(array('users.id','users.username','jersey_image','jersey_no','profile_pic',DB::raw('count(comments.id) as total')))->join('comments','users.id','=','comments.user_id')->join('teams','teams.id','=','users.team_id')->orderBy('total','desc')->groupBy('users.id')->where('comments.type','assist')->take(3)->get();
+		$attackers = User::select(array('users.id','users.username','jersey_image','jersey_no','profile_pic',DB::raw('count(comments.id) as total')))->join('comments','users.id','=','comments.user_id')->join('teams','teams.id','=','users.team_id')->orderBy('total','desc')->groupBy('users.id')->where('comments.type','attack')->take(3)->get();		
+		
+		if($defenders){
+			foreach ($defenders as $value) {
+				$startingeleven[$value->id] = array('name'=>$value->username,  'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'D');	
+			}
+		}
+
+		if($assisters){
+			foreach ($assisters as $value) {
+				if(isset($startingeleven[$value->id]) && ($startingeleven[$value->id]['total'] > $value->total)) $startingeleven[$value->id] = array('name'=>$value->username, 'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'M');	
+				else $startingeleven[$value->id] = array('name'=>$value->username, 'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'M');	
+			}	
+		}
+
+		if($attackers){
+			foreach ($attackers as $value) {
+				if(isset($startingeleven[$value->id]) && ($startingeleven[$value->id]['total'] > $value->total)) $startingeleven[$value->id] = array('name'=>$value->username, 'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'F');	
+				else $startingeleven[$value->id] = array('name'=>$value->username, 'no'=>$value->jersey_no, 'pic'=>$value->profile_pic, 'jersey_image'=>$value->jersey_image, 'total'=>$value->total, 'position'=>'F');	
+			}
+		}
+		
+		$noplayer = array('name'=>'No player', 'no'=>'0', 'pic'=>'', 'jersey_image'=>'player_dummy.png', 'total'=>0);
+		if(count($startingeleven) > 0){
+			foreach($startingeleven as $se){
+				if($se['position'] == 'F') array_push($data['attackers'], $se);
+				if($se['position'] == 'M') array_push($data['assisters'], $se);
+				if($se['position'] == 'D') array_push($data['defenders'], $se);
+			}
+			
+			if(count($data['defenders']) < 5){
+				$selisih = 5 - count($data['defenders']);
+				for($i=0; $i<$selisih; $i++){
+					array_push($data['defenders'], $noplayer);
+				}
+			}
+			if(count($data['assisters']) < 3){
+				$selisih = 3 - count($data['assisters']);
+				for($i=0; $i<$selisih; $i++){
+					array_push($data['assisters'], $noplayer);
+				}
+			}
+			if(count($data['attackers']) < 3){
+				$selisih = 3 - count($data['attackers']);
+				for($i=0; $i<$selisih; $i++){
+					array_push($data['attackers'], $noplayer);
+				}
+			}
+		}else{
+			for($i=0; $i<5; $i++){
+				array_push($data['defenders'], $noplayer);
+			}
+			for($i=0; $i<3; $i++){
+				array_push($data['attackers'], $noplayer);
+				array_push($data['assisters'], $noplayer);
+			}
+		}
+		return View::make('halloffame2')->with($data);
 	}
 
 	public function loginWithFacebook() {

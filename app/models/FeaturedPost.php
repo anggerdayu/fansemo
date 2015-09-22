@@ -8,7 +8,7 @@ class FeaturedPost extends Eloquent {
 
     public function post()
     {
-        return $this->belongsTo('Post', 'id', 'post_id');
+        return $this->belongsTo('Post', 'post_id', 'id');
     }
 
 }

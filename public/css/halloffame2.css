@@ -1,0 +1,113 @@
+
+
+
+/* ========================================== */
+/*          trending page only                */
+/* ========================================== */
+
+.m0a10 { margin: 0 auto 10px; }
+#top-field { background: url('../images/bg_halloffame.jpg'); background-repeat: no-repeat; background-size: cover;  }
+
+#fieldWrapper {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;  
+  overflow: hidden;
+}
+
+#fieldWrapper img { width: 100%; height: auto; }
+
+.player {
+  width: 7%;
+  height: auto;
+  position: absolute;
+}
+.player p {
+  background-color: #000;
+  color: #fff;
+  font-size: 12px;  
+}
+#player1 { top: 40%; left: 6%; }
+#player2 { top: 19%; left: 20%; }
+#player3 { top: 45%; left: 20%; }
+#player4 { top: 70%; left: 25%; }
+#player5 { top: 14%; left: 52%; }
+#player6 { top: 35%; left: 40%; }
+#player7 { top: 2%; left: 31%; }
+#player8 { top: 56%; left: 50%; }
+#player9 { top: 6%; left: 70%; }
+#player10 { top: 70%; left: 70%; }
+#player11 { top: 40%; left: 80%; }
+
+.playerListWrap {  }
+.playerList { text-align: left; border-bottom: 2px solid #ccc;}
+.playerList img { width: 10%; height: auto; display: inline-block; }
+.playerList p { display: inline-block; }
+
+#weekClub { background-color: #414142; padding-top: 25px; }
+#weekClub .container { position: relative; }
+#weekClub .container:before {
+  content: " ";
+  background: url('../images/cup_icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  top: -20%;
+  left: 10%;
+}
+#weekClub .container:after {
+  content: " ";
+  background: url('../images/cup_icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  top: -20%;
+  right: 10%;
+}
+#weekClub .flagtitle span { margin-left: 50px;}
+#weekClubTeam { background-color: #be1e2d; padding-bottom: 50px; }
+
+#weekClubTeam .imgTeam { max-width: 300px; height: auto; text-align: right; float: right; }
+#weekClubTeam .imgTeam img { width: 100%; height: auto; }
+
+#weekClubTeam .rightColumn { max-width: 300px; }
+#weekClubTeam .rightColumn p.pull-left { padding-bottom: 5px; border-bottom: 1px solid #fff; }
+
+/* ========================================= responsive =======================================*/
+
+      @media (max-width: 920px) and (min-width: 768px) {
+ 
+       }
+
+      @media (max-width: 767px) {
+        .rightBarTrend { margin-top: 30px; }
+        .player p { display: none; }
+        #weekClub .container:before{ width: 40px; left: 4%; }
+        #weekClub .container:after{ width: 40px; right: 4%; }
+        #weekClub .flagtitle { width: 200px;   background-size: contain;  background-repeat: no-repeat; }
+        #weekClub .flagtitle span { font-size: 14px; margin-left: 40px;}
+
+        #weekClubTeam .imgTeam { float: none; margin: 0 auto 25px; }
+        #weekClubTeam .rightColumn { float: none; margin: 0 auto; }
+
+      }
+
+      @media (max-width: 920px) {
+ 
+      }
+
+
+/* ========================================= content web =======================================*/
+
+/* ========================================= footer Block =======================================*/
+
+
+
+/* ========================================== */
+/*              extend bootstrap              */
+/* ========================================== */
+

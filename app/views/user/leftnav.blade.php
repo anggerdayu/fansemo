@@ -1,4 +1,4 @@
-<div class="col-sm-3">
+<div class="col-sm-3 mb40">
         		<div style="width:100%" class="btn-group-vertical" role="group" aria-label="Vertical button group">
       				<button type="button" class="btn btn-default"><a href="{{url('me')}}">My Profile</a></button>
       				<button type="button" class="btn btn-default"><a href="{{url('changepassword')}}">Change Password</a></button>
@@ -11,6 +11,7 @@
 				<div style="width:100%" class="btn-group-vertical" role="group" aria-label="Vertical button group">
       				<button type="button" class="btn btn-default"><a href="{{url('admin/teams')}}">Team Management</a></button>
               <button type="button" class="btn btn-default"><a href="{{url('admin/badges')}}">Badges Management</a></button>
+              <button type="button" class="btn btn-default"><a href="{{url('admin/banners')}}">Banners Management</a></button>
               <button type="button" class="btn btn-default"><a href="{{url('admin/featuredvideo')}}">Featured Video</a></button>	
 				</div>
 				@endif

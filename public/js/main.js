@@ -72,6 +72,13 @@ $(document).ready(function(){
         });
   });
 
+  $('.su-signin').click(function(){
+      $('#modalSignup').modal('hide');
+  });
+  $('.si-signup').click(function(){
+      $('#modalSignin').modal('hide');
+  });
+
   $(document).on("mouseover", ".box", function(e) {
     $(this).find('.overlay-mask').show();
     $(this).find('.overlay-content').show();
@@ -87,8 +94,8 @@ $(document).ready(function(){
       url: '/like',
       data: {id: id},
       success: function(data){
-        obj.removeClass("btn-default").addClass("btn-success");
-        obj.parent().find('.btn-danger').removeClass('btn-danger').addClass('btn-default');
+        obj.parent().find('.activeAct').removeClass('activeAct');
+        obj.addClass("activeAct");
       }
     });
   }).on("click", ".dislike", function(e) {
@@ -100,8 +107,8 @@ $(document).ready(function(){
       url: '/dislike',
       data: {id: id},
       success: function(data){
-        obj.removeClass("btn-default").addClass("btn-danger");
-        obj.parent().find('.btn-success').removeClass('btn-success').addClass('btn-default');
+        obj.parent().find('.activeAct').removeClass('activeAct');
+        obj.addClass("activeAct");
       }
     });
   }).on("click", ".disabledlike", function(e) {

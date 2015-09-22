@@ -65,6 +65,7 @@ class PostController extends BaseController {
 	public function myPosts()
 	{
 		$data['page'] = 'myposts';
+		$data['pagetype'] = 'mine';
 		$data['images'] = Post::where('user_id',Auth::id())->orderBy('created_at','desc');
 		if(Auth::user()){
 			$data['images'] = $data['images']->with(array('votes' => function($query){
@@ -73,7 +74,7 @@ class PostController extends BaseController {
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
 		}
-		return View::make('post.mypost')->with($data);
+		return View::make('scrollpost')->with($data);
 	}
 
 	public function ajaxGetNextPage($type,$page){
@@ -103,42 +104,48 @@ class PostController extends BaseController {
 		}
 		$images = $images->skip($skip)->take(12)->get();
 		$result = '';
-		if($images){
+		if($images->count() > 0){
 			foreach ($images as $img) {
 				if(isset($img->votes)){
-					if(!empty($img->votes->first()) && $img->votes->first()->type == "like") $classlike = 'btn-success disabledlike';
-					else $classlike = 'btn-default like';
-
-					if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike') $classdislike = 'btn-danger disabledlike'; 
-					else $classdislike = 'btn-default dislike';
-					$buttons = '<button class="btn '.$classlike.'" data-id="'.$img->id.'"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                			<button class="btn '.$classdislike.'" data-id="'.$img->id.'"><i class="glyphicon glyphicon-thumbs-down"></i></button>';
+					if(!empty($img->votes->first()) && $img->votes->first()->type == "like") $classlike = 'activeAct disabledlike';
+					else $classlike = 'like';
+					if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike') $classdislike = 'activeAct disabledlike'; 
+					else $classdislike = 'dislike';
+					$buttons = '<a href="#" class="'.$classlike.'" data-id="'.$img->id.'"><i class="fa fa-thumbs-up"></i></a>
+                          <a href="#" class="'.$classdislike.'" data-id="'.$img->id.'"><i class="fa fa-thumbs-down"></i></a>';
 				}else{
-					$buttons = '<button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-                <button class="btn btn-default disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="glyphicon glyphicon-thumbs-down"></i></button>';
+					$buttons = '<a class="disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-thumbs-up"></i></a>
+                          <a class="disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-thumbs-down"></i></a>';
 				}
 				$attack = Comment::where('post_id',$img->id)->where('type','attack')->count();
-                  $assist = Comment::where('post_id',$img->id)->where('type','assist')->count();
-                  $defense = Comment::where('post_id',$img->id)->where('type','defense')->count();
+                $assist = Comment::where('post_id',$img->id)->where('type','assist')->count();
+                $defense = Comment::where('post_id',$img->id)->where('type','defense')->count();
 
-				$result = $result.'<div class="box">
-				<img src="'.url('imgpost/'.$img->user_id.'/'.$img->image).'" title="'.$img->title.'" class="img-content">
-				<div class="overlay-mask" style="display:none"></div>
-				<a href="'.url('post/'.$img->slug).'">
-            		<div class="overlay-content" style="display:none">
-              		<div class="overlay-text">
-              		'.str_limit($img->title, $limit = 50, $end = '...').'<br><br>
-              		<small>Posted at '.date('d F Y,H:i').'</small><br>
-              		'.Vote::where('post_id',$img->id)->where('type','like')->count().' likes, '.Vote::where('post_id',$img->id)->where('type','dislike')->count().' dislikes<br><br>
-	                '.$buttons.'
-	                <br><br>
-	                ATT : '.$attack.' points,<br>DF : '.$defense.' points,<br>ASS : '.$assist.' points
-	                </div>
-	                </div>
-				</div>'; 
+				$result = $result. '<div class="col-sm-12">
+                    <a href="'.url('post/'.$img->slug).'"><h3 class="text-left mtm0">'.str_limit($img->title, $limit = 50, $end = '...').'</h3></a>
+                    <div class="imageBox">
+                      <img src="'.url('imgpost/'.$img->user_id.'/'.$img->image).'" alt="'.$img->title.'" title="'.$img->title.'">
+                    </div><!-- imageBox -->
+                    <div class="row infoBarTrend mt10 text-left">
+                      <div class="leftBarTrend pull-left col-sm-7 col-xs-12">
+                        <p class="inlineB">'.Vote::where('post_id',$img->id)->where('type','like')->count().' likes</p>
+                        <p class="inlineB ml10">'.Vote::where('post_id',$img->id)->where('type','dislike')->count().' dislikes</p>
+                        <p class="inlineB ml10">'.Comment::where('post_id',$img->id)->count().' comments</p>
+                        <div class="actionRow">
+                          '.$buttons.'
+                          <a href="'.url('post/'.$img->slug).'"><i class="fa fa-comment"></i></a>
+                        </div><!-- actionRow -->
+                      </div><!-- leftBarTrend -->
+                      <div class="rightBarTrend pull-right col-sm-5 col-xs-12">
+                        <p><img src="'.asset('images/icon_attack.jpg').'" alt="icon_attack"><span class="clrGrey"> Attack: </span><span> '.$attack.' </span> points</p>
+                        <p><img src="'.asset('images/icon_defense.jpg').'" alt="icon_defense"><span class="clrGrey"> Defense: </span><span> '.$assist.' </span> points</p>
+                        <p><img src="'.asset('images/icon_assist.jpg').'" alt="icon_assist"><span class="clrGrey"> Assist: </span><span> '.$defense.' </span> points</p>
+                      </div><!-- rightBarTrend -->
+                    </div><!-- infoBarTrend -->
+                  </div>';
 			}
 			$nextpage = $page + 1;
-			$result = $result.'<div class="row"><div class="col-sm-12"><a href="'.url('next/fresh/'.$nextpage).'">next page</a></div></div>';
+			$result = $result.'<div class="col-sm-12 mt30 mb40"><a href="'.url('next/'.$type.'/'.$nextpage).'" class="btn btn-default">Load More</a></div>';
 		}
 		return $result;
 	}
@@ -154,6 +161,7 @@ class PostController extends BaseController {
 		$post->load(array('votes' => function($query){
 										$query->where('user_id', Auth::id());
     				}));
+		$others = Post::orderBy(DB::raw('RAND()'))->take(3)->get();
 		$data = array(
 				'page' => 'page',
 				'post' => $post,
@@ -161,9 +169,10 @@ class PostController extends BaseController {
 				'comments' => $comments,
 				'attacks' => $attack_comments,
 				'assists' => $assist_comments,
-				'defenses' => $defense_comments
+				'defenses' => $defense_comments,
+				'others' => $others
 			);
-		return View::make('post')->with($data);
+		return View::make('post2')->with($data);
 	}
 
 	public function insertcomment(){
@@ -273,6 +282,7 @@ class PostController extends BaseController {
 			$comment->text = $text;
 			$comment->upload_type = !empty($image) ? 'image' : 'none';
 			if(!empty($image)) $comment->image = $newname;
+			Session::flash('success','New comment inserted');
 			$comment->save();
 
 			$post = Post::find($postid);
@@ -320,7 +330,7 @@ class PostController extends BaseController {
 			foreach($comments as $comment){
 			  $commentVotesLike = CommentVote::where('type','like')->where('comment_id',$comment->id)->count();
               $commentVotesDislike = CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count();
-              if(!empty($comment->image)) $commenttype = '<img src="'.asset('images/'.$comment->type.'.png').'" width="30"> '.ucfirst($comment->type).'&nbsp;&nbsp;'; 
+              if(!empty($comment->image)) $commenttype = '<br><br><img src="'.asset('images/icon_'.$comment->type.'.jpg').'" width="10"> '.ucfirst($comment->type).'&nbsp;&nbsp;'; 
               else $commenttype = '';
 
               if(Auth::user()){
@@ -334,7 +344,7 @@ class PostController extends BaseController {
               	$likeButton = '<button class="btn '.$likeButtonClass.'" data-id="'.$comment->id.'"><i class="glyphicon glyphicon-thumbs-up"></i></button>
                         <button class="btn '.$dislikeButtonClass.'" data-id="'.$comment->id.'"><i class="glyphicon glyphicon-thumbs-down"></i></button>';
               	$buttonReplyComment = '<div class="col-sm-12">
-                      <p class="mt10"><button class="reply-comment">Reply this comment</button></p>
+                      <p class="mt10"><button class="btn btn-default reply-comment">Reply this comment</button></p>
                     </div>';
 
               }else{
@@ -346,60 +356,107 @@ class PostController extends BaseController {
               else $image = '';
 
               if(!empty($comment->user->profile_pic)) $pp = '<img src="'.asset('usr/pp/'.$comment->user->profile_pic).'">'; 
-              else $pp = '<img src="'.asset('images/user.jpg').'">'; 
-              	
-              $result.= '<div class="row commentbox">
-                <div class="col-sm-3">
-                  '.$pp.'
-                </div>
-                <div class="col-sm-9">
-                  
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <b>'.$comment->user->username.'</b> &nbsp;&nbsp;
-                      <br><font color="#888">'.$commentVotesLike.' likes, '.$commentVotesDislike.' dislikes</font>
-                      <br><small class="text-muted">posted at '.date('d F Y,H:i',strtotime($comment->created_at)).'</small>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="pull-right">
-                        '.$commenttype.'
-                        '.$likeButton.'
-                      </div>
-                    </div>
-                  </div>
-                  <br><br>
-                  <p>'.$comment->text.'</p>
-                  '.$image.'
-                  
-                  <div class="row">
-                   '.$buttonReplyComment.'
-                    <div class="col-sm-12 hidden">
-                      <span class="btn btn-success fileinput-button">
-                          <i class="glyphicon glyphicon-plus"></i>
-                          <span>Add image...</span>
-                          <!-- The file input field used as target for the file upload widget -->
-                          <input class="commentupload" data-id="'.$comment->id.'" data-type="'.$type.'" type="file" name="files">
-                      </span>
-                      <br><br>
-                      <!-- The global progress bar -->
-                      <div id="progress'.$comment->id.'-'.$type.'" class="progress">
-                          <div class="progress-bar progress-bar-success"></div>
-                      </div>
-                      <!-- The container for the uploaded files -->
-                      <div id="files'.$comment->id.'-'.$type.'" class="files"></div>
+              else $pp = '<img src="'.asset('images/user.jpg').'">';
 
-                      <form role="form" class="form-reply-comment" action="'.url('insertcomment').'">
-                      <div class="errormsg"></div>
-                      <div class="form-group">
-                        <input type="hidden" name="post_id" value="'.$postid.'">
-                        <input type="hidden" name="comment_id" value="'.$comment->id.'">
-                        <input type="hidden" name="img" id="imgurl'.$comment->id.'-'.$type.'">
-                        <textarea name="text" class="comment-textarea"></textarea>
-                      </div>
-                      <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
-                      </form>
-                    </div>
-                  </div>';
+              $result.= '<div class="userComment  mt30 row">
+                        <div class="col-xs-3 imgWrap">
+                          <a href="">
+                            '.$pp.'
+                          </a>
+                        </div>
+                        <div class="col-xs-9 detailPost">
+                          <a><b>'.$comment->user->username.'</b></a>
+                          
+                          <br><font color="#888">'.$commentVotesLike.' likes, '.$commentVotesDislike.' dislikes</font> , <small class="text-muted">posted at '.date('d F Y,H:i',strtotime($comment->created_at)).'</small>
+                          '.$commenttype.' '.$likeButton.'
+	                          
+	                    
+	                  <br><br>
+	                  <p>'.$comment->text.'</p>
+	                  	'.$image.'
+	                  	<div class="row">
+	                  	'.$buttonReplyComment.'
+	                  	<div class="col-sm-12 hidden">
+                       <span class="btn btn-default fileinput-button">
+                           <i class="glyphicon glyphicon-plus"></i>
+                           <span>Add image...</span>
+                           <!-- The file input field used as target for the file upload widget -->
+                           <input class="commentupload" data-id="'.$comment->id.'" data-type="'.$type.'" type="file" name="files">
+                       </span>
+                       <br><br>
+                       <!-- The global progress bar -->
+                       <div id="progress'.$comment->id.'-'.$type.'" class="progress">
+                           <div class="progress-bar progress-bar-success"></div>
+                       </div>
+                       <!-- The container for the uploaded files -->
+                       <div id="files'.$comment->id.'-'.$type.'" class="files"></div>
+
+                       <form role="form" class="form-reply-comment" action="'.url('insertcomment').'">
+                       <div class="errormsg"></div>
+                       <div class="form-group">
+                         <input type="hidden" name="post_id" value="'.$postid.'">
+                         <input type="hidden" name="comment_id" value="'.$comment->id.'">
+                         <input type="hidden" name="img" id="imgurl'.$comment->id.'-'.$type.'">
+                         <textarea name="text" class="comment-textarea form-control mb10" rows="3"></textarea>
+                       </div>
+                       <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
+                       </form>
+                     </div>
+                   </div>
+                        '; 
+              	
+              // $result.= '<div class="row commentbox">
+              //   <div class="col-sm-3">
+              //     '.$pp.'
+              //   </div>
+              //   <div class="col-sm-9">
+                  
+              //     <div class="row">
+              //       <div class="col-sm-6">
+              //         <b>'.$comment->user->username.'</b> &nbsp;&nbsp;
+              //         <br><font color="#888">'.$commentVotesLike.' likes, '.$commentVotesDislike.' dislikes</font>
+              //         <br><small class="text-muted">posted at '.date('d F Y,H:i',strtotime($comment->created_at)).'</small>
+              //       </div>
+              //       <div class="col-sm-6">
+              //         <div class="pull-right">
+              //           '.$commenttype.'
+              //           '.$likeButton.'
+              //         </div>
+              //       </div>
+              //     </div>
+              //     <br><br>
+              //     <p>'.$comment->text.'</p>
+              //     '.$image.'
+                  
+              //     <div class="row">
+              //      '.$buttonReplyComment.'
+              //       <div class="col-sm-12 hidden">
+              //         <span class="btn btn-success fileinput-button">
+              //             <i class="glyphicon glyphicon-plus"></i>
+              //             <span>Add image...</span>
+              //             <!-- The file input field used as target for the file upload widget -->
+              //             <input class="commentupload" data-id="'.$comment->id.'" data-type="'.$type.'" type="file" name="files">
+              //         </span>
+              //         <br><br>
+              //         <!-- The global progress bar -->
+              //         <div id="progress'.$comment->id.'-'.$type.'" class="progress">
+              //             <div class="progress-bar progress-bar-success"></div>
+              //         </div>
+              //         <!-- The container for the uploaded files -->
+              //         <div id="files'.$comment->id.'-'.$type.'" class="files"></div>
+
+              //         <form role="form" class="form-reply-comment" action="'.url('insertcomment').'">
+              //         <div class="errormsg"></div>
+              //         <div class="form-group">
+              //           <input type="hidden" name="post_id" value="'.$postid.'">
+              //           <input type="hidden" name="comment_id" value="'.$comment->id.'">
+              //           <input type="hidden" name="img" id="imgurl'.$comment->id.'-'.$type.'">
+              //           <textarea name="text" class="comment-textarea"></textarea>
+              //         </div>
+              //         <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
+              //         </form>
+              //       </div>
+              //     </div>';
 
                   $childs = Comment::where('parent_comment_id',$comment->id)->get();
                   if($childs){
@@ -462,13 +519,19 @@ class PostController extends BaseController {
 		}
 	}
 
-	public function deletePost()
+	public function deletePost($id)
 	{
-		$id = Input::get('id');
+		// $id = Input::get('id');
 		$post = Post::find($id);
-		$post->delete();
-		Session::flash('warning', 'Your post deleted successfully');
-		return 'success'
+		if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+			$post->delete();
+			Session::flash('warning', 'Your post deleted successfully');
+			return Redirect::to('/');
+		}else{
+			Session::flash('warning', 'Sorry we can\'t delete this post because you are not it\'s owner');
+			return Redirect::back();
+		}
+		// return 'success';
 	}
 
 }

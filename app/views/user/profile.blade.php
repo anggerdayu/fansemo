@@ -1,4 +1,4 @@
-@extends('layout.base')
+@extends('layout.base2')
 
 @section('css')
  <link href="{{asset('assets/vendor/select2/dist/css/select2.min.css')}}" rel="stylesheet">
@@ -147,8 +147,10 @@ $(function () {
 @stop
 
 @section('content')
-	<div class="container mt80">
-        
+	<div class="container mt150">
+        <div class="row">
+        	@include('user.leftnav')
+        	<div class="col-sm-9">
         <div class="row">
           <div class="col-sm-12">
             <center>
@@ -156,11 +158,6 @@ $(function () {
             </center>
           </div>
         </div>
-
-        <div class="row">
-        	@include('user.leftnav')
-        	<div class="col-sm-9">
-        		<h3>Change Profile Picture</h3>
 
         		@if(Session::get('success'))
         		<div class="alert alert-success alert-dismissible" role="alert">
@@ -177,16 +174,19 @@ $(function () {
                 @endif
 
         		<div class="row mb40">
-        			<div class="col-sm-3">
+        			<div class="col-sm-5 col-lg-3">
         				@if(Auth::user()->profile_pic)
         				<img src="{{asset('usr/pp/'.Auth::user()->profile_pic)}}" width="160">
         				@else
         				<img src="{{asset('images/user.jpg')}}">
         				@endif
-        			</div>
-        			<div class="col-sm-9">
+<!--                         <h3>Change Profile Picture</h3> -->
         				
-        				<div id="uploadpart">
+                        <div id="uploadpart" class="mt15">
+                            <!-- The global progress bar -->
+                            <div id="progress" class="progress">
+                                <div class="progress-bar progress-bar-success"></div>
+                            </div>
 			              <span class="btn btn-success fileinput-button">
 			                    <i class="glyphicon glyphicon-plus"></i>
 			                    <span>Browse your profile pic</span>
@@ -194,18 +194,13 @@ $(function () {
 			                    <input id="fileupload" type="file" name="files">
 			                </span>
 			                <br><br>
-			                <!-- The global progress bar -->
-			                <div id="progress" class="progress">
-			                    <div class="progress-bar progress-bar-success"></div>
-			                </div>
 			                <!-- The container for the uploaded files -->
 			                <div id="files" class="files"></div>
 			          	</div>
 			          	<input type="hidden" id="image" value="">
-			          	<button id="changepp">Change Profile Picture</button>
+                        <button id="changepp">Set as Profile Picture</button>
         			</div>
-        		</div>
-
+        			<div class="col-sm-7 col-lg-5 col-lg-offset-2">
 				<h3>Favourite Team</h3>
 				<form role="form" method="post" action="{{url('chteam')}}" class="mb40">
                 
@@ -233,6 +228,10 @@ $(function () {
 				  </div>
 					<button type="submit" name="submit" class="btn btn-default">Submit</button>
 				</form>
+                    
+                    </div>
+                </div>
+
         	</div>
         </div>
 
