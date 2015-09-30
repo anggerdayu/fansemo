@@ -7,7 +7,7 @@ class UserController extends BaseController {
     	$password = Input::get('password');
     	$remember = Input::has('remember') ? true : false;
     	$rules = array(
-    			'email' => 'required|email',
+    			'email' => 'required',
 		    	'password' => 'required'
     		);
     	$validator = Validator::make(Input::all(),$rules);
@@ -18,11 +18,16 @@ class UserController extends BaseController {
 		    	return $message;
 		    }
 		}else{
-			// check username at db
+			// check email at db
 			if (Auth::attempt(array('email' => $email, 'password' => $password),$remember)){
 			    return 'success';
 			}else{
-				return 'wrong email and password match';
+				// check username
+				if (Auth::attempt(array('name' => $email, 'password' => $password),$remember)){
+					return 'success';
+				}else{
+					return 'wrong email and password match';
+				}
 			}
 		}
     }
