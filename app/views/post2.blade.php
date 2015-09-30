@@ -96,7 +96,7 @@
                   </div><!-- col-sm-12 -->
                   
             @if(Auth::user())
-            <div id="commentarea" style="display:none">
+            <div id="commentarea">
                   <div class="col-sm-12 mt30 clearfix">
                     <span class="btn btn-default fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>

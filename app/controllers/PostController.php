@@ -273,6 +273,15 @@ class PostController extends BaseController {
 				}
 			} //end comment id
 
+			if(!$commentid){
+				$parentCommentOwner = '';
+			}else{			
+				$parentCommentOwnerId = Comment::find($commentid)->user_id;
+				$parentCommentOwner = User::find($parentCommentOwnerId);
+				if($parentCommentOwner) $parentCommentOwner = '<a href="#" style="color:blue">@'.$parentCommentOwner->username.'</a>';
+				else $parentCommentOwner = '';
+				$text = $parentCommentOwner.' '.$text;
+			}
 			// insert
 			$comment = new Comment;
 			$comment->user_id = Auth::id();
@@ -301,6 +310,13 @@ class PostController extends BaseController {
 			$notif->type = 'comment';
 			$notif->description = $desc;
 			$notif->save();
+
+			$receiverUserEmail = User::find($post->user_id)->email;
+			$receiverUserName = User::find($post->user_id)->username;
+			Mail::send('emails.message', array('desc' => $desc), function($message) use($receiverUserEmail, $receiverUserName)
+			{
+			    $message->to($receiverUserEmail, $receiverUserName)->subject('Tifosiwar Alert');
+			});
 			return 'success';
 		} //end else
 

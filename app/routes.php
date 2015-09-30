@@ -53,6 +53,13 @@ Route::group(array('before' => 'lang'), function()
         return Response::make($cacheImage,200,array('Content-type'=>'image/jpeg'));
     });
 
+    Route::get('test', function(){
+            Mail::send('emails.message', array('desc' => 'test'), function($message)
+            {
+                $message->to('vendera.hadi@gmail.com', 'admin')->subject('Tifosiwar Alert');
+            });
+    });
+
     Route::group(array('before' => 'auth'), function(){
         Route::get('upload','PostController@upload');
         Route::post('upload','PostController@postImage');
