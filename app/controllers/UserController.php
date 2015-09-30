@@ -171,7 +171,7 @@ class UserController extends BaseController {
 	        // This was a callback request from google, get the token
 	        $token = $googleService->requestAccessToken( $code );
 	        // Send a request with it
-	        // $result = json_decode( $googleService->request( 'https://www.googleapis.com/oauth2/v1/userinfo' ), true );
+	        $result = json_decode( $googleService->request( 'https://www.googleapis.com/oauth2/v1/userinfo' ), true );
 	        // $message = 'Your unique Google user id is: ' . $result['id'] . ' and your name is ' . $result['name'];
 	        // echo $message. "<br/>";
 	        //Var_dump
@@ -241,7 +241,7 @@ class UserController extends BaseController {
 	        // This was a callback request from google, get the token
 	        $token = $googleService->requestAccessToken( $code );
 	        // Send a request with it
-	        // $result = json_decode( $googleService->request( 'https://www.googleapis.com/oauth2/v1/userinfo' ), true );
+	        $result = json_decode( $googleService->request( 'https://www.googleapis.com/oauth2/v1/userinfo' ), true );
 	        // $message = 'Your unique Google user id is: ' . $result['id'] . ' and your name is ' . $result['name'];
 	        // echo $message. "<br/>";
 	        //Var_dump
