@@ -9,8 +9,8 @@
       </div>
       <div class="modal-body">
         <p>Connect through social media :</p>
-        <a class="btn btn-primary"><i class="fa fa-facebook"></i>&nbsp; Connect to Facebook </a><br>
-        <a class="btn btn-danger mt15"><i class="fa fa-google-plus"></i>&nbsp; Connect to Google &plus;</a>
+        <a href="{{url('fbsignup')}}" class="btn btn-primary"><i class="fa fa-facebook"></i>&nbsp; Connect to Facebook </a><br>
+        <a href="{{url('gpsignup')}}" class="btn btn-danger mt15"><i class="fa fa-google-plus"></i>&nbsp; Connect to Google &plus;</a>
         <p class="mt10">Or, Sign up :</p>
         <center><p class="text-danger" id="error-signup"></p></center>
       <form id="form-modal-signup" method="post" action="{{url('register')}}">

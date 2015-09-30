@@ -196,7 +196,7 @@ class UserController extends BaseController {
 	    // get data from input
 	    $code = Input::get( 'code' );
 	    // get google service
-	    $googleService = OAuth::consumer( 'Google' );
+	    $googleService = OAuth::consumer( 'Google' ,url('gplogin'));
 	    // check if code is valid
 
 	    // if code is provided get user data and sign in
@@ -216,6 +216,7 @@ class UserController extends BaseController {
 	        // get googleService authorization
 	        $url = $googleService->getAuthorizationUri();
 	        // return to google login url
+	        // echo (string)$url;
 	        return Redirect::to( (string)$url );
 	    }
 	}

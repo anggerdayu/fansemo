@@ -22,6 +22,7 @@ Route::group(array('before' => 'lang'), function()
     Route::get('/gplogin', 'UserController@loginWithGoogle');
 
     Route::get('/fbsignup', 'UserController@registerWithFacebook');
+    Route::get('/gpsignup', 'UserController@registerWithGoogle');
 
     Route::get('/next/{type}/{page}','PostController@ajaxGetNextPage');
     Route::post('/like','VoteController@likePost');
