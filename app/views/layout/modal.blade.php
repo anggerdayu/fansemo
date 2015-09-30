@@ -96,3 +96,31 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
   @endif
+
+  @if(Session::has('regSosmed'))
+   <div id="regModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Message</h4>
+      </div>
+      <form id="regSocial" action="{{url('ajaxRegSosmed')}}">
+      <div class="modal-body">
+        <p>Please input your username for this website</p>
+          <div class="form-group">
+            <input type="hidden" name="email" value="{{Session::get('regemail')}}">
+            <label class="control-label">Username:</label>
+            <input type="text" class="form-control" name="username">
+          </div>
+
+          <p class="text-danger regSocialError"></p>
+      </div>
+      <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@endif

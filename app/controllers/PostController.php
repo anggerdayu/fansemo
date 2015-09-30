@@ -524,6 +524,8 @@ class PostController extends BaseController {
 		// $id = Input::get('id');
 		$post = Post::find($id);
 		if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+			// cek fetatured post
+			FeaturedPost::where('post_id',$id)->delete();
 			$post->delete();
 			Session::flash('warning', 'Your post deleted successfully');
 			return Redirect::to('/');
