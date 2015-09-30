@@ -23,7 +23,7 @@ class UserController extends BaseController {
 			    return 'success';
 			}else{
 				// check username
-				if (Auth::attempt(array('name' => $email, 'password' => $password),$remember)){
+				if (Auth::attempt(array('username' => $email, 'password' => $password),$remember)){
 					return 'success';
 				}else{
 					return 'wrong email and password match';
