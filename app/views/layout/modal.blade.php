@@ -65,7 +65,7 @@
 
       <p class="mt30">Or, Connect through social media :</p>
       <a href="{{url('fblogin')}}" class="btn btn-primary"><i class="fa fa-facebook"></i>&nbsp; Connect to Facebook </a><br>
-      <a class="btn btn-danger mt15"><i class="fa fa-google-plus"></i>&nbsp; Connect to Google &plus;</a>
+      <a href="{{url('gplogin')}}" class="btn btn-danger mt15"><i class="fa fa-google-plus"></i>&nbsp; Connect to Google &plus;</a>
 
       </div>
       <div class="modal-footer">
