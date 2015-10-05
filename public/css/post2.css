@@ -4,7 +4,7 @@
 /* ========================================== */
 /*          trending page only                */
 /* ========================================== */
-.imageBox { max-width: 600px; }
+.imageBox { max-width: 450px; margin: 0 auto; }
 .imageBox img { width: 100%; height: auto; }
 
 .actionRow a {   

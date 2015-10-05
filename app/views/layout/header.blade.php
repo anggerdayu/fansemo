@@ -3,7 +3,7 @@
         <div class="cover-container">
           <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
-              <div class="container pl0 pr0 mt0">
+              <div class="container container-navbar pl0 pr0 mt0">
               <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header loginNav">
                   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
