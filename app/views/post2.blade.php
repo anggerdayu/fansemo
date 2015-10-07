@@ -69,9 +69,9 @@
                         
                         <p class="inlineB ml10">{{ Comment::where('post_id',$post->id)->count() }} comments</p>
                         <div class="actionRow">
-                          @if(isset($post->votes))
-                          <a class="@if(!empty($post->votes->first()) && $post->votes->first()->type == 'like'){{'activeAct disabledlike'}}@else{{'like'}}@endif" data-id="{{$post->id}}"><i class="fa fa-thumbs-up"></i></a>
-                          <a class="@if(!empty($post->votes->first()) && $post->votes->first()->type == 'dislike'){{'activeAct disabledlike'}}@else{{'dislike'}}@endif" data-id="{{$post->id}}"><i class="fa fa-thumbs-down"></i></a>
+                          @if(Auth::user())
+                          <a class="@if(isset($post->votes) && !empty($post->votes->first()) && $post->votes->first()->type == 'like'){{'activeAct disabledlike'}}@else{{'like'}}@endif" data-id="{{$post->id}}"><i class="fa fa-thumbs-up"></i></a>
+                          <a class="@if(isset($post->votes) && !empty($post->votes->first()) && $post->votes->first()->type == 'dislike'){{'activeAct disabledlike'}}@else{{'dislike'}}@endif" data-id="{{$post->id}}"><i class="fa fa-thumbs-down"></i></a>
                           @else
                           <a class="disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-thumbs-up"></i></a>
                           <a class="disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-thumbs-down"></i></a>
