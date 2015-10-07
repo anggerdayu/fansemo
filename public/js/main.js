@@ -96,6 +96,12 @@ $(document).ready(function(){
       success: function(data){
         obj.parent().find('.activeAct').removeClass('activeAct');
         obj.addClass("activeAct");
+        if($('.totallikes').length){
+          var total = parseInt($('.totallikes').text());
+          total = total+1;
+          $('.totallikes').html(total+' likes');
+        }
+        
       }
     });
   }).on("click", ".dislike", function(e) {
@@ -109,6 +115,11 @@ $(document).ready(function(){
       success: function(data){
         obj.parent().find('.activeAct').removeClass('activeAct');
         obj.addClass("activeAct");
+        if($('.totaldislikes').length){
+          var total = parseInt($('.totaldislikes').text());
+          total = total+1;
+          $('.totaldislikes').html(total+' dislikes');
+        }
       }
     });
   }).on("click", ".disabledlike", function(e) {

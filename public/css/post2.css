@@ -32,8 +32,8 @@
 .infoBar2 p { color: #fff; font-size: 1em; text-align: left;}
 .infoBar2 a { color: #fff; cursor: pointer; }
 
-.rightColumn .columnBlock .infoBar2 > a { position: relative; bottom: -50px; transition: all 0.8s; }
-.rightColumn .columnBlock:hover .infoBar2 > a { bottom: 0; }
+.rightColumn .columnBlock .infoBar2 > .like-row { position: relative; bottom: -50px; transition: all 0.8s; }
+.rightColumn .columnBlock:hover .infoBar2 > .like-row { bottom: 0; }
 .rightColumn .columnBlock { overflow: hidden; margin-bottom: 30px; }
 
 #uploadImgBtn {

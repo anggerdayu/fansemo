@@ -81,9 +81,15 @@ $(document).ready(function(){
                     <a href="{{url('post/'.$ot->slug)}}"><img src="{{asset('imgpost/'.$ot->user_id.'/'.$ot->image)}}" /></a>
                   </div>
                   <div class="infoBar2 clearfix">
-                    <p class="mb0 pull-left">{{str_limit($ot->title, $limit = 50, $end = '...')}}</p>
+                    <p class="mb0 pull-left">
+                      <a href="{{url('post/'.$ot->slug)}}">                    
+                        {{str_limit($ot->title, $limit = 50, $end = '...')}}
+                      </a>
+                    </p>
+                    <p class="mb0 like-row">
                     <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','like')->count()}}</span> </a>
                     <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','dislike')->count()}} </span> </a>
+                    </p>
                   </div><!-- infoBar2 -->
                 </div><!-- columnBlock -->
                 @endforeach

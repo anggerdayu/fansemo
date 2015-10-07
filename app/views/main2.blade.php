@@ -15,9 +15,9 @@ $('.bxslider1').bxSlider({
 });
 
 $('.bxslider2').bxSlider({
-  minSlides: 3,
+  minSlides: 2,
   maxSlides: 3,
-  slideWidth: 1200,
+  slideWidth: 350,
   slideMargin: 20,
   pager: false,
   auto: false,
@@ -56,7 +56,6 @@ $('.bxslider2').bxSlider({
               </div>
               <?php $i++; ?>
               @endforeach
-              
             </div>
           </div>
 
@@ -68,13 +67,20 @@ $('.bxslider2').bxSlider({
                   @foreach($featuredpost as $fp)
                   <li>
                     <a href="{{url('post/'.$fp->post->slug)}}">
-                    <img src="{{asset('imgpost/landscape/'.$fp->post->user_id.'/'.$fp->post->image)}}" />
-                    <div class="infoBar clearfix">
-                      <p class="mb0 pull-left">{{str_limit($fp->post->title, $limit = 50, $end = '...')}}</p>
-                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fp->post->id)->count()}}</span> </a>
-                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$fp->post->id)->count()}}</span> </a>
-                    </div>
+                      <img src="{{asset('imgpost/landscape/'.$fp->post->user_id.'/'.$fp->post->image)}}" />
                     </a>
+
+                    <div class="infoBar clearfix">
+                      <p class="mb2 mr10">
+                        <a href="{{url('post/'.$fp->post->slug)}}">
+                          {{str_limit($fp->post->title, $limit = 50, $end = '...')}}
+                        </a>
+                      </p>
+                      <p class="mb0 like-row">
+                        <a class="mb0 ml5 pull-left like" data-id="{{$fp->post->id}}"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fp->post->id)->count()}}</span> </a>
+                        <a class="mb0 ml15 pull-left dislike" data-id="{{$fp->post->id}}"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$fp->post->id)->count()}}</span> </a>
+                      </p>
+                    </div>
                   </li>
                   @endforeach
                 </ul>
@@ -88,13 +94,19 @@ $('.bxslider2').bxSlider({
                   @foreach($freshpost as $fsp)
                   <li>
                     <a href="{{url('post/'.$fsp->slug)}}">
-                    <img src="{{asset('imgpost/'.$fsp->user_id.'/'.$fsp->image)}}" />
-                    <div class="infoBar clearfix">
-                      <p class="mb0 pull-left">{{str_limit($fsp->title, $limit = 50, $end = '...')}}</p>
-                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fsp->id)->count()}}</span> </a>
-                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span>{{Vote::where('type','dislike')->where('post_id',$fsp->id)->count()}}</span> </a>
-                    </div>
+                      <img src="{{asset('imgpost/'.$fsp->user_id.'/'.$fsp->image)}}" />
                     </a>
+                    <div class="infoBar clearfix">
+                      <p class="mb2 mr10">
+                        <a href="{{url('post/'.$fsp->slug)}}">
+                          {{str_limit($fsp->title, $limit = 50, $end = '...')}}
+                        </a>
+                      </p>
+                      <p class="mb0 like-row">
+                        <a class="mb0 ml5 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fsp->id)->count()}}</span> </a>
+                        <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span>{{Vote::where('type','dislike')->where('post_id',$fsp->id)->count()}}</span> </a>
+                      </p>
+                    </div>
                   </li>
                   @endforeach
                 </ul>
@@ -108,13 +120,20 @@ $('.bxslider2').bxSlider({
                   @foreach($trendingpost as $tp)
                   <li>
                     <a href="{{url('post/'.$tp->slug)}}">
-                    <img src="{{asset('imgpost/'.$tp->user_id.'/'.$tp->image)}}" />
-                    <div class="infoBar clearfix">
-                      <p class="mb0 pull-left">{{str_limit($tp->title, $limit = 50, $end = '...')}}</p>
-                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('type','like')->where('post_id',$tp->id)->count()}}</span> </a>
-                      <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$tp->id)->count()}} </span> </a>
-                    </div>
+                      <img src="{{asset('imgpost/'.$tp->user_id.'/'.$tp->image)}}" />
                     </a>
+                    <div class="infoBar clearfix">
+                      <p class="mb2 mr10">
+                        <a href="{{url('post/'.$tp->slug)}}">
+                         {{str_limit($tp->title, $limit = 50, $end = '...')}}
+                       </a>
+
+                      </p>
+                      <p class="mb0 like-row"> 
+                        <a class="mb0 ml5 pull-left clicked"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('type','like')->where('post_id',$tp->id)->count()}}</span> </a>
+                        <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$tp->id)->count()}} </span> </a>
+                      </p>
+                    </div>
                   </li>
                   @endforeach
                 </ul>

@@ -50,6 +50,8 @@
                     @endif
                     @if(Auth::id() == $post->user_id && Auth::user()->status == 'management')
                     <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-default">Delete Post</a>
+                    @elseif(Auth::id() == $post->user_id)
+                    <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-default">Delete Post</a>
                     @endif
 
                     <a class="btn btn-primary" href="https://www.facebook.com/sharer/sharer.php?u={{Request::fullUrl()}}" target="_blank">Share on Facebook</a>
@@ -62,8 +64,8 @@
                     </div><!-- imageBox -->
                     <div class="row infoBarTrend mt10 text-left">
                       <div class="leftBarTrend pull-left col-sm-7 col-xs-12">
-                        <p class="inlineB">{{Vote::where('post_id',$post->id)->where('type','like')->count()}} likes</p>
-                        <p class="inlineB ml10">{{Vote::where('post_id',$post->id)->where('type','dislike')->count()}} dislikes</p>
+                        <p class="inlineB totallikes">{{Vote::where('post_id',$post->id)->where('type','like')->count()}} likes</p>
+                        <p class="inlineB ml10 totaldislikes">{{Vote::where('post_id',$post->id)->where('type','dislike')->count()}} dislikes</p>
                         
                         <p class="inlineB ml10">{{ Comment::where('post_id',$post->id)->count() }} comments</p>
                         <div class="actionRow">
@@ -189,9 +191,16 @@
                           </a>
                         </div>
                         <div class="col-xs-9 detailPost">
+                          @if(empty($comment->deleted_at))
                           <a><b>{{$comment->user->username}}</b></a>
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
+
+                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @elseif(Auth::id() == $post->user_id)
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @endif
 
                           @if(!empty($comment->image))
                           <br><br>
@@ -248,7 +257,7 @@
                       </form>
                     </div>
                   </div>
-                  <?php $childs = Comment::where('parent_comment_id',$comment->id)->get(); ?>
+                  <?php $childs = Comment::withTrashed()->where('parent_comment_id',$comment->id)->get(); ?>
                   @if($childs)
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
@@ -260,15 +269,27 @@
                       @endif
                     </div>
                     <div class="col-sm-9">
+                      @if(empty($cmt->deleted_at))
+                      @if(Auth::id() == $post->user_id && Auth::user()->status == 'management')
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @elseif(Auth::id() == $post->user_id)
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @endif
                       <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
                       @if($cmt->image)
                       <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                      @endif
+
+                      @else
+                      This comment has been deleted by user
                       @endif
                     </div>
                   </div>
                   @endforeach
                   @endif
-
+                        @else
+                        This comment has been deleted by user
+                        @endif
                         </div>
                       </div><!-- userComment -->
                       @endforeach
@@ -303,9 +324,16 @@
                           </a>
                         </div>
                         <div class="col-xs-9 detailPost">
+                          @if(empty($comment->deleted_at))
                           <a><b>{{$comment->user->username}}</b></a>
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
+
+                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @elseif(Auth::id() == $post->user_id)
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @endif
 
                           @if(!empty($comment->image))
                           <br><br>
@@ -362,7 +390,7 @@
                       </form>
                     </div>
                   </div>
-                  <?php $childs = Comment::where('parent_comment_id',$comment->id)->get(); ?>
+                  <?php $childs = Comment::withTrashed()->where('parent_comment_id',$comment->id)->get(); ?>
                   @if($childs)
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
@@ -374,15 +402,27 @@
                       @endif
                     </div>
                     <div class="col-sm-9">
+                      @if(empty($cmt->deleted_at))
+                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @elseif(Auth::id() == $post->user_id)
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @endif
                       <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
                       @if($cmt->image)
                       <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
                       @endif
+
+                       @else
+                        This comment has been deleted by user
+                        @endif
                     </div>
                   </div>
                   @endforeach
                   @endif
-
+                      @else
+                        This comment has been deleted by user
+                        @endif
                         </div>
                       </div><!-- userComment -->
                       @endforeach
@@ -419,9 +459,16 @@
                           </a>
                         </div>
                         <div class="col-xs-9 detailPost">
+                          @if(empty($comment->deleted_at))
                           <a><b>{{$comment->user->username}}</b></a>
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
+
+                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @elseif(Auth::id() == $post->user_id)
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @endif
 
                           @if(!empty($comment->image))
                           <br><br>
@@ -478,7 +525,7 @@
                       </form>
                     </div>
                   </div>
-                  <?php $childs = Comment::where('parent_comment_id',$comment->id)->get(); ?>
+                  <?php $childs = Comment::withTrashed()->where('parent_comment_id',$comment->id)->get(); ?>
                   @if($childs)
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
@@ -490,15 +537,26 @@
                       @endif
                     </div>
                     <div class="col-sm-9">
-                      <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
-                      @if($cmt->image)
-                      <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                      @if(empty($cmt->deleted_at))
+                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @elseif(Auth::id() == $post->user_id)
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @endif
+                          <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                          @if($cmt->image)
+                          <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                          @endif
+                      @else
+                        This comment has been deleted by user
                       @endif
                     </div>
                   </div>
                   @endforeach
                   @endif
-
+                        @else
+                        This comment has been deleted by user
+                      @endif
                         </div>
                       </div><!-- userComment -->
                       @endforeach
@@ -535,9 +593,16 @@
                           </a>
                         </div>
                         <div class="col-xs-9 detailPost">
+                          @if(empty($comment->deleted_at))
                           <a><b>{{$comment->user->username}}</b></a>
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
+
+                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @elseif(Auth::id() == $post->user_id)
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @endif
 
                           @if(!empty($comment->image))
                           <br><br>
@@ -594,7 +659,7 @@
                       </form>
                     </div>
                   </div>
-                  <?php $childs = Comment::where('parent_comment_id',$comment->id)->get(); ?>
+                  <?php $childs = Comment::withTrashed()->where('parent_comment_id',$comment->id)->get(); ?>
                   @if($childs)
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
@@ -606,15 +671,26 @@
                       @endif
                     </div>
                     <div class="col-sm-9">
-                      <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
-                      @if($cmt->image)
-                      <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                      @if(empty($cmt->deleted_at))
+                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @elseif(Auth::id() == $post->user_id)
+                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @endif
+                          <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                          @if($cmt->image)
+                          <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
+                          @endif
+                      @else
+                        This comment has been deleted by user
                       @endif
                     </div>
                   </div>
                   @endforeach
                   @endif
-
+                        @else
+                        This comment has been deleted by user
+                        @endif
                         </div>
                       </div><!-- userComment -->
                       @endforeach
@@ -642,9 +718,15 @@
                     <a href="{{url('post/'.$ot->slug)}}"><img src="{{asset('imgpost/'.$ot->user_id.'/'.$ot->image)}}" /></a>
                   </div>
                   <div class="infoBar2 clearfix">
-                    <p class="mb0 pull-left">{{str_limit($ot->title, $limit = 50, $end = '...')}}</p>
+                    <p class="mb0 pull-left">
+                      <a href="{{url('post/'.$ot->slug)}}">
+                        {{str_limit($ot->title, $limit = 50, $end = '...')}}
+                      </a>
+                    </p>
+                    <p class="mb0 like-row">
                     <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','like')->count()}}</span> </a>
                     <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','dislike')->count()}} </span> </a>
+                    </p>
                   </div><!-- infoBar2 -->
                 </div><!-- columnBlock -->
                 @endforeach

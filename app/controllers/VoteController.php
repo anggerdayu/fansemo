@@ -4,20 +4,24 @@ class VoteController extends BaseController {
 
 	public function likePost(){
 		$id = Input::get('id');
-		$oppositeVote = Vote::where('type','dislike')->where('user_id',Auth::id())->where('post_id',$id)->first();
-		if(!empty($oppositeVote)){
-			$oppositeVote->delete();
-		} 
-		$vote = new Vote;
-		$vote->user_id = Auth::id();
-		$vote->post_id = $id;
-		$vote->type = 'like';
-		$vote->save();
+		$likeVote = Vote::where('type','like')->where('user_id',Auth::id())->where('post_id',$id)->first();
+		if(!$likeVote){
+			$oppositeVote = Vote::where('type','dislike')->where('user_id',Auth::id())->where('post_id',$id)->first();
+			if(!empty($oppositeVote)){
+				$oppositeVote->delete();
+			} 
+			$vote = new Vote;
+			$vote->user_id = Auth::id();
+			$vote->post_id = $id;
+			$vote->type = 'like';
+			$vote->save();
+		}
 		return 'success';
 	}
 
 	public function likeCommentPost(){
 		$id = Input::get('id');
+		
 		$oppositeVote = CommentVote::where('type','dislike')->where('user_id',Auth::id())->where('comment_id',$id)->first();
 		if(!empty($oppositeVote)){
 			$oppositeVote->delete();

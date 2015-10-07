@@ -73,6 +73,7 @@ Route::group(array('before' => 'lang'), function()
         Route::post('chteam','TeamController@chteam');
         Route::get('getteams','TeamController@getteams');
         Route::get('deletepost/{id}','PostController@deletePost');
+        Route::post('deletecomment','PostController@deleteComment');
 
         Route::get('admin/teams','TeamController@adminTeamPage')->before('isadmin');
         Route::get('admin/banners','BannerController@index')->before('isadmin');

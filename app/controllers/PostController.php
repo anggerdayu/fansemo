@@ -151,7 +151,7 @@ class PostController extends BaseController {
 	}
 
 	public function post($slug){
-		$post = Post::where('slug',$slug)->first();
+		$post = Post::withTrashed()->where('slug',$slug)->first();
 		$nextpost = Post::where('id','<',$post->id)->orderBy('id','desc')->first();
 		if(empty($post)) App::abort(404);
 		$comments = Comment::where('post_id',$post->id)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->get();
@@ -326,6 +326,7 @@ class PostController extends BaseController {
 		$type = Input::get('type');
 		$counter = Input::get('count');
 		$postid = Input::get('postid');
+		$post = Post::find($postid);
 		$skip = $counter * 3;
 		switch ($type) {
 			case 'all':
@@ -374,18 +375,19 @@ class PostController extends BaseController {
               if(!empty($comment->user->profile_pic)) $pp = '<img src="'.asset('usr/pp/'.$comment->user->profile_pic).'">'; 
               else $pp = '<img src="'.asset('images/user.jpg').'">';
 
-              $result.= '<div class="userComment  mt30 row">
-                        <div class="col-xs-3 imgWrap">
-                          <a href="">
-                            '.$pp.'
-                          </a>
-                        </div>
-                        <div class="col-xs-9 detailPost">
-                          <a><b>'.$comment->user->username.'</b></a>
+            $delcomment = '';
+            if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
+            }else if(Auth::id() == $post->user_id){
+                $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
+            }
+
+            if(empty($comment->deleted_at)){
+            	$content = '<a><b>'.$comment->user->username.'</b></a>
                           
                           <br><font color="#888">'.$commentVotesLike.' likes, '.$commentVotesDislike.' dislikes</font> , <small class="text-muted">posted at '.date('d F Y,H:i',strtotime($comment->created_at)).'</small>
                           '.$commenttype.' '.$likeButton.'
-	                          
+	                       '.$delcomment.'   
 	                    
 	                  <br><br>
 	                  <p>'.$comment->text.'</p>
@@ -417,8 +419,20 @@ class PostController extends BaseController {
                        </div>
                        <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
                        </form>
-                     </div>
-                   </div>
+                       </div>
+                   </div>';
+            }else{
+            	$content = 'This comment has been deleted by user';
+            }
+              $result.= '<div class="userComment  mt30 row">
+                        <div class="col-xs-3 imgWrap">
+                          <a href="">
+                            '.$pp.'
+                          </a>
+                        </div>
+                        <div class="col-xs-9 detailPost">
+                          '.$content.'
+                     
                         '; 
               	
               // $result.= '<div class="row commentbox">
@@ -474,7 +488,7 @@ class PostController extends BaseController {
               //       </div>
               //     </div>';
 
-                  $childs = Comment::where('parent_comment_id',$comment->id)->get();
+                  $childs = Comment::withTrashed()->where('parent_comment_id',$comment->id)->get();
                   if($childs){
 	                  foreach($childs as $cmt){
 	                  	  if(!empty($cmt->user->profile_pic)) $pp = '<img src="'.asset('usr/pp/'.$cmt->user->profile_pic).'" width="50">'; 
@@ -482,13 +496,28 @@ class PostController extends BaseController {
 
 	                  	  if($cmt->image) $commentImage = '<img src="'.asset('comments/'.$postid.'/'.$cmt->image).'">';
 	                      else $commentImage = '';
+
+	                      $delcomment = '';
+			                if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+			                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
+			                }else if(Auth::id() == $post->user_id){
+			                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
+			                }
+
+			               if(!empty($cmt->deleted_at)){
+			               		$content = 'This comment has been deleted by user';
+			               }else{
+			               		$content = $delcomment.'
+		                      <p><b>'.$cmt->user->username.' commented :</b><br> '.$cmt->text.'</p>
+		                      '.$commentImage;
+			               }
+
 		                  $result.= '<div class="row mb10 mt30">
 		                    <div class="col-sm-3">
 		                      '.$pp.'
 		                    </div>
 		                    <div class="col-sm-9">
-		                      <p><b>'.$cmt->user->username.' commented :</b><br> '.$cmt->text.'</p>
-		                      '.$commentImage.'
+		                      '.$content.'
 		                    </div>
 		                  </div>';
 	                  }
@@ -545,11 +574,25 @@ class PostController extends BaseController {
 			$post->delete();
 			Session::flash('warning', 'Your post deleted successfully');
 			return Redirect::to('/');
+		}if(Auth::id() == $post->user_id){
+			FeaturedPost::where('post_id',$id)->delete();
+			$post->delete();
+			Session::flash('warning', 'Your post deleted successfully');
+			return Redirect::to('/');
 		}else{
 			Session::flash('warning', 'Sorry we can\'t delete this post because you are not it\'s owner');
 			return Redirect::back();
 		}
 		// return 'success';
+	}
+
+	public function deleteComment(){
+		$id = Input::get('id');
+		$comment = Comment::find($id);
+		if($comment){
+			$comment->delete();
+		}
+		return 'success';
 	}
 
 }

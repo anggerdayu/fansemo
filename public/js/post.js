@@ -413,6 +413,21 @@ $(document).on('fileuploadadd', '.commentupload', function (e, data) {
     $('#morecomments-assist').hide();
     $('#morecomments-defense').hide();
 
+    $(document).delegate('.delcomment','click', function(){
+        if(confirm('Are you sure want to delete this comment ?')){
+            var obj = $(this);
+            var id = obj.data('id');
+            $.ajax({
+              type: "POST",
+              url: '/deletecomment',
+              data: {id: id},
+              success: function(data){
+                if(data=='success') obj.closest('.col-sm-9').html('This comment has been deleted by user');
+              }
+            });
+        }
+    });
+
 // $('.tab-all').click(function(){
 //     $('#commentpart-all,#morecomments-all').show();
 //     $('#commentpart-attack,#morecomments-attack').hide();
