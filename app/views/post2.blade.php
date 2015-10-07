@@ -720,7 +720,7 @@
                   <div class="infoBar2 clearfix">
                     <p class="mb0 pull-left">
                       <a href="{{url('post/'.$ot->slug)}}">
-                        {{str_limit($ot->title, $limit = 50, $end = '...')}}
+                        {{str_limit($ot->title, $limit = 20, $end = '...')}}
                       </a>
                     </p>
                     <p class="mb0 like-row">

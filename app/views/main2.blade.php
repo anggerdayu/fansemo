@@ -73,7 +73,7 @@ $('.bxslider2').bxSlider({
                     <div class="infoBar clearfix">
                       <p class="mb2 mr10">
                         <a href="{{url('post/'.$fp->post->slug)}}">
-                          {{str_limit($fp->post->title, $limit = 50, $end = '...')}}
+                          {{str_limit($fp->post->title, $limit = 20, $end = '...')}}
                         </a>
                       </p>
                       <p class="mb0 like-row">
@@ -99,7 +99,7 @@ $('.bxslider2').bxSlider({
                     <div class="infoBar clearfix">
                       <p class="mb2 mr10">
                         <a href="{{url('post/'.$fsp->slug)}}">
-                          {{str_limit($fsp->title, $limit = 50, $end = '...')}}
+                          {{str_limit($fsp->title, $limit = 20, $end = '...')}}
                         </a>
                       </p>
                       <p class="mb0 like-row">
@@ -125,7 +125,7 @@ $('.bxslider2').bxSlider({
                     <div class="infoBar clearfix">
                       <p class="mb2 mr10">
                         <a href="{{url('post/'.$tp->slug)}}">
-                         {{str_limit($tp->title, $limit = 50, $end = '...')}}
+                         {{str_limit($tp->title, $limit = 20, $end = '...')}}
                        </a>
 
                       </p>
