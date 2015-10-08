@@ -124,7 +124,7 @@ class PostController extends BaseController {
 				$result = $result. '<div class="col-sm-12">
                     <a href="'.url('post/'.$img->slug).'"><h3 class="text-left mtm0">'.str_limit($img->title, $limit = 50, $end = '...').'</h3></a>
                     <div class="imageBox">
-                      <img src="'.url('imgpost/'.$img->user_id.'/'.$img->image).'" alt="'.$img->title.'" title="'.$img->title.'">
+                      <a href="'.url('post/'.$img->slug).'"><img src="'.url('imgpost/'.$img->user_id.'/'.$img->image).'" alt="'.$img->title.'" title="'.$img->title.'"></a>
                     </div><!-- imageBox -->
                     <div class="row infoBarTrend mt10 text-left">
                       <div class="leftBarTrend pull-left col-sm-7 col-xs-12">
@@ -328,18 +328,23 @@ class PostController extends BaseController {
 		$postid = Input::get('postid');
 		$post = Post::find($postid);
 		$skip = $counter * 3;
+		$nextskip = ($counter+1) * 3;
 		switch ($type) {
 			case 'all':
 				$comments = Comment::where('post_id',$postid)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($skip)->get();
+				$nextcomments = Comment::where('post_id',$postid)->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($nextskip)->count();
 				break;
 			case 'attack':
 				$comments = Comment::where('post_id',$postid)->where('type','attack')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($skip)->get();
+				$nextcomments = Comment::where('post_id',$postid)->where('type','attack')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($nextskip)->count();
 				break;
 			case 'assist':
 				$comments = Comment::where('post_id',$postid)->where('type','assist')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($skip)->get();
+				$nextcomments = Comment::where('post_id',$postid)->where('type','assist')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($nextskip)->count();
 				break;
 			case 'defense':
 				$comments = Comment::where('post_id',$postid)->where('type','defense')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($skip)->get();
+				$nextcomments = Comment::where('post_id',$postid)->where('type','defense')->where('parent_comment_id',0)->orderBy('created_at','desc')->take(3)->skip($nextskip)->count();
 				break;
 		}
 		$result = '';
@@ -523,7 +528,10 @@ class PostController extends BaseController {
 	                  }
                   }
 
+                  if($nextcomments < 3) $isEnd = '<end></end>';
+                  else $isEnd = '';
                   $result.= "</div></div>
+                  				".$isEnd."
                   				<script>
                   				$('.commentupload').fileupload({
 							        url: url,

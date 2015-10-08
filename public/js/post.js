@@ -127,6 +127,10 @@ $('#morecomments-all').click(function(){
             $('#loading').hide();
             $('#showmore').show();
             $('#morecomments-all').data('count',count+1);
+            var search = data.search("<end></end>");
+            if(search > 0){
+              $('#morecomments-all').hide();
+            }
         }else{
             $('#morecomments-all').hide();
         }
