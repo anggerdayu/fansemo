@@ -36,6 +36,7 @@ class PostController extends BaseController {
 				$img->resize(800, null, function ($constraint) {
 				    $constraint->aspectRatio();
 				});
+				$img->insert('images/watermark.png');
 				$img->save('files/'.$image);
 			}
 
