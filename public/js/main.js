@@ -167,6 +167,39 @@ $(document).ready(function(){
     });
   }).on("click", ".disabledlike", function(e) {
     e.preventDefault();
+  }).on("click", ".smlike", function(e) {
+    e.preventDefault();
+    var obj = $(this); 
+    var id = obj.data('id');
+    $.ajax({
+      type: "POST",
+      url: '/like',
+      data: {id: id},
+      success: function(data){
+        obj.toggleClass('clicked');
+        obj.parent().find('.smdislike').removeClass("clicked");
+        var total = parseInt(obj.find('span').text());
+        total = total+1;
+        obj.find('span').html(total);
+        
+      }
+    });
+  }).on("click", ".smdislike", function(e) {
+    e.preventDefault();
+    var obj = $(this);
+    var id = obj.data('id');
+    $.ajax({
+      type: "POST",
+      url: '/dislike',
+      data: {id: id},
+      success: function(data){
+        obj.toggleClass('clicked');
+        obj.parent().find('.smlike').removeClass("clicked");
+        var total = parseInt(obj.find('span').text());
+        total = total+1;
+        obj.find('span').html(total);
+      }
+    });
   });
 
   setTimeout(function() {

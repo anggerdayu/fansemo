@@ -78,7 +78,7 @@
                           @endif
 
                           @if(Auth::user())
-                          <a href="#" id="commentBtn"><i class="fa fa-comment"></i></a>
+                          <a href="#" id="commentBtn" class="activeAct"><i class="fa fa-comment"></i></a>
                           @else
                           <a href="#" id="commentBtn" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-comment"></i></a>
                           @endif
@@ -724,8 +724,8 @@
                       </a>
                     </p>
                     <p class="mb0 like-row">
-                    <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','like')->count()}}</span> </a>
-                    <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','dislike')->count()}} </span> </a>
+                    <a class="mb0 ml15 pull-left smlike" data-id="{{$ot->id}}"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','like')->count()}}</span> </a>
+                    <a class="mb0 ml15 pull-left smdislike" data-id="{{$ot->id}}"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','dislike')->count()}} </span> </a>
                     </p>
                   </div><!-- infoBar2 -->
                 </div><!-- columnBlock -->

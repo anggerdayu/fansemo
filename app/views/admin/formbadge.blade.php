@@ -178,6 +178,14 @@ $(function () {
                     @endif
                   </div>
 
+                  <div class="form-group @if($errors->first('totalposts')){{'has-error'}}@endif">
+                    <label>Total Posts limit:</label>
+                    <input type="text" name="totalposts" @if($mode=='edit') value="{{$detail->total_posts}}" @endif class="form-control">
+                    @if($errors->first('totalposts'))
+                    <p class="text-danger">{{$errors->first('totalposts')}}</p>
+                    @endif
+                  </div>
+
                 
                   @if($mode=='edit')
                   <input type="hidden" name="id" value="{{$detail->id}}">

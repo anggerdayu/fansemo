@@ -162,6 +162,19 @@ class PostController extends BaseController {
 										$query->where('user_id', Auth::id());
     				}));
 		$others = Post::orderBy(DB::raw('RAND()'))->take(3)->get();
+
+		$user = User::find($post->user_id);
+		$totalposts = Post::where('user_id',$user->id)->count();
+		if(!$totalposts) $totalposts = 0;
+		$badge = Badge::where('total_posts','<=', $totalposts)->orderBy('total_posts','desc')->first();
+		if($badge){
+			$badgename = $badge->name;
+			$badgeimage = $badge->image;
+		}else{
+			$badgename = '';
+			$badgeimage = '';
+		}
+
 		$data = array(
 				'page' => 'page',
 				'post' => $post,
@@ -170,7 +183,10 @@ class PostController extends BaseController {
 				'attacks' => $attack_comments,
 				'assists' => $assist_comments,
 				'defenses' => $defense_comments,
-				'others' => $others
+				'others' => $others,
+				'posted_by' => $user->username,
+				'badge_name' => $badgename,
+				'badge_image' => $badgeimage
 			);
 		return View::make('post2')->with($data);
 	}

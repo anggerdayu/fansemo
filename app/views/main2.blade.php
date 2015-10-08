@@ -77,8 +77,8 @@ $('.bxslider2').bxSlider({
                         </a>
                       </p>
                       <p class="mb0 like-row">
-                        <a class="mb0 ml5 pull-left like" data-id="{{$fp->post->id}}"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fp->post->id)->count()}}</span> </a>
-                        <a class="mb0 ml15 pull-left dislike" data-id="{{$fp->post->id}}"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$fp->post->id)->count()}}</span> </a>
+                        <a class="mb0 ml5 pull-left smlike" data-id="{{$fp->post->id}}"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fp->post->id)->count()}}</span> </a>
+                        <a class="mb0 ml15 pull-left smdislike" data-id="{{$fp->post->id}}"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$fp->post->id)->count()}}</span> </a>
                       </p>
                     </div>
                   </li>
@@ -103,8 +103,8 @@ $('.bxslider2').bxSlider({
                         </a>
                       </p>
                       <p class="mb0 like-row">
-                        <a class="mb0 ml5 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fsp->id)->count()}}</span> </a>
-                        <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span>{{Vote::where('type','dislike')->where('post_id',$fsp->id)->count()}}</span> </a>
+                        <a class="mb0 ml5 pull-left smlike" data-id="{{$fsp->id}}"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span>{{Vote::where('type','like')->where('post_id',$fsp->id)->count()}}</span> </a>
+                        <a class="mb0 ml15 pull-left smdislike" data-id="{{$fsp->id}}"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span>{{Vote::where('type','dislike')->where('post_id',$fsp->id)->count()}}</span> </a>
                       </p>
                     </div>
                   </li>
@@ -130,8 +130,8 @@ $('.bxslider2').bxSlider({
 
                       </p>
                       <p class="mb0 like-row"> 
-                        <a class="mb0 ml5 pull-left clicked"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('type','like')->where('post_id',$tp->id)->count()}}</span> </a>
-                        <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$tp->id)->count()}} </span> </a>
+                        <a class="mb0 ml5 pull-left smlike" data-id="{{$tp->id}}"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('type','like')->where('post_id',$tp->id)->count()}}</span> </a>
+                        <a class="mb0 ml15 pull-left smdislike" data-id="{{$tp->id}}"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('type','dislike')->where('post_id',$tp->id)->count()}} </span> </a>
                       </p>
                     </div>
                   </li>

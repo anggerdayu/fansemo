@@ -26,7 +26,8 @@ class BadgeController extends BaseController {
 		$rules = array(
     			'name' => 'required', 
     			'desc' => 'required',
-		    	'badge' => 'required' 
+		    	'badge' => 'required',
+		    	'totalposts' => 'required|numeric' 
     		);
 		$validator = Validator::make(Input::all(),$rules);
 		if ($validator->fails()){
@@ -51,6 +52,7 @@ class BadgeController extends BaseController {
 			$badge->name = Input::get('name');
 			$badge->description = Input::get('desc');
 			$badge->image = $newname;
+			$badge->total_posts = Input::get('totalposts');
 			$badge->save();
 
 			Session::flash('success', 'New badge added');
@@ -61,12 +63,13 @@ class BadgeController extends BaseController {
 	public function update(){
 		$rules = array(
     			'name' => 'required', 
-    			'desc' => 'required'
+    			'desc' => 'required',
+    			'totalposts' => 'required|numeric'
     		);
 		$validator = Validator::make(Input::all(),$rules);
 		$badgeid = Input::get('id');
 		if ($validator->fails()){
-	    	return Redirect::to('admin/addbadge')->withErrors($validator)->withInput();
+	    	return Redirect::to('admin/editbadge/'.$badgeid)->withErrors($validator)->withInput();
 	    }else{
 	    	$name = Input::get('name');
 	    	if(Input::get('badge')){
@@ -88,6 +91,7 @@ class BadgeController extends BaseController {
 			$badge->name = Input::get('name');
 			$badge->description = Input::get('desc');
 			if(Input::get('badge')) $badge->image = $newname;
+			$badge->total_posts = Input::get('totalposts');
 			$badge->save();
 
 			Session::flash('success', 'Badge updated');
