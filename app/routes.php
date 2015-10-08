@@ -36,6 +36,9 @@ Route::group(array('before' => 'lang'), function()
     Route::post('/register', 'UserController@register');
     Route::post('/login', 'UserController@doLogin');
     Route::post('/logout', 'UserController@doLogout');
+    Route::post('/forgetpass', 'UserController@forget');
+    Route::get('/resetpassword/{code}', 'UserController@reset');
+    Route::post('/resetpassword', 'UserController@doReset');
 
     Route::get('imgpost/{uid}/{src}',function($uid,$src) {
         $cacheImage = Image::cache(function($image) use ($uid,$src){

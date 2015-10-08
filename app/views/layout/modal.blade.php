@@ -70,13 +70,67 @@
       </div>
       <div class="modal-footer">
         <div class="text-center">
-          <a href="{{url('forgetpass')}}" class="text-center clr-red"><b>Forget password ? </b></a> &vert; <a href="#" data-toggle="modal" data-target="#modalSignup" class="si-signup clr-red"><b>Sign in.</b></a>
+          <a data-toggle="modal" data-target="#modalForget" class="si-forget text-center clr-red"><b>Forget password ? </b></a> &vert; <a href="#" data-toggle="modal" data-target="#modalSignup" class="si-signup clr-red"><b>Sign in.</b></a>
         </div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
+
+
+<div id="modalForget" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Forgot Password</h4>
+      </div>
+      <div class="modal-body">
+        <div id="forget-form" data-action="{{url('forgetpass')}}">
+          <p class="text-danger text-center forget-msg"></p>
+          <p class="text-success text-center forget-scc"></p>
+          <p>Your email address</p>
+          <input type="text" name="email" class="form-control" id="EmailForget" placeholder="Your Email">
+          <br><br>
+          <button type="submit" id="modal-forget-submit" class="btn btn-default">Submit</button>
+        </div>
+
+        <span class="forget-loading" style="display:none"><center><i class="fa fa-spinner"></i><br>
+        loading</center></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+@if(Session::has('reset'))
+<div id="warningModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Reset Your Password</h4>
+      </div>
+      <div class="modal-body">
+        <p class="text-danger text-center reset-msg"></p>
+        <p>Input your new password</p>
+        <form id="form-reset" data-action="{{url('resetpassword')}}">
+          <input type="hidden" name="user_id" value="2" class="form-control" placeholder="New Password">
+          <input type="password" name="password" class="form-control" placeholder="New Password"><br>
+          <input type="password" name="password_confirmation" class="form-control" placeholder="New Password Confirmation"><br>
+          <button type="submit" id="modal-reset-submit" class="btn btn-default">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+@endif
 
 @if(Session::has('warning'))
     <div id="warningModal" class="modal fade">

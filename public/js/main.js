@@ -26,6 +26,46 @@ $(document).ready(function(){
           }
         });
       });
+
+  $('#modal-forget-submit').click(function(e){
+      e.preventDefault();
+      $('.forget-loading').show();
+      $('#forget-form').hide();
+      var email = $('#EmailForget').val();
+      $.ajax({
+          type: "POST",
+          url: $("#forget-form").data('action'),
+          data: {email: email},
+          success: function(response) {
+            if(response!='success'){
+              $('.forget-msg').html(response);
+              $('.forget-scc').html('');
+            }else{
+              $('.forget-msg').html('');
+              $('.forget-scc').html('Your forget password request have been sent to your email');
+            }
+            $('.forget-loading').hide();
+            $('#forget-form').show();
+          }
+        });
+  });
+
+  $('#form-reset').submit(function(e){
+      e.preventDefault();
+      var datastring = $(this).serialize();
+      $.ajax({
+          type: "POST",
+          url: $("#form-reset").data('action'),
+          data: datastring,
+          success: function(response) {
+            if(response!='success'){
+              $('.reset-msg').html(response);
+            }else{
+              location.reload();
+            }
+          }
+        });
+  });
 	// logout
 	$('#logout').click(function(){
 		$.ajax({
@@ -76,6 +116,9 @@ $(document).ready(function(){
       $('#modalSignup').modal('hide');
   });
   $('.si-signup').click(function(){
+      $('#modalSignin').modal('hide');
+  });
+  $('.si-forget').click(function(){
       $('#modalSignin').modal('hide');
   });
 

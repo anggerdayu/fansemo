@@ -287,6 +287,82 @@ class UserController extends BaseController {
 		return 'success';
 	}
 
+	public function forget(){
+		$rules = array(
+    			'email' => 'email|required',
+    		);
+		$email = Input::get('email');
+    	$validator = Validator::make(array('email'=>$email),$rules);
+
+		if ($validator->fails()){
+		    $messages = $validator->messages();
+		    foreach ($messages->all() as $message) {
+		    	return $message;
+		    }
+		}else{
+			// check email
+			$getEmail = User::where('email',$email)->first();
+			if(!$getEmail){
+				return 'Your email haven\'t registered yet into our system';
+			}else{
+				$hash = str_random(20);
+				$user = $getEmail->username;
+				$forgetpass = new ForgetPass;
+				$forgetpass->email = $email;
+				$forgetpass->hash = $hash;
+				$forgetpass->save();
+				// send email
+				Mail::send('emails.message2', array('hash' => $hash), function($message) use($email,$user)
+				{
+				    $message->to($email, $user)->subject('Tifosiwar Forget Password');
+				});
+				return 'success';
+			}
+		}
+	}
+
+	public function reset($hash){
+		// cek hash
+		$getHash = ForgetPass::where('hash',$hash)->orderBy('created_at','desc')->first();
+		// if not return warning modal else modal change password
+		if($getHash){
+			$email = $getHash->email;
+			$user = User::where('email',$email)->first();
+			Session::flash('reset',$user->id);
+		}else{
+			Session::flash('warning','Please try to reset email again, we can\'t find reset password records in our data');
+		}
+		return Redirect::to('/');
+	}
+
+	public function doReset(){
+		$rules = array(
+			'user_id' => 'required',
+	    	'password' => 'required|alpha_num|min:6',
+    		'password_confirmation' => 'required|same:password' 
+		);
+    	$validator = Validator::make(Input::all(),$rules);
+
+    	if ($validator->fails()){
+		    $messages = $validator->messages();
+		    foreach ($messages->all() as $message) {
+		    	return $message;
+		    }
+		}else{
+			// change password
+			$userId = Input::get('user_id');
+			$password = Input::get('password');
+			$user = User::find($userId);
+			$user->password = Hash::make($password);
+			$user->save();
+			// attempt login
+			Auth::loginUsingId($user->id);
+			// set message
+			Session::flash('warning','Congratulations, your password has been reset successfully');
+			return 'success';
+		}
+	}
+
     public function doLogout(){
     	Auth::logout();
     	return 'true';
