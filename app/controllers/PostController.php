@@ -214,7 +214,7 @@ class PostController extends BaseController {
 			
 			if(!$commentid){
 				if(empty($type) && !empty($image)){
-					$message = 'Please choose the comment type at the icons belows';
+					$message = 'Please choose the comment type (attack, assist, defense) at the icons belows';
 					$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
 					            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					            '.$message.'
@@ -258,34 +258,50 @@ class PostController extends BaseController {
 					}
 				}	
 			}else{
-				// ada comment id
-				if(!empty($image)){ 
-					$image = explode('/',$image);
-					$image = urldecode(end($image));
-					$extension = explode(".", $image);
-					$extension = end($extension);
+				if(empty($type) && !empty($image)){
+					$message = 'Please choose the comment type (attack, assist, defense) at the icons above';
+					$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
+					            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					            '.$message.'
+					          </div>';
+			    	return $alert;
+				}else if(!empty($type) && empty($image)){
+					$message = 'If you want to attack, assist or defense please upload an image';
+					$alert = '<div class="alert alert-danger alert-dismissible" role="alert">
+					            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					            '.$message.'
+					          </div>';
+			    	return $alert;	
+				}else{
+					// ada comment id
+					if(!empty($image)){ 
+						$image = explode('/',$image);
+						$image = urldecode(end($image));
+						$extension = explode(".", $image);
+						$extension = end($extension);
 
-					list($width, $height) = getimagesize('files/'.$image);
-					if($width > 500){
-						$img = Image::make('files/'.$image);
-						$img->resize(400, null, function ($constraint) {
-						    $constraint->aspectRatio();
-						});
-						$img->save('files/'.$image);
-					}else if($height > 500){
-						$img = Image::make('files/'.$image);
-						$img->resize(null, 400, function ($constraint) {
-						    $constraint->aspectRatio();
-						});
-						$img->save('files/'.$image);
-					}
+						list($width, $height) = getimagesize('files/'.$image);
+						if($width > 500){
+							$img = Image::make('files/'.$image);
+							$img->resize(400, null, function ($constraint) {
+							    $constraint->aspectRatio();
+							});
+							$img->save('files/'.$image);
+						}else if($height > 500){
+							$img = Image::make('files/'.$image);
+							$img->resize(null, 400, function ($constraint) {
+							    $constraint->aspectRatio();
+							});
+							$img->save('files/'.$image);
+						}
 
-					// create directory
-					if(!File::exists('comments/'.$postid)){
-						File::makeDirectory('comments/'.$postid,0775,true);
+						// create directory
+						if(!File::exists('comments/'.$postid)){
+							File::makeDirectory('comments/'.$postid,0775,true);
+						}
+						$newname = date('YmdHis').'_'.str_random(40).'.'.$extension;
+						File::move('files/'.$image, 'comments/'.$postid.'/'.$newname);
 					}
-					$newname = date('YmdHis').'_'.str_random(40).'.'.$extension;
-					File::move('files/'.$image, 'comments/'.$postid.'/'.$newname);
 				}
 			} //end comment id
 
@@ -303,7 +319,8 @@ class PostController extends BaseController {
 			$comment->user_id = Auth::id();
 			if($postid) $comment->post_id = $postid;
 			if($commentid) $comment->parent_comment_id = $commentid;
-			if($type) $comment->type = $type; else $comment->type = 'none';
+			// if($type) $comment->type = $type; else $comment->type = 'none';
+			$comment->type = $type;
 			$comment->text = $text;
 			$comment->upload_type = !empty($image) ? 'image' : 'none';
 			if(!empty($image)) $comment->image = $newname;
@@ -438,6 +455,8 @@ class PostController extends BaseController {
                          <input type="hidden" name="img" id="imgurl'.$comment->id.'-'.$type.'">
                          <textarea name="text" class="comment-textarea form-control mb10" rows="3"></textarea>
                        </div>
+                       <span class="commentspinner" style="display:none"><center><i class="fa fa-spinner"></i><br>
+        loading</center></span>
                        <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
                        </form>
                        </div>
@@ -529,7 +548,10 @@ class PostController extends BaseController {
 			               		$content = 'This comment has been deleted by user';
 			               }else{
 			               		$content = $delcomment.'
-		                      <p><b>'.$cmt->user->username.' commented :</b><br> '.$cmt->text.'</p>
+		                      <p><b>'.$cmt->user->username.' commented :</b>
+		                      <br>
+                        <img src="'.asset('images/icon_'.$cmt->type.'.jpg').'" width="10"> '.ucfirst($cmt->type).'&nbsp;&nbsp;
+		                      <br> '.$cmt->text.'</p>
 		                      '.$commentImage;
 			               }
 

@@ -91,8 +91,8 @@
                       ?>
                       <div class="rightBarTrend pull-right col-sm-5 col-xs-12">
                         <p><img src="{{asset('images/icon_attack.jpg')}}" alt="icon_attack"><span class="clrGrey"> Attack: </span><span> {{$attack}} </span> points</p>
-                        <p><img src="{{asset('images/icon_defense.jpg')}}" alt="icon_defense"><span class="clrGrey"> Defense: </span><span> {{$assist}} </span> points</p>
-                        <p><img src="{{asset('images/icon_assist.jpg')}}" alt="icon_assist"><span class="clrGrey"> Assist: </span><span> {{$defense}} </span> points</p>
+                        <p><img src="{{asset('images/icon_defense.jpg')}}" alt="icon_defense"><span class="clrGrey"> Defense: </span><span> {{$defense}} </span> points</p>
+                        <p><img src="{{asset('images/icon_assist.jpg')}}" alt="icon_assist"><span class="clrGrey"> Assist: </span><span> {{$assist}} </span> points</p>
                       </div><!-- rightBarTrend -->
                     </div><!-- infoBarTrend -->
                   </div><!-- col-sm-12 -->
@@ -143,7 +143,7 @@
           <form id="form-comment" action="{{url('insertcomment')}}">
           <input type="hidden" name="post_id" value="{{$post->id}}">
           <input type="hidden" name="img" id="imgurl">
-          <input type="hidden" name="type" id="cmttype">
+          <input type="hidden" name="type" class="cmttype">
 
           <textarea name="text" placeholder="post your comment" class="form-control"></textarea>
           <br>
@@ -196,7 +196,7 @@
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
-                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+                          @if(Auth::id() == $post->user_id && Auth::user()->status == 'management')
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
                           @elseif(Auth::id() == $post->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
@@ -231,6 +231,29 @@
                     </div>
                     @endif
                     <div class="col-sm-12 hidden">
+                      <div class="col-sm-12 text-left mt10">
+                    <p>Choose comment Type :</p>
+                    <ul class="cmtType">
+                      <li>
+                        <ul class="text-center">
+                          <li><div class="comment-type attack-bg"></div></li>
+                          <li>Attack</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <ul class="text-center">
+                          <li><div class="comment-type assist-bg"></div></li>
+                          <li>Assist</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <ul class="text-center">
+                          <li><div class="comment-type defense-bg"></div></li>
+                          <li>Defense</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
                       <span class="btn btn-default fileinput-button">
                           <i class="glyphicon glyphicon-plus"></i>
                           <span>Add image...</span>
@@ -251,8 +274,11 @@
                         <input type="hidden" name="post_id" value="{{$post->id}}">
                         <input type="hidden" name="comment_id" value="{{$comment->id}}">
                         <input type="hidden" name="img" id="imgurl{{$comment->id}}-all">
+                        <input type="hidden" name="type" class="cmttype">
                         <textarea name="text" class="comment-textarea form-control mb10" rows="3"></textarea>
                       </div>
+                      <span class="commentspinner" style="display:none"><center><i class="fa fa-spinner"></i><br>
+        loading</center></span>
                       <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
                       </form>
                     </div>
@@ -275,7 +301,10 @@
                           @elseif(Auth::id() == $post->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
-                      <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                      <p><b>{{$cmt->user->username}} commented :</b>
+                        <br>
+                        <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
+                        <br> {{$cmt->text}}</p>
                       @if($cmt->image)
                       <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
                       @endif
@@ -386,6 +415,8 @@
                         <input type="hidden" name="img" id="imgurl{{$comment->id}}-attack">
                         <textarea name="text" class="comment-textarea form-control mb10" rows="3"></textarea>
                       </div>
+                      <span class="commentspinner" style="display:none"><center><i class="fa fa-spinner"></i><br>
+        loading</center></span>
                       <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
                       </form>
                     </div>
@@ -408,7 +439,10 @@
                           @elseif(Auth::id() == $post->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
-                      <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                      <p><b>{{$cmt->user->username}} commented :</b>
+                        <br>
+                        <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
+                        <br> {{$cmt->text}}</p>
                       @if($cmt->image)
                       <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
                       @endif
@@ -521,6 +555,8 @@
                         <input type="hidden" name="img" id="imgurl{{$comment->id}}-defense">
                         <textarea name="text" class="comment-textarea form-control mb10" rows="3"></textarea>
                       </div>
+                      <span class="commentspinner" style="display:none"><center><i class="fa fa-spinner"></i><br>
+        loading</center></span>
                       <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
                       </form>
                     </div>
@@ -543,7 +579,10 @@
                           @elseif(Auth::id() == $post->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
-                          <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                          <p><b>{{$cmt->user->username}} commented :</b>
+                            <br>
+                        <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
+                            <br> {{$cmt->text}}</p>
                           @if($cmt->image)
                           <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
                           @endif
@@ -655,6 +694,8 @@
                         <input type="hidden" name="img" id="imgurl{{$comment->id}}-assist">
                         <textarea name="text" class="comment-textarea form-control mb10" rows="3"></textarea>
                       </div>
+                      <span class="commentspinner" style="display:none"><center><i class="fa fa-spinner"></i><br>
+        loading</center></span>
                       <div class="pull-right"><button type="submit" class="btn btn-info">Submit</button></div>
                       </form>
                     </div>
@@ -677,7 +718,10 @@
                           @elseif(Auth::id() == $post->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
-                          <p><b>{{$cmt->user->username}} commented :</b><br> {{$cmt->text}}</p>
+                          <p><b>{{$cmt->user->username}} commented :</b>
+                            <br>
+                        <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
+                            <br> {{$cmt->text}}</p>
                           @if($cmt->image)
                           <img src="{{asset('comments/'.$post->id.'/'.$cmt->image)}}">
                           @endif

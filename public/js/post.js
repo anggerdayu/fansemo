@@ -1,30 +1,30 @@
 $(document).on("click", ".comment-type", function(e) {
 	if($(this).hasClass('attack-bg') || $(this).hasClass('attack-bg-hover')){
 		if($(this).hasClass('attack-bg')){ 
-			$('#cmttype').val('attack');
+			$('.cmttype').val('attack');
 			$(this).removeClass('attack-bg').addClass('attack-bg-hover');
 		}else{
-      $('#cmttype').val('');
+      $('.cmttype').val('');
       $(this).removeClass('attack-bg-hover').addClass('attack-bg');
     }
 		$('.assist-bg-hover').removeClass('assist-bg-hover').addClass('assist-bg');
 		$('.defense-bg-hover').removeClass('defense-bg-hover').addClass('defense-bg');
 	}else if($(this).hasClass('assist-bg') || $(this).hasClass('assist-bg-hover')){
 		if($(this).hasClass('assist-bg')){
-			$('#cmttype').val('assist'); 
+			$('.cmttype').val('assist'); 
 			$(this).removeClass('assist-bg').addClass('assist-bg-hover');
 		}else{
-      $('#cmttype').val('');
+      $('.cmttype').val('');
       $(this).removeClass('assist-bg-hover').addClass('assist-bg');
     }
 		$('.attack-bg-hover').removeClass('attack-bg-hover').addClass('attack-bg');
 		$('.defense-bg-hover').removeClass('defense-bg-hover').addClass('defense-bg');
 	}else if($(this).hasClass('defense-bg') || $(this).hasClass('defense-bg-hover')){
 		if($(this).hasClass('defense-bg')){ 
-			$('#cmttype').val('defense');
+			$('.cmttype').val('defense');
 			$(this).removeClass('defense-bg').addClass('defense-bg-hover');
 		}else{
-      $('#cmttype').val('');
+      $('.cmttype').val('');
       $(this).removeClass('defense-bg-hover').addClass('defense-bg');
     }
 		$('.attack-bg-hover').removeClass('attack-bg-hover').addClass('attack-bg');
@@ -58,6 +58,7 @@ $(document).on("click", ".comment-type", function(e) {
     });
   }).on("click", ".reply-comment", function(e) {
   		e.preventDefault();
+      $('.cmttype').val('');
   		$(this).parent().parent().parent().find('.hidden').removeClass('hidden');
   });
 
@@ -88,14 +89,21 @@ $('#form-comment').submit(function(e){
 
 $('.form-reply-comment').submit(function(e){
   e.preventDefault();
-  var datastring = $(this).serialize();
-  var alertobj = $(this).find('.errormsg');
+  var obj = $(this);
+  var datastring = obj.serialize();
+  var alertobj = obj.find('.errormsg');
+
+  obj.find('textarea').hide();
+  obj.find('.commentspinner').show();
+
   $.ajax({
           type: "POST",
           url: $("#form-comment").attr('action'),
           data: datastring,
           success: function(response) {
             if(response!='success'){
+              obj.find('textarea').show();
+              obj.find('.commentspinner').hide();
               alertobj.html(response);
             }else{
               location.reload();
