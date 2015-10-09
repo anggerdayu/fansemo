@@ -176,8 +176,8 @@ $(document).ready(function(){
       url: '/like',
       data: {id: id},
       success: function(data){
-        obj.toggleClass('clicked');
-        obj.parent().find('.smdislike').removeClass("clicked");
+        obj.toggleClass('click-liked');
+        obj.parent().find('.smdislike').removeClass("click-unliked");
         var total = parseInt(obj.find('span').text());
         total = total+1;
         obj.find('span').html(total);
@@ -193,8 +193,8 @@ $(document).ready(function(){
       url: '/dislike',
       data: {id: id},
       success: function(data){
-        obj.toggleClass('clicked');
-        obj.parent().find('.smlike').removeClass("clicked");
+        obj.toggleClass('click-unliked');
+        obj.parent().find('.smlike').removeClass("click-liked");
         var total = parseInt(obj.find('span').text());
         total = total+1;
         obj.find('span').html(total);

@@ -88,8 +88,8 @@
                         <img src="{{asset('badges/'.$badge_image)}}" class="ml10" alt="user badge">                        
                       </div>
                       <div class="rightColumnUser pull-left">
-                          <p><a href="#"> {{$badge_name}} </a></p>
-                          <p>{{$post->user->username}}</p>
+                          <p><a href="#"> {{$post->user->username}}</a></p>
+                          <p>{{$badge_name}}</p>
                       </div>     
                     </div>
                     @endif

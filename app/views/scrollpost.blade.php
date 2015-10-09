@@ -106,8 +106,8 @@ $(document).ready(function(){
                       </a>
                     </p>
                     <p class="mb0 like-row">
-                    <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','like')->count()}}</span> </a>
-                    <a class="mb0 ml15 pull-left"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','dislike')->count()}} </span> </a>
+                    <a class="mb0 ml15 pull-left smlike" data-id="{{$ot->id}}"><i class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','like')->count()}}</span> </a>
+                    <a class="mb0 ml15 pull-left smdislike" data-id="{{$ot->id}}"><i class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></i> <span> {{Vote::where('post_id',$ot->id)->where('type','dislike')->count()}} </span> </a>
                     </p>
                   </div><!-- infoBar2 -->
                 </div><!-- columnBlock -->
