@@ -37,6 +37,27 @@ body {
   text-align: center;
   /*text-shadow: 0 1px 3px rgba(0,0,0,.5);*/
 }
+.userProfile img {
+  width: 100%;
+  height: auto;
+  max-width: 45px;
+}
+.userProfile p {
+
+}
+.userProfile a{
+  color: #337ab7;  
+}
+.userProfile a:hover{
+  text-decoration: none;  
+  color: #333;
+}
+.rightColumn { height: 1150px !important; }
+
+ @media (max-width: 460px) {
+  .shareFb span, .shareTwt span { display: none; }
+  .shareFb, .shareTwt { padding: 9px; }
+ }
 
 /* ========================================= modal =======================================*/
 
@@ -238,13 +259,15 @@ nav.navbar { border-top: 10px solid #be1e2d; }
   position: absolute;
   top: 10%;
   right: 5%;
+  z-index: 999;
 }
 @media (max-width: 768px) {
   #videoFrame { display: none; }
 }
 
 /* ========================================= content web =======================================*/
-.clicked { color: #DE4A4A !important; }
+.click-liked { color: #DE4A4A !important; }
+.click-unliked { color: #28B325 !important; }
 .container { margin-top: 40px; }
 .flagtitle{
   width:248px; 
@@ -412,6 +435,9 @@ ul.bxslider li img { width: 100%; }
 .mt15{
   margin-top: 15px;
 }
+.mt20{
+  margin-top: 20px;
+}
 .mt30{
   margin-top: 30px;
 }
@@ -459,6 +485,7 @@ ul.bxslider li img { width: 100%; }
 .pt5 { padding-top: 5px !important; }
 .p15 { padding: 15px !important; }
 
+.p9 { padding: 9px; }
 .pl0 { padding-left: 0; }
 .pr0 { padding-right: 0; }
 .bgBlack { background-color: #000; }

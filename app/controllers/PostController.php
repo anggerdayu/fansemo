@@ -162,7 +162,7 @@ class PostController extends BaseController {
 		$post->load(array('votes' => function($query){
 										$query->where('user_id', Auth::id());
     				}));
-		$others = Post::orderBy(DB::raw('RAND()'))->take(3)->get();
+		$others = Post::orderBy(DB::raw('RAND()'))->take(10)->get();
 
 		$user = User::find($post->user_id);
 		$totalposts = Post::where('user_id',$user->id)->count();

@@ -42,7 +42,7 @@ class HomeController extends BaseController {
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
 		}
-		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(3)->get();
+		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(10)->get();
 		return View::make('scrollpost')->with($data);
 	}
 
@@ -58,7 +58,7 @@ class HomeController extends BaseController {
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
 		}
-		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(3)->get();
+		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(10)->get();
 		return View::make('scrollpost')->with($data);	
 	}
 

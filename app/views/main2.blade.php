@@ -40,6 +40,11 @@ $('.bxslider2').bxSlider({
               <li data-target="#carousel-slider" data-slide-to="1"></li>
               <li data-target="#carousel-slider" data-slide-to="2"></li>
             </ol>
+                @if(empty($i))
+                <div id="videoFrame">
+                  {{$video->url}}
+                </div>
+                @endif
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
@@ -48,11 +53,6 @@ $('.bxslider2').bxSlider({
               <div class="item @if(empty($i)) active @endif">
                 <img src="{{asset($banner->image)}}" alt="slider{{$i}}">
                 <div class="carousel-caption"></div>
-                @if(empty($i))
-                <div id="videoFrame">
-                  {{$video->url}}
-                </div>
-                @endif
               </div>
               <?php $i++; ?>
               @endforeach

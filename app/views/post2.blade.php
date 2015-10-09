@@ -10,6 +10,7 @@
 <script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-image.js') }}"></script>
 <script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload-validate.js') }}"></script>
 <script src="{{ asset('assets/vendor/blueimp-tmpl/js/tmpl.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/slim-scroll/slimscroll.js') }}"></script>
 
 <script src="{{ asset('assets/vendor/fancybox/source/jquery.fancybox.pack.js') }}"></script>
 <script>
@@ -22,7 +23,25 @@
 <link href="{{ asset('css/jquery.fileupload.css') }}" rel="stylesheet">
  <link href="{{ asset('assets/vendor/fancybox/source/jquery.fancybox.css') }}" rel="stylesheet">
 <link href="{{ asset('css/post2.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/vendor/slim-scroll/slimscroll.css') }}" rel="stylesheet">
     @stop
+<script>
+            window.onload = function(){
+                var element = document.querySelectorAll('.slimScroll');
+
+                // Apply slim scroll plugin
+                var one = new slimScroll(element[0], {
+                    'wrapperClass': 'scroll-wrapper unselectable mac',
+                    'scrollBarContainerClass': 'scrollBarContainer',
+                    'scrollBarContainerSpecialClass': 'animate',
+                    'scrollBarClass': 'scroll-bar',
+                    'keepFocus': true
+                });
+                window.onresize = function(){
+                    one.resetValues();
+                }
+            }    
+</script>
 
 @section('content')
           <div class="container pb0 mt150">
@@ -30,7 +49,10 @@
               <div class="col-sm-12 col-md-6 leftColumn">
                 <div class="row">
                   <div class="col-sm-12 text-left">
-                    <a href="{{URL::previous()}}">&lt; &lt; Back</a>
+                    <a href="{{URL::previous()}}" class="btn btn-default pull-left">&lt; &lt; Back</a>
+                    @if($nextpost)
+                    <a href="{{url('post/'.$nextpost->slug)}}" class="btn btn-default pull-right">Next Page >></a>
+                    @endif
                     <br><br>
                     @if(Session::get('success'))
                       <div class="alert alert-success alert-dismissible" role="alert">
@@ -42,26 +64,36 @@
                    
                     <h3 class="text-left mtm0">{{$post->title}}</h3>
 
-                    @if($nextpost)
-                    <a href="{{url('post/'.$nextpost->slug)}}" class="btn btn-default">Next Page >></a>
-                    @endif
                     @if(Auth::user() && Auth::user()->status == 'management')
-                    <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-default">Set as Featured Post</a>
+                    <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Set as Featured Post">Set as Featured Post</a>
                     @endif
                     @if(Auth::id() == $post->user_id && Auth::user()->status == 'management')
-                    <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-default">Delete Post</a>
+                    <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-danger p9" title="delete post">Delete Post</a>
                     @elseif(Auth::id() == $post->user_id)
-                    <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-default">Delete Post</a>
+                    <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-danger p9" title="delete post"><i class="fa fa-trash-o"></i></a>
                     @endif
 
-                    <a class="btn btn-primary" href="https://www.facebook.com/sharer/sharer.php?u={{Request::fullUrl()}}" target="_blank">Share on Facebook</a>
-                    <a class="btn btn-info" href="https://twitter.com/share?url={{Request::fullUrl()}}" target="_blank">Share on Twitter</a>
+                    <a class="btn btn-primary shareFb" href="https://www.facebook.com/sharer/sharer.php?u={{Request::fullUrl()}}" target="_blank" title="Share on facebook"><span>Share &nbsp; </span><i class="fa fa-facebook"></i></a>
+                    <a class="btn btn-info shareTwt" href="https://twitter.com/share?url={{Request::fullUrl()}}" target="_blank" title="Share on twitter"><span>Share &nbsp;</span>  <i class="fa fa-twitter"></i></a>
                     <!-- <button type="button" class="btn btn-warning">Report this post</button> -->
                     <br><br>
 
                     <div class="imageBox">
                       <a href="{{asset('usr/'.$post->user_id.'/'.$post->image)}}" class="fancybox"><img src="{{asset('usr/'.$post->user_id.'/'.$post->image)}}"></a>
                     </div><!-- imageBox -->
+                    
+                    @if(!empty($badge_name))
+                    <div class="row userProfile mb20 mt20">
+                      <div class="leftColumnUser pull-left mr10">
+                        <img src="{{asset('badges/'.$badge_image)}}" class="ml10" alt="user badge">                        
+                      </div>
+                      <div class="rightColumnUser pull-left">
+                          <p><a href="#"> {{$badge_name}} </a></p>
+                          <p>{{$post->user->username}}</p>
+                      </div>     
+                    </div>
+                    @endif
+
                     <div class="row infoBarTrend mt10 text-left">
                       <div class="leftBarTrend pull-left col-sm-7 col-xs-12">
                         <p class="inlineB totallikes">{{Vote::where('post_id',$post->id)->where('type','like')->count()}} likes</p>
@@ -98,7 +130,7 @@
                   </div><!-- col-sm-12 -->
                   
             @if(Auth::user())
-            <div id="commentarea">
+            <div id="commentarea" class="col-sm-12 ">
                   <div class="col-sm-12 mt30 clearfix">
                     <span class="btn btn-default fileinput-button">
                     <i class="glyphicon glyphicon-plus"></i>
@@ -140,6 +172,7 @@
 
 
           <div id="errormsg" class="col-sm-12"></div>       
+          <div class="col-sm-12">
           <form id="form-comment" action="{{url('insertcomment')}}">
           <input type="hidden" name="post_id" value="{{$post->id}}">
           <input type="hidden" name="img" id="imgurl">
@@ -149,6 +182,8 @@
           <br>
           <div class="pull-right"><button class="btn btn-default">Submit</button></div>
           </form>
+          </div>       
+
       </div>
       @endif
         
@@ -323,8 +358,11 @@
                       </div><!-- userComment -->
                       @endforeach
                       </div>
+                        @if($comments->count() > 2)
                         <br><br>
                         <button style="float:left" class="btn btn-default btn-block" id="morecomments-all" data-id="{{$post->id}}" data-count="1" data-type="all"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
+                        @endif
+
                         @endif
                         
                     </div>
@@ -461,8 +499,10 @@
                       </div><!-- userComment -->
                       @endforeach
                       </div>
+                      @if($attacks->count() > 2)
                         <br><br>
                         <button class="btn btn-default btn-block" id="morecomments-attack" data-count="1" data-type="attack"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
+                      @endif
                   
                   @endif
 
@@ -600,8 +640,10 @@
                       </div><!-- userComment -->
                       @endforeach
                     </div>
+                      @if($defenses->count() > 2)
                         <br><br>
                         <button class="btn btn-default btn-block" id="morecomments-defense" data-count="1" data-type="defense"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
+                      @endif
                   
                   @endif
                      
@@ -739,9 +781,10 @@
                       </div><!-- userComment -->
                       @endforeach
                         </div>
+                        @if($assists->count() > 2)
                         <br><br>
                         <button class="btn btn-default btn-block" id="morecomments-assist" data-count="1" data-type="assist"> <span id="showmore">Show more comments</span> <span id="loading" style="display:none"><img src="{{asset('images/loading_spinner.gif')}}" width="25"></span></button>
-                  
+                        @endif
                   @endif
 
                     </div>
@@ -754,7 +797,7 @@
 
               </div><!-- leftColumn -->
               <div class="col-sm-12 col-md-2"></div>
-              <div class="col-sm-12 col-md-4 rightColumn">
+              <div class="col-sm-12 col-md-4 rightColumn slimScroll">
                 <div class="flagtitle"><span>Other posts</span></div>
                @foreach($others as $ot)
                 <div class="columnBlock col-md-12 col-sm-6">

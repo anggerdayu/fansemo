@@ -12,12 +12,31 @@ $(document).ready(function(){
     // });
 });
 </script>
+<script src="{{ asset('assets/vendor/slim-scroll/slimscroll.js') }}"></script>
+
 @stop
 
 @section('css')
 <link href="{{ asset('css/trending2.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/vendor/slim-scroll/slimscroll.css') }}" rel="stylesheet">
     @stop
+<script>
+            window.onload = function(){
+                var element = document.querySelectorAll('.slimScroll');
 
+                // Apply slim scroll plugin
+                var one = new slimScroll(element[0], {
+                    'wrapperClass': 'scroll-wrapper unselectable mac',
+                    'scrollBarContainerClass': 'scrollBarContainer',
+                    'scrollBarContainerSpecialClass': 'animate',
+                    'scrollBarClass': 'scroll-bar',
+                    'keepFocus': true
+                });
+                window.onresize = function(){
+                    one.resetValues();
+                }
+            }    
+</script>
 @section('content')
 
           <div class="container pb0 mt150">
@@ -73,7 +92,7 @@ $(document).ready(function(){
               <div class="col-sm-12 col-md-2"></div>
               
               @if($pagetype!='mine')
-              <div class="col-sm-12 col-md-4 rightColumn">
+              <div class="col-sm-12 col-md-4 rightColumn slimScroll">
                 <div class="flagtitle"><span>Other posts</span></div>
                 @foreach($others as $ot)
                 <div class="columnBlock col-md-12 col-sm-6">

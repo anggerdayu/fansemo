@@ -36,6 +36,34 @@
 .rightColumn .columnBlock:hover .infoBar2 > .like-row { bottom: 0; }
 .rightColumn .columnBlock { overflow: hidden; margin-bottom: 30px; }
 
+/* scrollbar for webkit */
+
+/* 
+
+.rightColumn::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+Track
+.rightColumn::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+Handle
+.rightColumn::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(255,0,0,0.8); 
+}
+.rightColumn::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255,0,0,0.4); 
+}
+ */
+/* end of scrollbar for webkit */
+
 #uploadImgBtn {
   max-width: 130px;
   padding: 6px 12px;
