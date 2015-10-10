@@ -67,7 +67,7 @@
                     @if(Auth::user() && Auth::user()->status == 'management')
                     <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Set as Featured Post">Set as Featured Post</a>
                     @endif
-                    @if(Auth::id() == $post->user_id && Auth::user()->status == 'management')
+                    @if(Auth::user() && Auth::user()->status == 'management')
                     <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-danger p9" title="delete post">Delete Post</a>
                     @elseif(Auth::id() == $post->user_id)
                     <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-danger p9" title="delete post"><i class="fa fa-trash-o"></i></a>
