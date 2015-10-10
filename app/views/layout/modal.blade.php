@@ -118,7 +118,7 @@
         <p class="text-danger text-center reset-msg"></p>
         <p>Input your new password</p>
         <form id="form-reset" data-action="{{url('resetpassword')}}">
-          <input type="hidden" name="user_id" value="2" class="form-control" placeholder="New Password">
+          <input type="hidden" name="user_id" value="{{Session::get('reset')}}" class="form-control" placeholder="New Password">
           <input type="password" name="password" class="form-control" placeholder="New Password"><br>
           <input type="password" name="password_confirmation" class="form-control" placeholder="New Password Confirmation"><br>
           <button type="submit" id="modal-reset-submit" class="btn btn-default">Submit</button>
