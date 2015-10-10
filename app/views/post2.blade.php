@@ -40,6 +40,7 @@
                 window.onresize = function(){
                     one.resetValues();
                 }
+                $('html,body').scrollTop(0);
             }    
 </script>
 
