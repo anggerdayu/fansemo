@@ -38,6 +38,10 @@ class PostController extends BaseController {
 				});
 				$img->insert('images/watermark.png');
 				$img->save('files/'.$image);
+			}else{
+				$img = Image::make('files/'.$image);
+				$img->insert('images/watermark.png');
+				$img->save('files/'.$image);
 			}
 
 			// create directory

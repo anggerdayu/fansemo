@@ -85,12 +85,12 @@
                     
                     @if(!empty($badge_name))
                     <div class="row userProfile mb20 mt20">
-                      <div class="leftColumnUser pull-left mr10">
+                      <!-- <div class="leftColumnUser pull-left mr10">
                         <img src="{{asset('badges/'.$badge_image)}}" class="ml10" alt="user badge">                        
-                      </div>
+                      </div> -->
                       <div class="rightColumnUser pull-left">
-                          <p><a href="#"> {{$post->user->username}}</a></p>
-                          <p>{{$badge_name}}</p>
+                          <p>&nbsp;&nbsp;&nbsp;Posted by, <a href="#">{{$post->user->username}}</a></p>
+                          <!-- <p>{{$badge_name}}</p> -->
                       </div>     
                     </div>
                     @endif
