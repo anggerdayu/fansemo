@@ -475,7 +475,7 @@ class PostController extends BaseController {
                             '.$pp.'
                           </a>
                         </div>
-                        <div class="col-xs-9 detailPost">
+                        <div class="col-xs-9 col-sm-9 detailPost">
                           '.$content.'
                      
                         '; 

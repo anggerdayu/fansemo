@@ -226,7 +226,7 @@
                             @endif
                           </a>
                         </div>
-                        <div class="col-xs-9 detailPost">
+                        <div class="col-xs-9 col-sm-9 detailPost">
                           @if(empty($comment->deleted_at))
                           <a><b>{{$comment->user->username}}</b></a>
                           
@@ -391,7 +391,7 @@
                             @endif
                           </a>
                         </div>
-                        <div class="col-xs-9 detailPost">
+                        <div class="col-xs-9 col-sm-9 detailPost">
                           @if(empty($comment->deleted_at))
                           <a><b>{{$comment->user->username}}</b></a>
                           
@@ -533,7 +533,7 @@
                             @endif
                           </a>
                         </div>
-                        <div class="col-xs-9 detailPost">
+                        <div class="col-xs-9 col-sm-9 detailPost">
                           @if(empty($comment->deleted_at))
                           <a><b>{{$comment->user->username}}</b></a>
                           
@@ -674,7 +674,7 @@
                             @endif
                           </a>
                         </div>
-                        <div class="col-xs-9 detailPost">
+                        <div class="col-xs-9 col-sm-9 detailPost">
                           @if(empty($comment->deleted_at))
                           <a><b>{{$comment->user->username}}</b></a>
                           
