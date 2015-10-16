@@ -419,7 +419,7 @@ class PostController extends BaseController {
               else $pp = '<img src="'.asset('images/user.jpg').'">';
 
             $delcomment = '';
-            if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+            if(Auth::id() && Auth::user()->status == 'management'){
                 $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
             }else if(Auth::id() == $post->user_id){
                 $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
@@ -543,7 +543,7 @@ class PostController extends BaseController {
 	                      else $commentImage = '';
 
 	                      $delcomment = '';
-			                if(Auth::id() == $post->user_id && Auth::user()->status == 'management'){
+			                if(Auth::id() && Auth::user()->status == 'management'){
 			                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
 			                }else if(Auth::id() == $post->user_id){
 			                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
