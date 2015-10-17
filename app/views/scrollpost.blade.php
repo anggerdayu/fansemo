@@ -43,6 +43,32 @@ $(document).ready(function(){
           <div class="container pb0 mt150">
             <div class="row mb20">
               <div class="col-sm-12 col-md-6 leftColumn mainbox">
+
+                @if($pagetype=='mine' ||  $pagetype=='profile')
+                <div class="row">
+                  <div class="col-xs-6">
+                  @if(!empty($userdata->profile_pic))
+                  <img src="{{asset('usr/pp/'.$userdata->profile_pic)}}" width="150">
+                  @else
+                  <img src="{{asset('images/user.jpg')}}">
+                  @endif
+                  <h4>{{$userdata->username}}</h4>
+                  
+                        <p><img src="{{asset('images/icon_attack.jpg')}}" alt="icon_attack"><span class="clrGrey"> Attack: </span><span> {{$attack}} </span> points</p>
+                        <p><img src="{{asset('images/icon_defense.jpg')}}" alt="icon_defense"><span class="clrGrey"> Defense: </span><span> {{$defense}} </span> points</p>
+                        <p><img src="{{asset('images/icon_assist.jpg')}}" alt="icon_assist"><span class="clrGrey"> Assist: </span><span> {{$assist}} </span> points</p>
+                        <p><b>Total Posts : </b> {{$totalposts}}</p>
+
+                  </div>
+                  <div class="col-xs-6">
+                    <p><b>Team :</b> @if(!empty($team)){{$team->name}}@else{{'<br>No Team'}}@endif</p>
+                    @if(!empty($team)) 
+                    <img src="{{asset('teams/'.$team->logo_image)}}" width="150">
+                    @endif
+                  </div>
+                </div>
+                @endif
+
                 <div class="row">
                   
                   @foreach($images as $img)
@@ -85,14 +111,15 @@ $(document).ready(function(){
 
 
                   <div class="col-sm-12 mt30 mb40">
-                    <a href="{{url('next/'.$pagetype.'/1')}}" class="btn btn-default">Load More</a>
+                    <?php if(!isset($profileid)) $profileid = ''; ?>
+                    <a href="{{url('next/'.$pagetype.$profileid.'/1')}}" class="btn btn-default">Load More</a>
                   </div>
 
                 </div><!-- row -->
               </div><!-- leftColumn -->
               <div class="col-sm-12 col-md-2"></div>
               
-              @if($pagetype!='mine')
+              @if($pagetype!='mine' &&  $pagetype!='profile')
               <div class="col-sm-12 col-md-4 rightColumn slimScroll">
                 <div class="flagtitle"><span>Other posts</span></div>
                 @foreach($others as $ot)

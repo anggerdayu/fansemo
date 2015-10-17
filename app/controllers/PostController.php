@@ -72,9 +72,43 @@ class PostController extends BaseController {
 		$data['page'] = 'myposts';
 		$data['pagetype'] = 'mine';
 		$data['images'] = Post::where('user_id',Auth::id())->orderBy('created_at','desc');
+		$data['userdata'] = Auth::user();
+		$data['totalposts'] = Post::where('user_id',Auth::id())->count();
+		$data['team'] = empty(Auth::user()->team_id) ? '' : Team::find(Auth::user()->team_id);
+
+		$data['attack'] = Comment::where('user_id',Auth::id())->where('type','attack')->count();
+		$data['assist'] = Comment::where('user_id',Auth::id())->where('type','assist')->count();
+		$data['defense'] = Comment::where('user_id',Auth::id())->where('type','defense')->count();
 		if(Auth::user()){
 			$data['images'] = $data['images']->with(array('votes' => function($query){
 														$query->where('user_id', Auth::id());
+    												}))->take(12)->get();
+		}else{
+			$data['images'] = $data['images']->take(12)->get();
+		}
+		return View::make('scrollpost')->with($data);
+	}
+
+	public function userpage($username)
+	{
+		$data['page'] = '';
+		$data['pagetype'] = 'profile';
+
+		$data['userdata'] = User::where('username',$username)->first();
+		if(empty($data['userdata'])) App::abort(404);
+		$userid = $data['userdata']->id;
+		$teamid = $data['userdata']->team_id;
+		$data['profileid'] = '_'.$userid;
+		$data['images'] = Post::where('user_id',$userid)->orderBy('created_at','desc');
+		$data['totalposts'] = Post::where('user_id',$userid)->count();
+		$data['team'] = empty($teamid) ? '' : Team::find($teamid);
+
+		$data['attack'] = Comment::where('user_id',$userid)->where('type','attack')->count();
+		$data['assist'] = Comment::where('user_id',$userid)->where('type','assist')->count();
+		$data['defense'] = Comment::where('user_id',$userid)->where('type','defense')->count();
+		if(Auth::user()){
+			$data['images'] = $data['images']->with(array('votes' => function($query) use($userid){
+														$query->where('user_id', $userid);
     												}))->take(12)->get();
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
@@ -99,7 +133,9 @@ class PostController extends BaseController {
 				break;			
 			
 			default:
-				# code...
+				$userid = explode('_', $type);
+				$userid = $userid[1];
+				$images = Post::where('user_id',$userid)->orderBy('created_at','desc');
 				break;
 		}
 		if(Auth::user()){ 
@@ -415,8 +451,8 @@ class PostController extends BaseController {
               if(!empty($comment->image)) $image = '<img src="'.asset('comments/'.$postid.'/'.$comment->image).'">';
               else $image = '';
 
-              if(!empty($comment->user->profile_pic)) $pp = '<img src="'.asset('usr/pp/'.$comment->user->profile_pic).'">'; 
-              else $pp = '<img src="'.asset('images/user.jpg').'">';
+              if(!empty($comment->user->profile_pic)) $pp = '<a href="'.url('profile/'.$comment->user->username).'"><img src="'.asset('usr/pp/'.$comment->user->profile_pic).'"></a>'; 
+              else $pp = '<a href="'.url('profile/'.$comment->user->username).'"><img src="'.asset('images/user.jpg').'"></a>';
 
             $delcomment = '';
             if(Auth::id() && Auth::user()->status == 'management'){
@@ -426,7 +462,7 @@ class PostController extends BaseController {
             }
 
             if(empty($comment->deleted_at)){
-            	$content = '<a><b>'.$comment->user->username.'</b></a>
+            	$content = '<a href="'.url('profile/'.$comment->user->username).'"><b>'.$comment->user->username.'</b></a>
                           
                           <br><font color="#888">'.$commentVotesLike.' likes, '.$commentVotesDislike.' dislikes</font> , <small class="text-muted">posted at '.date('d F Y,H:i',strtotime($comment->created_at)).'</small>
                           '.$commenttype.' '.$likeButton.'
@@ -471,9 +507,7 @@ class PostController extends BaseController {
             }
               $result.= '<div class="userComment  mt30 row">
                         <div class="col-xs-3 imgWrap">
-                          <a href="">
                             '.$pp.'
-                          </a>
                         </div>
                         <div class="col-xs-9 col-sm-9 detailPost">
                           '.$content.'
@@ -536,8 +570,8 @@ class PostController extends BaseController {
                   $childs = Comment::withTrashed()->where('parent_comment_id',$comment->id)->get();
                   if($childs){
 	                  foreach($childs as $cmt){
-	                  	  if(!empty($cmt->user->profile_pic)) $pp = '<img src="'.asset('usr/pp/'.$cmt->user->profile_pic).'" width="50">'; 
-	                  	  else $pp = '<img src="'.asset('images/user.jpg').'" width="50">';
+	                  	  if(!empty($cmt->user->profile_pic)) $pp = '<a href="'.url('profile/'.$cmt->user->username).'"><img src="'.asset('usr/pp/'.$cmt->user->profile_pic).'" width="50"></a>'; 
+	                  	  else $pp = '<a href="'.url('profile/'.$cmt->user->username).'"><img src="'.asset('images/user.jpg').'" width="50"></a>';
 
 	                  	  if($cmt->image) $commentImage = '<img src="'.asset('comments/'.$postid.'/'.$cmt->image).'">';
 	                      else $commentImage = '';
@@ -553,7 +587,7 @@ class PostController extends BaseController {
 			               		$content = 'This comment has been deleted by user';
 			               }else{
 			               		$content = $delcomment.'
-		                      <p><b>'.$cmt->user->username.' commented :</b>
+		                      <p><b><a href="'.url('profile/'.$cmt->user->username).'">'.$cmt->user->username.'</a> commented :</b>
 		                      <br>
                         <img src="'.asset('images/icon_'.$cmt->type.'.jpg').'" width="10"> '.ucfirst($cmt->type).'&nbsp;&nbsp;
 		                      <br> '.$cmt->text.'</p>

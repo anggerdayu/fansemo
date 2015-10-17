@@ -218,7 +218,7 @@
                       @foreach($comments as $comment)
                       <div class="userComment  mt30 row">
                         <div class="col-xs-3 imgWrap">
-                          <a href="">
+                          <a href="{{url('profile/'.$comment->user->username)}}">
                             @if(!empty($comment->user->profile_pic))
                             <img src="{{asset('usr/pp/'.$comment->user->profile_pic)}}">
                             @else
@@ -228,7 +228,7 @@
                         </div>
                         <div class="col-xs-9 col-sm-9 detailPost">
                           @if(empty($comment->deleted_at))
-                          <a><b>{{$comment->user->username}}</b></a>
+                          <a href="{{url('profile/'.$comment->user->username)}}"><b>{{$comment->user->username}}</b></a>
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
@@ -324,11 +324,13 @@
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
                     <div class="col-sm-3">
+                      <a href="{{url('profile/'.$cmt->user->username)}}">
                       @if(!empty($cmt->user->profile_pic))
                       <img src="{{asset('usr/pp/'.$cmt->user->profile_pic)}}" width="50">
                       @else
                       <img src="{{asset('images/user.jpg')}}" width="50">
                       @endif
+                      </a>
                     </div>
                     <div class="col-sm-9">
                       @if(empty($cmt->deleted_at))
@@ -337,7 +339,7 @@
                           @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
-                      <p><b>{{$cmt->user->username}} commented :</b>
+                      <p><b><a href="{{url('profile/'.$cmt->user->username)}}">{{$cmt->user->username}}</a> commented :</b>
                         <br>
                         <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
                         <br> {{$cmt->text}}</p>
@@ -383,7 +385,7 @@
                       @foreach($attacks as $comment)
                       <div class="userComment  mt30 row">
                         <div class="col-xs-3 imgWrap">
-                          <a href="">
+                          <a href="{{url('profile/'.$comment->user->username)}}">
                             @if(!empty($comment->user->profile_pic))
                             <img src="{{asset('usr/pp/'.$comment->user->profile_pic)}}">
                             @else
@@ -393,7 +395,7 @@
                         </div>
                         <div class="col-xs-9 col-sm-9 detailPost">
                           @if(empty($comment->deleted_at))
-                          <a><b>{{$comment->user->username}}</b></a>
+                          <a href="{{url('profile/'.$comment->user->username)}}"><b>{{$comment->user->username}}</b></a>
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
@@ -465,11 +467,13 @@
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
                     <div class="col-sm-3">
+                      <a href="{{url('profile/'.$cmt->user->username)}}">
                       @if(!empty($cmt->user->profile_pic))
                       <img src="{{asset('usr/pp/'.$cmt->user->profile_pic)}}" width="50">
                       @else
                       <img src="{{asset('images/user.jpg')}}" width="50">
                       @endif
+                      </a>
                     </div>
                     <div class="col-sm-9">
                       @if(empty($cmt->deleted_at))
@@ -478,7 +482,7 @@
                           @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
-                      <p><b>{{$cmt->user->username}} commented :</b>
+                      <p><b><a href="{{url('profile/'.$cmt->user->username)}}">{{$cmt->user->username}}</a> commented :</b>
                         <br>
                         <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
                         <br> {{$cmt->text}}</p>
@@ -525,7 +529,7 @@
                       @foreach($defenses as $comment)
                       <div class="userComment  mt30 row">
                         <div class="col-xs-3 imgWrap">
-                          <a href="">
+                          <a href="{{url('profile/'.$comment->user->username)}}">
                             @if(!empty($comment->user->profile_pic))
                             <img src="{{asset('usr/pp/'.$comment->user->profile_pic)}}">
                             @else
@@ -535,7 +539,7 @@
                         </div>
                         <div class="col-xs-9 col-sm-9 detailPost">
                           @if(empty($comment->deleted_at))
-                          <a><b>{{$comment->user->username}}</b></a>
+                          <a href="{{url('profile/'.$comment->user->username)}}"><b>{{$comment->user->username}}</b></a>
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
@@ -607,11 +611,13 @@
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
                     <div class="col-sm-3">
+                      <a href="{{url('profile/'.$cmt->user->username)}}">
                       @if(!empty($cmt->user->profile_pic))
                       <img src="{{asset('usr/pp/'.$cmt->user->profile_pic)}}" width="50">
                       @else
                       <img src="{{asset('images/user.jpg')}}" width="50">
                       @endif
+                      </a>
                     </div>
                     <div class="col-sm-9">
                       @if(empty($cmt->deleted_at))
@@ -620,7 +626,7 @@
                           @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
-                          <p><b>{{$cmt->user->username}} commented :</b>
+                          <p><b><a href="{{url('profile/'.$cmt->user->username)}}">{{$cmt->user->username}}</a> commented :</b>
                             <br>
                         <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
                             <br> {{$cmt->text}}</p>
@@ -666,7 +672,7 @@
                       @foreach($assists as $comment)
                       <div class="userComment  mt30 row">
                         <div class="col-xs-3 imgWrap">
-                          <a href="">
+                          <a href="{{url('profile/'.$comment->user->username)}}">
                             @if(!empty($comment->user->profile_pic))
                             <img src="{{asset('usr/pp/'.$comment->user->profile_pic)}}">
                             @else
@@ -676,7 +682,7 @@
                         </div>
                         <div class="col-xs-9 col-sm-9 detailPost">
                           @if(empty($comment->deleted_at))
-                          <a><b>{{$comment->user->username}}</b></a>
+                          <a href="{{url('profile/'.$comment->user->username)}}"><b>{{$comment->user->username}}</b></a>
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
@@ -748,11 +754,13 @@
                   @foreach($childs as $cmt)
                   <div class="row mb10 mt30">
                     <div class="col-sm-3">
+                      <a href="{{url('profile/'.$cmt->user->username)}}">
                       @if(!empty($cmt->user->profile_pic))
                       <img src="{{asset('usr/pp/'.$cmt->user->profile_pic)}}" width="50">
                       @else
                       <img src="{{asset('images/user.jpg')}}" width="50">
                       @endif
+                    </a>
                     </div>
                     <div class="col-sm-9">
                       @if(empty($cmt->deleted_at))
@@ -761,7 +769,7 @@
                           @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
-                          <p><b>{{$cmt->user->username}} commented :</b>
+                          <p><b><a href="{{url('profile/'.$cmt->user->username)}}">{{$cmt->user->username}}</a> commented :</b>
                             <br>
                         <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
                             <br> {{$cmt->text}}</p>
