@@ -421,7 +421,7 @@ class PostController extends BaseController {
             $delcomment = '';
             if(Auth::id() && Auth::user()->status == 'management'){
                 $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
-            }else if(Auth::id() == $post->user_id){
+            }else if(Auth::id() == $comment->user_id){
                 $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
             }
 
@@ -545,7 +545,7 @@ class PostController extends BaseController {
 	                      $delcomment = '';
 			                if(Auth::id() && Auth::user()->status == 'management'){
 			                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
-			                }else if(Auth::id() == $post->user_id){
+			                }else if(Auth::id() == $cmt->user_id){
 			                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
 			                }
 
@@ -638,12 +638,20 @@ class PostController extends BaseController {
 	}
 
 	public function deleteComment(){
+		$status = 0;
 		$id = Input::get('id');
 		$comment = Comment::find($id);
+
 		if($comment){
-			$comment->delete();
+			if(Auth::user() && Auth::user()->status == 'management') $status = 1;
+			else if(Auth::id() == $comment->user_id) $status = 1;
+			else $status = 0;
+
+			if(!empty($status)) $comment->delete();
+			else return 'fail';
 		}
-		return 'success';
+		if(Auth::user()->status == 'management') return 'administrator';
+		else return 'user';
 	}
 
 }

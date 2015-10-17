@@ -168,7 +168,7 @@ class UserController extends BaseController {
 	    // get data from input
 	    $code = Input::get( 'code' );
 	    // get google service
-	    $googleService = OAuth::consumer( 'Google' ,url('gplogin'));
+	    $googleService = OAuth::consumer( 'Google' ,url('gpsignup'));
 	    // check if code is valid
 
 	    // if code is provided get user data and sign in

@@ -234,7 +234,7 @@
 
                           @if(Auth::id() && Auth::user()->status == 'management')
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $post->user_id)
+                          @elseif(Auth::id() == $comment->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
 
@@ -334,7 +334,7 @@
                       @if(empty($cmt->deleted_at))
                       @if(Auth::id() && Auth::user()->status == 'management')
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $post->user_id)
+                          @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
                       <p><b>{{$cmt->user->username}} commented :</b>
@@ -399,7 +399,7 @@
 
                           @if(Auth::id() && Auth::user()->status == 'management'){
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $post->user_id)
+                          @elseif(Auth::id() == $comment->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
 
@@ -475,7 +475,7 @@
                       @if(empty($cmt->deleted_at))
                           @if(Auth::id() && Auth::user()->status == 'management'){
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $post->user_id)
+                          @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
                       <p><b>{{$cmt->user->username}} commented :</b>
@@ -541,7 +541,7 @@
 
                           @if(Auth::id() && Auth::user()->status == 'management'){
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $post->user_id)
+                          @elseif(Auth::id() == $comment->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
 
@@ -617,7 +617,7 @@
                       @if(empty($cmt->deleted_at))
                           @if(Auth::id() && Auth::user()->status == 'management'){
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $post->user_id)
+                          @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
                           <p><b>{{$cmt->user->username}} commented :</b>
@@ -682,7 +682,7 @@
 
                           @if(Auth::id() && Auth::user()->status == 'management'){
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $post->user_id)
+                          @elseif(Auth::id() == $comment->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
 
@@ -758,7 +758,7 @@
                       @if(empty($cmt->deleted_at))
                           @if(Auth::id() && Auth::user()->status == 'management'){
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $post->user_id)
+                          @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
                           <p><b>{{$cmt->user->username}} commented :</b>

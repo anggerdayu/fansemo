@@ -70,7 +70,7 @@
       </div>
       <div class="modal-footer">
         <div class="text-center">
-          <a data-toggle="modal" data-target="#modalForget" class="si-forget text-center clr-red"><b>Forget password ? </b></a> &vert; <a href="#" data-toggle="modal" data-target="#modalSignup" class="si-signup clr-red"><b>Sign in.</b></a>
+          <a data-toggle="modal" data-target="#modalForget" class="si-forget text-center clr-red"><b>Forget password ? </b></a> &vert; <a href="#" data-toggle="modal" data-target="#modalSignup" class="si-signup clr-red"><b>Sign up.</b></a>
         </div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>

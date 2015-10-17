@@ -434,7 +434,7 @@ $(document).on('fileuploadadd', '.commentupload', function (e, data) {
               url: '/deletecomment',
               data: {id: id},
               success: function(data){
-                if(data=='success') obj.closest('.col-sm-9').html('This comment has been deleted by user');
+                if(data!='fail') obj.closest('.col-sm-9').html('This comment has been deleted by '+data);
               }
             });
         }

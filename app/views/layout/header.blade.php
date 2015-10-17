@@ -50,7 +50,7 @@
                         @else
                         <img src="{{asset('images/icon_crown.png')}}" width="177" title="tifosiwar" alt="tifosiwar"><br>
                         @endif
-                      Hall of Fame          
+                      Hall of Fame <small style="color:#FFC300">beta</small>         
                     </a>
                   </li>
                 </ul>
