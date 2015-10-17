@@ -10,7 +10,7 @@ $('.bxslider1').bxSlider({
   slideWidth: 1200,
   slideMargin: 20,
   pager: false,
-  auto: false,
+  auto: true,
   speed: 1000
 });
 

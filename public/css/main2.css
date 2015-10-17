@@ -346,6 +346,10 @@ nav.navbar { border-top: 10px solid #be1e2d; }
 /* ========================================== */
 /*              extend bootstrap              */
 /* ========================================== */
+#modalSignup .modal-body{
+    max-height: 300px;
+    overflow: auto;
+}
 
 .modal-content { padding: 0 50px; font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Helvetica, Arial, sans-serif; }
 .modal-footer, .modal-header { border: none; }
