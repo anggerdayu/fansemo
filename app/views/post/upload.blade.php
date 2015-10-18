@@ -61,6 +61,7 @@ $(function () {
         previewMaxHeight: 100,
         previewCrop: true
     }).on('fileuploadadd', function (e, data) {
+        $('#files').html('');
         data.context = $('<div/>').appendTo('#files');
         $.each(data.files, function (index, file) {
             var node = $('<p/>')
@@ -111,6 +112,7 @@ $(function () {
                     .append('<br>')
                     .append(error);
             }
+            // $('#fileupload').attr('disabled','disabled');
             $('#imgurl').val(file.url);
         });
     }).on('fileuploadfail', function (e, data) {

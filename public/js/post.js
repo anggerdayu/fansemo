@@ -267,6 +267,7 @@ var uploadButton = $('<button/>')
         previewMaxHeight: 100,
         previewCrop: true
     }).on('fileuploadadd', function (e, data) {
+        $('#files').html('');
         data.context = $('<div/>').appendTo('#files');
         $.each(data.files, function (index, file) {
             var node = $('<p/>')
@@ -354,6 +355,7 @@ $('.commentupload').fileupload({
 $(document).on('fileuploadadd', '.commentupload', function (e, data) {
         var commentid = $(this).data('id');
         var commenttype = $(this).data('type');
+        $('#files'+commentid+'-'+commenttype).html('');
         data.context = $('<div/>').appendTo('#files'+commentid+'-'+commenttype);
         $.each(data.files, function (index, file) {
             var node = $('<p/>')

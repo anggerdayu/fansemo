@@ -53,6 +53,7 @@ $(function () {
         previewMaxHeight: 100,
         previewCrop: true
     }).on('fileuploadadd', function (e, data) {
+        $('#files').html('');
         data.context = $('<div/>').appendTo('#files');
         $.each(data.files, function (index, file) {
             var node = $('<p/>')
