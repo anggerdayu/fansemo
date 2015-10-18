@@ -13,6 +13,8 @@
         <a href="{{url('gpsignup')}}" class="btn btn-danger mt15"><i class="fa fa-google-plus"></i>&nbsp; Connect to Google &plus;</a>
         <p class="mt10">Or, Sign up :</p>
         <center><p class="text-danger" id="error-signup"></p></center>
+        <span class="signup-loading" style="display:none"><center><i class="fa fa-spinner"></i><br>
+        loading</center></span>
       <form id="form-modal-signup" method="post" action="{{url('register')}}">
         <div class="form-group text-left">
           <label for="UsernameInput">Username :</label>

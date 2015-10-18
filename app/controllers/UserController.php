@@ -51,12 +51,20 @@ class UserController extends BaseController {
 			$email = Input::get('email');
 			$username = Input::get('username');
 
+			$hash = str_random(20);
 			$user = new User;
 			$user->username = $username;
 			$user->email = $email;
 			$user->password = Hash::make($password);
 			$user->status = 'member';
+			$user->register_token = $hash;
 			$user->save();
+
+			$desc = 'Thank you '.$username.' for joining us, to verify your Registration Process, please click this <a href="'.url('verifyregistration/'.$hash).'">LINK</a>';
+			Mail::send('emails.message', array('desc' => $desc), function($message) use($email, $username)
+			{
+			    $message->to($email, $username)->subject('Tifosiwar Registration Confirmation');
+			});			
 
 			Auth::loginUsingId($user->id);
 			return 'success';
@@ -361,6 +369,18 @@ class UserController extends BaseController {
 			Session::flash('warning','Congratulations, your password has been reset successfully');
 			return 'success';
 		}
+	}
+
+	public function verify($hash){
+		$user = User::where('register_token',$hash)->orderBy('created_at','desc')->first();
+		if(!$user){
+			Session::flash('warning','Sorry we can\'t search this user in our system');
+		}else{
+			$user->verified = 1;
+			$user->save();
+			Session::flash('warning','Thank you for registering, you are now verified');
+		}
+		return Redirect::to('/');
 	}
 
     public function doLogout(){

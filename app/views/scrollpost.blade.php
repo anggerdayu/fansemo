@@ -81,13 +81,13 @@ $(document).ready(function(){
                     </div><!-- imageBox -->
                     <div class="row infoBarTrend mt10 text-left">
                       <div class="leftBarTrend pull-left col-sm-7 col-xs-12">
-                        <p class="inlineB">{{Vote::where('post_id',$img->id)->where('type','like')->count()}} likes</p>
-                        <p class="inlineB ml10">{{Vote::where('post_id',$img->id)->where('type','dislike')->count()}} dislikes</p>
+                        <p class="inlineB totallikes">{{Vote::where('post_id',$img->id)->where('type','like')->count()}} likes</p>
+                        <p class="inlineB ml10 totaldislikes">{{Vote::where('post_id',$img->id)->where('type','dislike')->count()}} dislikes</p>
                         <p class="inlineB ml10">{{ Comment::where('post_id',$img->id)->count() }} comments</p>
                         <div class="actionRow">
                           @if(isset($img->votes))
-                          <a class="@if(!empty($img->votes->first()) && $img->votes->first()->type == 'like'){{'activeAct disabledlike'}}@else{{'like'}}@endif" data-id="{{$img->id}}"><i class="fa fa-thumbs-up"></i></a>
-                          <a class="@if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike'){{'activeAct disabledlike'}}@else{{'dislike'}}@endif" data-id="{{$img->id}}"><i class="fa fa-thumbs-down"></i></a>
+                          <a class="@if(!empty($img->votes->first()) && $img->votes->first()->type == 'like'){{'activeAct like'}}@else{{'like'}}@endif" data-id="{{$img->id}}"><i class="fa fa-thumbs-up"></i></a>
+                          <a class="@if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike'){{'activeAct dislike'}}@else{{'dislike'}}@endif" data-id="{{$img->id}}"><i class="fa fa-thumbs-down"></i></a>
                           @else
                           <a class="disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-thumbs-up"></i></a>
                           <a class="disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-thumbs-down"></i></a>

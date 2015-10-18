@@ -80,12 +80,16 @@ $(document).ready(function(){
 	$('#modal-signup-submit').click(function(e){
         e.preventDefault();
         var datastring = $("#form-modal-signup").serialize();
+        $('#form-modal-signup').hide();
+        $('.signup-loading').show();
         $.ajax({
           type: "POST",
           url: $("#form-modal-signup").attr('action'),
           data: datastring,
           success: function(response) {
             if(response!='success'){
+              $('#form-modal-signup').show();
+              $('.signup-loading').hide();
               $('#error-signup').html(response);
             }else{
               location.reload();
@@ -122,6 +126,10 @@ $(document).ready(function(){
       $('#modalSignin').modal('hide');
   });
 
+  var likecount = 0;
+  var dislikecount = 0;
+  var defaultlike = parseInt($('.totallikes').text());
+  var defaultdislike = parseInt($('.totaldislikes').text());
   $(document).on("mouseover", ".box", function(e) {
     $(this).find('.overlay-mask').show();
     $(this).find('.overlay-content').show();
@@ -140,9 +148,13 @@ $(document).ready(function(){
         obj.parent().find('.activeAct').removeClass('activeAct');
         obj.addClass("activeAct");
         if($('.totallikes').length){
-          var total = parseInt($('.totallikes').text());
-          total = total+1;
-          $('.totallikes').html(total+' likes');
+          if(likecount == 0){
+            likecount = likecount + 1;
+            var total = defaultlike;
+            total = total+1;
+            $('.totallikes').html(total+' likes');
+            dislikecount = 0;
+          }
         }
         
       }
@@ -159,9 +171,13 @@ $(document).ready(function(){
         obj.parent().find('.activeAct').removeClass('activeAct');
         obj.addClass("activeAct");
         if($('.totaldislikes').length){
-          var total = parseInt($('.totaldislikes').text());
-          total = total+1;
-          $('.totaldislikes').html(total+' dislikes');
+          if(dislikecount == 0){
+            dislikecount = dislikecount + 1;
+            var total = defaultdislike;
+            total = total+1;
+            $('.totaldislikes').html(total+' dislikes');
+            likecount = 0;
+          }
         }
       }
     });

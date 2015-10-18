@@ -103,8 +103,8 @@
                         <p class="inlineB ml10">{{ Comment::where('post_id',$post->id)->count() }} comments</p>
                         <div class="actionRow">
                           @if(Auth::user())
-                          <a class="@if(isset($post->votes) && !empty($post->votes->first()) && $post->votes->first()->type == 'like'){{'activeAct disabledlike'}}@else{{'like'}}@endif" data-id="{{$post->id}}"><i class="fa fa-thumbs-up"></i></a>
-                          <a class="@if(isset($post->votes) && !empty($post->votes->first()) && $post->votes->first()->type == 'dislike'){{'activeAct disabledlike'}}@else{{'dislike'}}@endif" data-id="{{$post->id}}"><i class="fa fa-thumbs-down"></i></a>
+                          <a class="@if(isset($post->votes) && !empty($post->votes->first()) && $post->votes->first()->type == 'like'){{'activeAct like'}}@else{{'like'}}@endif" data-id="{{$post->id}}"><i class="fa fa-thumbs-up"></i></a>
+                          <a class="@if(isset($post->votes) && !empty($post->votes->first()) && $post->votes->first()->type == 'dislike'){{'activeAct dislike'}}@else{{'dislike'}}@endif" data-id="{{$post->id}}"><i class="fa fa-thumbs-down"></i></a>
                           @else
                           <a class="disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-thumbs-up"></i></a>
                           <a class="disabledlike" data-toggle="modal" data-target="#modalSignin"><i class="fa fa-thumbs-down"></i></a>
@@ -130,7 +130,7 @@
                     </div><!-- infoBarTrend -->
                   </div><!-- col-sm-12 -->
                   
-            @if(Auth::user())
+            @if(Auth::user() && !empty(Auth::user()->verified))
             <div id="commentarea" class="col-sm-12 ">
                   <div class="col-sm-12 mt30 clearfix">
                     <span class="btn btn-default fileinput-button">
@@ -185,6 +185,12 @@
           </form>
           </div>       
 
+      </div>
+      @elseif(Auth::user() && empty(Auth::user()->verified))
+      <div id="commentarea" class="col-sm-12 ">
+        <div class="col-sm-12 mt30 clearfix">
+          <p><b>Please verify your registration from your email to comment</b></p>
+        </div>
       </div>
       @endif
         
