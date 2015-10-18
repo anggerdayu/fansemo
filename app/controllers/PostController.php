@@ -62,8 +62,8 @@ class PostController extends BaseController {
 			$post->title = $title;
 			$post->image = $newname;
 			$post->save();
-			Session::flash('success', true);
-			return "success";
+			Session::flash('warning', 'New post inserted');
+			return $slug;
 		}
 	}
 

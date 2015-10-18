@@ -132,8 +132,9 @@ $(function () {
            data: $("#form-upload").serialize(),
            success: function(data)
            {
-                if(data=='success'){
-                    location.reload();
+                if(data.length==10){
+                    // location.reload();
+                    window.location.href= '{{url("post")}}/'+data;
                 }else{
                     $('#alert').html(data);
                 }
