@@ -24,6 +24,7 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main2.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/components-font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     @yield('css')
   </head>
 

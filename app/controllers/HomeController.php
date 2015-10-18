@@ -21,7 +21,7 @@ class HomeController extends BaseController {
 		$data['video'] = Featuredvideo::find(1);
 		$data['banners'] = Banner::orderBy('id')->get();
 		$data['freshpost'] = Post::orderBy('created_at','desc')->take(5)->get();
-		$data['featuredpost'] = FeaturedPost::orderBy('id','desc')->take(6)->with('post')->get();
+		$data['featuredpost'] = FeaturedPost::orderBy('id','desc')->take(10)->with('post')->get();
 		$data['trendingpost'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
 							->groupBy('posts.id')->orderBy('total','desc')->take(6)->get();
 

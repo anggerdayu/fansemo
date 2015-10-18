@@ -66,7 +66,11 @@
                     <h3 class="text-left mtm0">{{$post->title}}</h3>
 
                     @if(Auth::user() && Auth::user()->status == 'management')
-                    <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Set as Featured Post">Set as Featured Post</a>
+                      @if($isfeatured)
+                      <a href="{{url('unsetfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Remove from Featured Post">Remove from Featured Post</a>
+                      @else
+                      <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Set as Featured Post">Set as Featured Post</a>
+                      @endif
                     @endif
                     @if(Auth::user() && Auth::user()->status == 'management')
                     <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-danger" title="delete post">Delete Post</a>

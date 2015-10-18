@@ -47,6 +47,12 @@ class UserController extends BaseController {
 		    	return $message;
 		    }
 		}else{
+			$captcha= Input::get('g-recaptcha-response');
+			if(!$captcha) return 'Please check the the captcha form';
+			$captchaResponse =file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LfoDA8TAAAAALdH7bSRKE0ve2ORX57YzwTVoWZT&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
+			$captchaResponse = json_decode($captchaResponse, true);
+			if($captchaResponse['success']==false) return "Sorry, you are a spammer. We can't let you in";
+
 			$password = Input::get('password');
 			$email = Input::get('email');
 			$username = Input::get('username');

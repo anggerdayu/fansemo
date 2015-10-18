@@ -215,6 +215,7 @@ class PostController extends BaseController {
 			$badgename = '';
 			$badgeimage = '';
 		}
+		$featured = FeaturedPost::where('post_id',$post->id)->first();
 
 		$data = array(
 				'page' => 'page',
@@ -227,7 +228,8 @@ class PostController extends BaseController {
 				'others' => $others,
 				'posted_by' => $user->username,
 				'badge_name' => $badgename,
-				'badge_image' => $badgeimage
+				'badge_image' => $badgeimage,
+				'isfeatured' => !empty($featured) ? true : false
 			);
 		return View::make('post2')->with($data);
 	}
@@ -645,6 +647,19 @@ class PostController extends BaseController {
 			$featured->post_id = $id;
 			$featured->save();
 			Session::flash('success', 'Success, this post are included into featured post');
+			return Redirect::back();
+		}
+	}
+
+	public function unsetFeatured($id)
+	{
+		$check = FeaturedPost::where('post_id',$id)->orderBy('created_at','desc')->first();
+		if($check){
+			$check->delete();
+			Session::flash('warning', 'This post has been removed from featured post');
+			return Redirect::back();
+		}else{
+			Session::flash('warning', 'This post was not at featured post right now');
 			return Redirect::back();
 		}
 	}

@@ -32,6 +32,8 @@
           <label for="inputPassword2">Confirm Password :</label>
           <input type="password" name="password_confirmation" class="form-control" id="inputPassword2" placeholder="Password">
         </div>
+        <div class="g-recaptcha" data-sitekey="6LfoDA8TAAAAANd8XnUT7wfsM0gBpNG9g6d0cmrZ"></div>
+        <br><br>
         <button type="submit" id="modal-signup-submit" class="btn btn-default">Submit</button>
       </form>
 
