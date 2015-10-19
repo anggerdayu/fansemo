@@ -147,12 +147,12 @@ $(document).ready(function(){
       success: function(data){
         obj.parent().find('.activeAct').removeClass('activeAct');
         obj.addClass("activeAct");
+        data = $.map(data, function(el) { return el });
         if($('.totallikes').length){
           if(likecount == 0){
             likecount = likecount + 1;
-            var total = defaultlike;
-            total = total+1;
-            $('.totallikes').html(total+' likes');
+            $('.totallikes').html(String(data[0])+' likes');
+            $('.totaldislikes').html(String(data[1])+' dislikes');
             dislikecount = 0;
           }
         }
@@ -170,12 +170,12 @@ $(document).ready(function(){
       success: function(data){
         obj.parent().find('.activeAct').removeClass('activeAct');
         obj.addClass("activeAct");
+        data = $.map(data, function(el) { return el });
         if($('.totaldislikes').length){
           if(dislikecount == 0){
             dislikecount = dislikecount + 1;
-            var total = defaultdislike;
-            total = total+1;
-            $('.totaldislikes').html(total+' dislikes');
+            $('.totaldislikes').html(String(data[1])+' dislikes');
+            $('.totallikes').html(String(data[0])+' likes');
             likecount = 0;
           }
         }

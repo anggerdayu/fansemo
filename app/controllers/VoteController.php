@@ -16,7 +16,10 @@ class VoteController extends BaseController {
 			$vote->type = 'like';
 			$vote->save();
 		}
-		return 'success';
+		$totalLikeVote = Vote::where('type','like')->where('post_id',$id)->count();
+		$totalDislikeVote = Vote::where('type','dislike')->where('post_id',$id)->count();
+		$result = array($totalLikeVote, $totalDislikeVote);
+		return Response::json($result);
 	}
 
 	public function likeCommentPost(){
@@ -48,7 +51,10 @@ class VoteController extends BaseController {
 			$vote->type = 'dislike';
 			$vote->save();
 		}
-		return 'success';
+		$totalLikeVote = Vote::where('type','like')->where('post_id',$id)->count();
+		$totalDislikeVote = Vote::where('type','dislike')->where('post_id',$id)->count();
+		$result = array($totalLikeVote, $totalDislikeVote);
+		return Response::json($result);
 	}
 
 	public function dislikeCommentPost(){

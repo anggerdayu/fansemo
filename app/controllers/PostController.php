@@ -148,9 +148,9 @@ class PostController extends BaseController {
 		if($images->count() > 0){
 			foreach ($images as $img) {
 				if(isset($img->votes)){
-					if(!empty($img->votes->first()) && $img->votes->first()->type == "like") $classlike = 'activeAct disabledlike';
+					if(!empty($img->votes->first()) && $img->votes->first()->type == "like") $classlike = 'activeAct like';
 					else $classlike = 'like';
-					if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike') $classdislike = 'activeAct disabledlike'; 
+					if(!empty($img->votes->first()) && $img->votes->first()->type == 'dislike') $classdislike = 'activeAct dislike'; 
 					else $classdislike = 'dislike';
 					$buttons = '<a href="#" class="'.$classlike.'" data-id="'.$img->id.'"><i class="fa fa-thumbs-up"></i></a>
                           <a href="#" class="'.$classdislike.'" data-id="'.$img->id.'"><i class="fa fa-thumbs-down"></i></a>';
