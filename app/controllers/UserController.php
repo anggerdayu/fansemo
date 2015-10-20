@@ -70,6 +70,11 @@ class UserController extends BaseController {
 			Mail::send('emails.message', array('desc' => $desc), function($message) use($email, $username)
 			{
 			    $message->to($email, $username)->subject('Tifosiwar Registration Confirmation');
+			});
+			$desc = 'New registration has been made from email : '.$email.', username : '.$username.' and IP Address : '.$_SERVER['REMOTE_ADDR'];
+			Mail::send('emails.message', array('desc' => $desc), function($message) use($email, $username)
+			{
+			    $message->to('admin@tifosiwar.com', 'Tifosiwar Auto System')->subject('Tifosiwar New Registration');
 			});			
 
 			Auth::loginUsingId($user->id);
