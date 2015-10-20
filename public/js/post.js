@@ -72,6 +72,7 @@ $('#uploadimg').click(function(e){
 $('#form-comment').submit(function(e){
 	e.preventDefault();
 	var datastring = $("#form-comment").serialize();
+  $("#form-comment").find('button').attr('disabled','disabled');
     console.log(datastring);
 	$.ajax({
           type: "POST",
@@ -79,6 +80,7 @@ $('#form-comment').submit(function(e){
           data: datastring,
           success: function(response) {
             if(response!='success'){
+              $("#form-comment").find('button').removeAttr('disabled');
               $('#errormsg').html(response);
             }else{
               location.reload();
@@ -92,7 +94,7 @@ $('.form-reply-comment').submit(function(e){
   var obj = $(this);
   var datastring = obj.serialize();
   var alertobj = obj.find('.errormsg');
-
+  obj.find('button').attr('disabled','disabled');
   obj.find('textarea').hide();
   obj.find('.commentspinner').show();
 
@@ -102,6 +104,7 @@ $('.form-reply-comment').submit(function(e){
           data: datastring,
           success: function(response) {
             if(response!='success'){
+              obj.find('button').removeAttr('disabled');
               obj.find('textarea').show();
               obj.find('.commentspinner').hide();
               alertobj.html(response);
