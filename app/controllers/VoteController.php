@@ -5,9 +5,9 @@ class VoteController extends BaseController {
 	public function likePost(){
 		$id = Input::get('id');
 		$likeVote = Vote::where('type','like')->where('user_id',Auth::id())->where('post_id',$id)->first();
-		if(!$likeVote){
+		if(!$likeVote || Auth::user()->status == 'management'){
 			$oppositeVote = Vote::where('type','dislike')->where('user_id',Auth::id())->where('post_id',$id)->first();
-			if(!empty($oppositeVote)){
+			if(!empty($oppositeVote) && Auth::user()->status != 'management'){
 				$oppositeVote->delete();
 			} 
 			$vote = new Vote;
@@ -40,9 +40,9 @@ class VoteController extends BaseController {
 	public function dislikePost(){
 		$id = Input::get('id');
 		$dislikeVote = Vote::where('type','dislike')->where('user_id',Auth::id())->where('post_id',$id)->first();
-		if(!$dislikeVote){
+		if(!$dislikeVote || Auth::user()->status == 'management'){
 			$oppositeVote = Vote::where('type','like')->where('user_id',Auth::id())->where('post_id',$id)->first();
-			if(!empty($oppositeVote)){
+			if(!empty($oppositeVote) && Auth::user()->status != 'management'){
 				$oppositeVote->delete();
 			}
 			$vote = new Vote;

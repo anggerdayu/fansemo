@@ -149,12 +149,12 @@ $(document).ready(function(){
         obj.addClass("activeAct");
         data = $.map(data, function(el) { return el });
         if($('.totallikes').length){
-          if(likecount == 0){
+          //if(likecount == 0){
             likecount = likecount + 1;
-            $('.totallikes').html(String(data[0])+' likes');
-            $('.totaldislikes').html(String(data[1])+' dislikes');
+            obj.parent().parent().find('.totallikes').html(String(data[0])+' likes');
+            obj.parent().parent().find('.totaldislikes').html(String(data[1])+' dislikes');
             dislikecount = 0;
-          }
+          //}
         }
         
       }
@@ -172,12 +172,12 @@ $(document).ready(function(){
         obj.addClass("activeAct");
         data = $.map(data, function(el) { return el });
         if($('.totaldislikes').length){
-          if(dislikecount == 0){
+          //if(dislikecount == 0){
             dislikecount = dislikecount + 1;
-            $('.totaldislikes').html(String(data[1])+' dislikes');
-            $('.totallikes').html(String(data[0])+' likes');
+            obj.parent().parent().find('.totaldislikes').html(String(data[1])+' dislikes');
+            obj.parent().parent().find('.totallikes').html(String(data[0])+' likes');
             likecount = 0;
-          }
+          //}
         }
       }
     });
