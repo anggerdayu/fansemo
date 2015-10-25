@@ -301,6 +301,7 @@ class UserController extends BaseController {
 		$user->username = $username;
 		$user->email = $email;
 		$user->status = 'member';
+		$user->verified = 1;
 		$user->save();
 		Session::flash('warning','Congratulations, your username is registered');
 		return 'success';
