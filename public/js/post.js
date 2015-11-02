@@ -89,7 +89,7 @@ $('#form-comment').submit(function(e){
     });
 });
 
-$('.form-reply-comment').submit(function(e){
+$(document).delegate('.form-reply-comment','submit', function(e){
   e.preventDefault();
   var obj = $(this);
   var datastring = obj.serialize();

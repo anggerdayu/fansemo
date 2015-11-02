@@ -39,6 +39,7 @@ class BannerController extends BaseController {
 	    	// insert to db
 	    	$banner = new Banner;
 	    	$banner->image = 'images/slider/'.$newname;
+	    	if(Input::has('url')) $banner->link = Input::get('url');
 	    	$banner->save();
 	    	Session::flash('success','New banner created');
 	    	return Redirect::to('admin/banners'); 
@@ -47,21 +48,24 @@ class BannerController extends BaseController {
 
 	public function update(){
 		$id = Input::get('id');
-		$rules = array( 
+		if(Input::has('url')) $rules = array();
+		else $rules = array( 
     			'image_banner' => 'required'
     		);
 		$validator = Validator::make(Input::all(),$rules);
 		if ($validator->fails()){
 	    	return Redirect::to('admin/editbanner/'.$id)->withErrors($validator)->withInput();
 	    }else{
-	    	$image = explode(url().'/', Input::get('image_banner'));
-	    	$realpath = public_path($image[1]);
-	    	$newname = date('YmdHis').'.jpg';
-	    	File::move($realpath, 'images/slider/'.$newname);
-
+	    	if(Input::has('image_banner')){
+		    	$image = explode(url().'/', Input::get('image_banner'));
+		    	$realpath = public_path($image[1]);
+		    	$newname = date('YmdHis').'.jpg';
+		    	File::move($realpath, 'images/slider/'.$newname);
+			}
 	    	// update db
 	    	$banner = Banner::find($id);
-	    	$banner->image = 'images/slider/'.$newname;
+	    	if(Input::has('image_banner')) $banner->image = 'images/slider/'.$newname;
+	    	if(Input::has('url')) $banner->link = Input::get('url');
 	    	$banner->save();
 	    	Session::flash('success','Banner updated');
 	    	return Redirect::to('admin/banners');

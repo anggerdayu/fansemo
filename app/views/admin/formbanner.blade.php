@@ -172,7 +172,10 @@ $(function () {
                   @if($mode=='edit')
                   <input type="hidden" name="id" value="{{$detail->id}}">
                   @endif
+                  <p>Paste your url Here</p>
+                  <textarea name="url" class="form-control">@if($mode=='edit'){{ $detail->link }}@endif</textarea>
                   <input type="hidden" name="image_banner" id="logo">
+                  <br><br>
                   <button type="submit" name="submit" class="btn btn-default">Submit</button>
                 </form>
             

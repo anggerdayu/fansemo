@@ -169,8 +169,8 @@ class PostController extends BaseController {
                     </div><!-- imageBox -->
                     <div class="row infoBarTrend mt10 text-left">
                       <div class="leftBarTrend pull-left col-sm-7 col-xs-12">
-                        <p class="inlineB">'.Vote::where('post_id',$img->id)->where('type','like')->count().' likes</p>
-                        <p class="inlineB ml10">'.Vote::where('post_id',$img->id)->where('type','dislike')->count().' dislikes</p>
+                        <p class="inlineB totallikes">'.Vote::where('post_id',$img->id)->where('type','like')->count().' likes</p>
+                        <p class="inlineB ml10 totaldislikes">'.Vote::where('post_id',$img->id)->where('type','dislike')->count().' dislikes</p>
                         <p class="inlineB ml10">'.Comment::where('post_id',$img->id)->count().' comments</p>
                         <div class="actionRow">
                           '.$buttons.'
@@ -476,6 +476,30 @@ class PostController extends BaseController {
 	                  	<div class="row">
 	                  	'.$buttonReplyComment.'
 	                  	<div class="col-sm-12 hidden">
+	                  	<div class="col-sm-12 text-left mt10">
+                    <p>Choose comment Type :</p>
+                    <ul class="cmtType">
+                      <li>
+                        <ul class="text-center">
+                          <li><div class="comment-type attack-bg"></div></li>
+                          <li>Attack</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <ul class="text-center">
+                          <li><div class="comment-type assist-bg"></div></li>
+                          <li>Assist</li>
+                        </ul>
+                      </li>
+                      <li>
+                        <ul class="text-center">
+                          <li><div class="comment-type defense-bg"></div></li>
+                          <li>Defense</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+	                  	
                        <span class="btn btn-default fileinput-button">
                            <i class="glyphicon glyphicon-plus"></i>
                            <span>Add image...</span>
@@ -496,6 +520,7 @@ class PostController extends BaseController {
                          <input type="hidden" name="post_id" value="'.$postid.'">
                          <input type="hidden" name="comment_id" value="'.$comment->id.'">
                          <input type="hidden" name="img" id="imgurl'.$comment->id.'-'.$type.'">
+                         <input type="hidden" name="type" class="cmttype">
                          <textarea name="text" class="comment-textarea form-control mb10" rows="3"></textarea>
                        </div>
                        <span class="commentspinner" style="display:none"><center><i class="fa fa-spinner"></i><br>

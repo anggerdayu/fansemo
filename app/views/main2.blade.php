@@ -51,8 +51,10 @@ $('.bxslider2').bxSlider({
               <?php $i = 0; ?>
               @foreach($banners as $banner)
               <div class="item @if(empty($i)) active @endif">
+                @if(!empty($banner->link)) <a href="{{$banner->link}}"> @else <a href="#"> @endif
                 <img src="{{asset($banner->image)}}" alt="slider{{$i}}">
                 <div class="carousel-caption"></div>
+                </a>
               </div>
               <?php $i++; ?>
               @endforeach
