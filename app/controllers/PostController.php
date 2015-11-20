@@ -179,8 +179,8 @@ class PostController extends BaseController {
                       </div><!-- leftBarTrend -->
                       <div class="rightBarTrend pull-right col-sm-5 col-xs-12">
                         <p><img src="'.asset('images/icon_attack.jpg').'" alt="icon_attack"><span class="clrGrey"> Attack: </span><span> '.$attack.' </span> points</p>
-                        <p><img src="'.asset('images/icon_defense.jpg').'" alt="icon_defense"><span class="clrGrey"> Defense: </span><span> '.$assist.' </span> points</p>
-                        <p><img src="'.asset('images/icon_assist.jpg').'" alt="icon_assist"><span class="clrGrey"> Assist: </span><span> '.$defense.' </span> points</p>
+                        <p><img src="'.asset('images/icon_defense.jpg').'" alt="icon_defense"><span class="clrGrey"> Defense: </span><span> '.$defense.' </span> points</p>
+                        <p><img src="'.asset('images/icon_assist.jpg').'" alt="icon_assist"><span class="clrGrey"> Assist: </span><span> '.$assist.' </span> points</p>
                       </div><!-- rightBarTrend -->
                     </div><!-- infoBarTrend -->
                   </div>';
