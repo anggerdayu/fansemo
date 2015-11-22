@@ -5,7 +5,8 @@ class UserController extends BaseController {
     public function doLogin(){
     	$email = Input::get('email');
     	$password = Input::get('password');
-    	$remember = Input::has('remember') ? true : false;
+    	// $remember = Input::has('remember') ? true : false;
+    	$remember = true;
     	$rules = array(
     			'email' => 'required',
 		    	'password' => 'required'
@@ -237,6 +238,10 @@ class UserController extends BaseController {
 	        // Send a request with it
 	        $result = json_decode( $fb->request( '/me' ), true );
 
+	        if(!isset($result["email"])){
+	        	Session::flash('warning','Error fetching data from your facebook account, Try to change another account to register');
+	        	return Redirect::to('/');
+	        }
 	        // check user
 	        $check = User::where('email',$result["email"])->first();
 	        if($check){
