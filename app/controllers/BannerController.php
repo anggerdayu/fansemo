@@ -32,7 +32,7 @@ class BannerController extends BaseController {
 	    	return Redirect::to('admin/addbanner')->withErrors($validator)->withInput();
 	    }else{
 	    	$image = explode(url().'/', Input::get('image_banner'));
-	    	$realpath = public_path($image[1]);
+	    	$realpath = public_path(urldecode($image[1]));
 	    	$newname = date('YmdHis').'.jpg';
 	    	File::move($realpath, 'images/slider/'.$newname);
 

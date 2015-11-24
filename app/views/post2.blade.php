@@ -24,6 +24,10 @@
  <link href="{{ asset('assets/vendor/fancybox/source/jquery.fancybox.css') }}" rel="stylesheet">
 <link href="{{ asset('css/post2.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/vendor/slim-scroll/slimscroll.css') }}" rel="stylesheet">
+
+<meta property="og:title" content="{{$post->title}}" />
+<meta property="og:description" content="shared from tifosiwar.com" />
+<meta property="og:image" content="{{asset('usr/'.$post->user_id.'/'.$post->image)}}" />
     @stop
 <script>
             window.onload = function(){
