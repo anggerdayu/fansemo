@@ -45,7 +45,7 @@ Route::group(array('before' => 'lang'), function()
     Route::get('imgpost/{uid}/{src}',function($uid,$src) {
         $cacheImage = Image::cache(function($image) use ($uid,$src){
             $image->make(asset("/usr/$uid/".$src))->fit(370,370);
-        },9000,true);
+        },9000,false);
         
         return Response::make($cacheImage,200,array('Content-type'=>'image/jpeg'));
     });
@@ -53,7 +53,7 @@ Route::group(array('before' => 'lang'), function()
     Route::get('imgpost/landscape/{uid}/{src}',function($uid,$src) {
         $cacheImage = Image::cache(function($image) use ($uid,$src){
             $image->make(asset("/usr/$uid/".$src))->fit(600,266);
-        },9000,true);
+        },9000,false);
         
         return Response::make($cacheImage,200,array('Content-type'=>'image/jpeg'));
     });
