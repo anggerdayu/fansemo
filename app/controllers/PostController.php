@@ -457,10 +457,12 @@ class PostController extends BaseController {
               else $pp = '<a href="'.url('profile/'.$comment->user->username).'"><img src="'.asset('images/user.jpg').'"></a>';
 
             $delcomment = '';
-            if(Auth::id() && Auth::user()->status == 'management'){
-                $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
-            }else if(Auth::id() == $comment->user_id){
-                $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
+            if(Auth::user()){
+                if(!empty(Auth::user()->status) && Auth::user()->status == 'management'){
+                	$delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
+            	}else if(Auth::id() == $comment->user_id){
+                	$delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$comment->id.'"><i class="fa fa-close"></i></a></div>';
+            	}
             }
 
             if(empty($comment->deleted_at)){
@@ -604,11 +606,13 @@ class PostController extends BaseController {
 	                      else $commentImage = '';
 
 	                      $delcomment = '';
-			                if(Auth::id() && Auth::user()->status == 'management'){
-			                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
-			                }else if(Auth::id() == $cmt->user_id){
-			                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
-			                }
+			              	if(Auth::user()){
+	                      		if(!empty(Auth::user()->status) && Auth::user()->status == 'management'){
+				                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
+				                }else if(Auth::id() == $cmt->user_id){
+				                    $delcomment = '<div class="pull-right"><a class="btn btn-default delcomment" data-id="'.$cmt->id.'"><i class="fa fa-close"></i></a></div>';
+				                }
+			            	}
 
 			               if(!empty($cmt->deleted_at)){
 			               		$content = 'This comment has been deleted by user';

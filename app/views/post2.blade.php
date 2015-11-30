@@ -69,17 +69,22 @@
                    
                     <h3 class="text-left mtm0">{{$post->title}}</h3>
 
-                    @if(Auth::user() && Auth::user()->status == 'management')
-                      @if($isfeatured)
-                      <a href="{{url('unsetfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Remove from Featured Post">Remove from Featured Post</a>
-                      @else
-                      <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Set as Featured Post">Set as Featured Post</a>
+                    @if(Auth::user())
+                      @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
+                        @if($isfeatured)
+                        <a href="{{url('unsetfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Remove from Featured Post">Remove from Featured Post</a>
+                        @else
+                        <a href="{{url('setfeaturedpost/'.$post->id)}}" class="btn btn-warning" title="Set as Featured Post">Set as Featured Post</a>
+                        @endif
                       @endif
                     @endif
-                    @if(Auth::user() && Auth::user()->status == 'management')
+
+                    @if(Auth::user())
+                      @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
                     <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-danger" title="delete post">Delete Post</a>
-                    @elseif(Auth::id() == $post->user_id)
+                      @elseif(Auth::id() == $post->user_id)
                     <a href="{{url('deletepost/'.$post->id)}}" onclick="return confirm('Are you sure want to delete this post?')" class="btn btn-danger" title="delete post"><i class="fa fa-trash-o"></i></a>
+                      @endif
                     @endif
 
                     <a class="btn btn-primary shareFb" href="https://www.facebook.com/sharer/sharer.php?u={{Request::fullUrl()}}" target="_blank" title="Share on facebook"><span>Share &nbsp; </span><i class="fa fa-facebook"></i></a>
@@ -246,10 +251,12 @@
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
-                          @if(Auth::id() && Auth::user()->status == 'management')
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $comment->user_id)
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @if(Auth::user())
+                            @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                            @elseif(Auth::id() == $comment->user_id)
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                            @endif
                           @endif
 
                           @if(!empty($comment->image))
@@ -348,11 +355,13 @@
                     </div>
                     <div class="col-sm-9">
                       @if(empty($cmt->deleted_at))
-                      @if(Auth::id() && Auth::user()->status == 'management')
+                        @if(Auth::user())
+                          @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @elseif(Auth::id() == $cmt->user_id)
                           <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
                           @endif
+                        @endif
                       <p><b><a href="{{url('profile/'.$cmt->user->username)}}">{{$cmt->user->username}}</a> commented :</b>
                         <br>
                         <img src="{{asset('images/icon_'.$cmt->type.'.jpg')}}" width="10"> {{ucfirst($cmt->type)}}&nbsp;&nbsp;
@@ -413,10 +422,12 @@
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
-                          @if(Auth::id() && Auth::user()->status == 'management'){
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $comment->user_id)
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @if(Auth::user())
+                            @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                            @elseif(Auth::id() == $comment->user_id)
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                            @endif
                           @endif
 
                           @if(!empty($comment->image))
@@ -491,10 +502,12 @@
                     </div>
                     <div class="col-sm-9">
                       @if(empty($cmt->deleted_at))
-                          @if(Auth::id() && Auth::user()->status == 'management'){
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $cmt->user_id)
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @if(Auth::user())
+                            @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                            @elseif(Auth::id() == $cmt->user_id)
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                            @endif
                           @endif
                       <p><b><a href="{{url('profile/'.$cmt->user->username)}}">{{$cmt->user->username}}</a> commented :</b>
                         <br>
@@ -557,10 +570,12 @@
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
-                          @if(Auth::id() && Auth::user()->status == 'management'){
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $comment->user_id)
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @if(Auth::user())
+                            @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                            @elseif(Auth::id() == $comment->user_id)
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                            @endif
                           @endif
 
                           @if(!empty($comment->image))
@@ -635,10 +650,12 @@
                     </div>
                     <div class="col-sm-9">
                       @if(empty($cmt->deleted_at))
-                          @if(Auth::id() && Auth::user()->status == 'management'){
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $cmt->user_id)
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @if(Auth::user())
+                            @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                            @elseif(Auth::id() == $cmt->user_id)
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                            @endif
                           @endif
                           <p><b><a href="{{url('profile/'.$cmt->user->username)}}">{{$cmt->user->username}}</a> commented :</b>
                             <br>
@@ -700,10 +717,12 @@
                           
                           <br><font color="#888">{{CommentVote::where('type','like')->where('comment_id',$comment->id)->count()}} likes, {{CommentVote::where('type','dislike')->where('comment_id',$comment->id)->count()}} dislikes</font> , <small class="text-muted">posted at {{date('d F Y,H:i',strtotime($comment->created_at))}}</small>
 
-                          @if(Auth::id() && Auth::user()->status == 'management'){
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $comment->user_id)
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                          @if(Auth::user())
+                            @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                            @elseif(Auth::id() == $comment->user_id)
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$comment->id}}"><i class="fa fa-close"></i></a></div>
+                            @endif
                           @endif
 
                           @if(!empty($comment->image))
@@ -778,10 +797,12 @@
                     </div>
                     <div class="col-sm-9">
                       @if(empty($cmt->deleted_at))
-                          @if(Auth::id() && Auth::user()->status == 'management'){
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
-                          @elseif(Auth::id() == $cmt->user_id)
-                          <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                          @if(Auth::user())
+                            @if(!empty(Auth::user()->status) && Auth::user()->status == 'management')
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                            @elseif(Auth::id() == $cmt->user_id)
+                            <div class="pull-right"><a class="btn btn-default delcomment" data-id="{{$cmt->id}}"><i class="fa fa-close"></i></a></div>
+                            @endif
                           @endif
                           <p><b><a href="{{url('profile/'.$cmt->user->username)}}">{{$cmt->user->username}}</a> commented :</b>
                             <br>
