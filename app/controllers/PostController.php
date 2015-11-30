@@ -29,21 +29,23 @@ class PostController extends BaseController {
 			$extension = explode(".", $image);
 			$extension = end($extension);
 			$title = Input::get('title');
-			// intervention
-			list($width, $height) = getimagesize('files/'.$image);
-			if($width > 1000){
-				$img = Image::make('files/'.$image);
-				$img->resize(800, null, function ($constraint) {
-				    $constraint->aspectRatio();
-				});
-				$img->insert('images/watermark.png');
-				$img->save('files/'.$image);
-			}else{
-				$img = Image::make('files/'.$image);
-				$img->insert('images/watermark.png');
-				$img->save('files/'.$image);
+			
+			if($extension != 'gif'){
+				// intervention
+				list($width, $height) = getimagesize('files/'.$image);
+				if($width > 1000){
+					$img = Image::make('files/'.$image);
+					$img->resize(800, null, function ($constraint) {
+					    $constraint->aspectRatio();
+					});
+					$img->insert('images/watermark.png');
+					$img->save('files/'.$image);
+				}else{
+					$img = Image::make('files/'.$image);
+					$img->insert('images/watermark.png');
+					$img->save('files/'.$image);
+				}
 			}
-
 			// create directory
 			if(!File::exists('usr/'.$user)){
 				File::makeDirectory('usr/'.$user,0775,true);
