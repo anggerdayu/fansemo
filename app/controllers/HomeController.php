@@ -23,7 +23,7 @@ class HomeController extends BaseController {
 		$data['freshpost'] = Post::orderBy('created_at','desc')->take(5)->get();
 		$data['featuredpost'] = FeaturedPost::orderBy('id','desc')->take(10)->with('post')->get();
 		$data['trendingpost'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
-							->groupBy('posts.id')->orderBy('total','desc')->take(6)->get();
+							->groupBy('posts.id')->orderBy('total','desc')->take(6)->remember(20)->get();
 
 		return View::make('main2')->with($data);	
 	}
@@ -42,7 +42,7 @@ class HomeController extends BaseController {
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
 		}
-		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(10)->get();
+		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(10)->remember(10)->get();
 		return View::make('scrollpost')->with($data);
 	}
 
@@ -58,7 +58,7 @@ class HomeController extends BaseController {
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
 		}
-		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(10)->get();
+		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(10)->remember(10)->get();
 		return View::make('scrollpost')->with($data);	
 	}
 
