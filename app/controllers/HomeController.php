@@ -329,6 +329,19 @@ class HomeController extends BaseController {
 	    }
 	}
 
+	public function howtomeme(){
+        return View::make('landingPage.howtomeme');
+    }
+
+    public function promotion(){
+        return View::make('landingPage.promotion');
+    }
+
+    public function tebakskor2(){
+        return View::make('landingPage.tebakskor2');
+    }
+
+
 	// public function test(){
 	// 	echo File::exists('usr/1'); die();
 	// 	$test = explode('/', 'http://localhost/fansemo/public/files/test.jpg');

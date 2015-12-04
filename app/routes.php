@@ -21,6 +21,9 @@ Route::group(array('before' => 'lang'), function()
     Route::get('/fblogin', 'UserController@loginWithFacebook');
     Route::get('/gplogin', 'UserController@loginWithGoogle');
 
+    Route::get('/promotion', 'HomeController@promotion');
+    Route::get('/howtomeme', 'HomeController@howtomeme');
+
     Route::get('/fbsignup', 'UserController@registerWithFacebook');
     Route::get('/gpsignup', 'UserController@registerWithGoogle');
     Route::get('/profile/{username}', 'PostController@userpage');
