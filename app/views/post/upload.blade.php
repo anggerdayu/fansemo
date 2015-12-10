@@ -55,11 +55,11 @@ $(function () {
         // Enable image resizing, except for Android and Opera,
         // which actually support image resizing, but fail to
         // send Blob objects via XHR requests:
-        disableImageResize: /Android(?!.*Chrome)|Opera/
-            .test(window.navigator.userAgent),
-        previewMaxWidth: 100,
-        previewMaxHeight: 100,
-        previewCrop: true
+        // disableImageResize: /Android(?!.*Chrome)|Opera/
+        //     .test(window.navigator.userAgent),
+        // previewMaxWidth: 100,
+        // previewMaxHeight: 100,
+        // previewCrop: true
     }).on('fileuploadadd', function (e, data) {
         $('#files').html('');
         data.context = $('<div/>').appendTo('#files');
