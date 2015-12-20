@@ -130,8 +130,9 @@ class PostController extends BaseController {
 				break;
 
 			case 'trending':
-				$images = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
-							->groupBy('posts.id')->orderBy('total','desc');
+				$images = Post::select('posts.*')->join('trending_posts', 'posts.id', '=', 'trending_posts.post_id')->orderBy('trending_posts.id');
+				// $images = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
+				// 			->groupBy('posts.id')->orderBy('total','desc');
 				break;			
 			
 			default:
