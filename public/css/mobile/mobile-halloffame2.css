@@ -1,0 +1,152 @@
+
+
+
+/* ========================================== */
+/*          hall of fame page only                */
+/* ========================================== */
+
+.m0a10 { margin: 0 auto 10px; }
+
+
+#fieldWrapper {
+  position: relative;
+  margin: 0 auto;  
+  overflow: hidden;
+  padding-bottom: 30px;
+}
+
+.player {
+  width: 15%;
+  height: auto;
+  max-height: 20%;
+  overflow: hidden;
+  position: absolute;
+  transform: translate(-50%, -50%); 
+  -webkit-transform: translate(-50%, -50%); 
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);  
+}
+
+.playerName {
+  background-color: #000;
+  width: 100%;
+  padding: 0 3px;
+}
+.player p {
+  color: #fff;
+  font-size: 12px;  
+  overflow: hidden;
+}
+
+#player1 { top: 8%; left: 50%;}
+#player2 { top: 18%; left: 32%; }
+#player3 { top: 18%; left: 68%; }
+#player4 { top: 30%; left: 85%; }
+#player5 { top: 30%; left: 15%; }
+#player6 { top: 40%; left: 50%; }
+#player7 { top: 50%; left: 35%; }
+#player8 { top: 50%; left: 65%; }
+#player9 { top: 60%; left: 16%; }
+#player10 { top: 60%; left: 84%; }
+#player11 { top: 75%; left: 50%; }
+
+.playerListWrap { padding-left: 15px; padding-right: 15px; }
+
+.playerList { text-align: left; border-bottom: 2px solid #ccc;}
+.playerList img { width: 80px; height: auto; display: inline-block; margin-right: 5%; }
+.playerList p { display: inline-block; margin-top: 15px;}
+
+
+#weekClub { background-color: #414142; padding-top: 25px; }
+#weekClub .weekBanner { position: relative; }
+#weekClub .weekBanner:before {
+  content: " ";
+  background: url('../../images/cup_icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  top: -30%;
+  left: 10%;
+}
+#weekClub .weekBanner:after {
+  content: " ";
+  background: url('../../images/cup_icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  top: -30%;
+  right: 10%;
+}
+#weekClub .flagtitle span { margin-left: 50px;}
+
+#weekClubTeam { background-color: #be1e2d; padding-bottom: 50px; padding-top: 20px; }
+
+#weekClubTeam .imgTeam img { width: 100%; max-width: 70%; height: auto; margin: 0 auto;}
+
+#weekClubTeam .detailClub { max-width: 70%; margin: 0 auto; margin-top: 30px; }
+#weekClubTeam .detailClub h2 span img { width: 50px; height: auto; margin-top: -15px; }
+
+#weekClubTeam .borderBottom img { width: 15px; height: auto; }
+#weekClubTeam .borderBottom { padding-bottom: 5px; border-bottom: 1px solid #fff; }
+
+/* ========================================= responsive =======================================*/
+
+      @media (max-width: 480px) {
+        .player p { font-size: 9px; }
+         .rightBarTrend { margin-top: 30px; } 
+        #weekClub .container:before{ width: 40px; left: 4%; }
+        #weekClub .container:after{ width: 40px; right: 4%; }
+        #weekClub .flagtitle { width: 200px;   background-size: contain;  background-repeat: no-repeat; }
+        #weekClub .flagtitle span { font-size: 14px; margin-left: 40px;}
+/*
+        #weekClubTeam .imgTeam { float: none; margin: 0 auto 25px; }
+        #weekClubTeam .rightColumn { float: none; margin: 0 auto; }
+*/
+      }
+
+      @media (max-width: 420px) {
+        #weekClub .flagtitle { width: 180px; }
+        #weekClub .flagtitle span { margin-top: 5px;}
+
+        #weekClub .weekBanner:before {
+          width: 35px;
+          top: -5%;
+          left: 4%;
+        }
+        #weekClub .weekBanner:after {
+          width: 35px;
+          top: -5%;
+          right: 4%;
+        }
+
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ========================================= content web =======================================*/
+
+/* ========================================= footer Block =======================================*/
+
+
+
+/* ========================================== */
+/*              extend bootstrap              */
+/* ========================================== */
+

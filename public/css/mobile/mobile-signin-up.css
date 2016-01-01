@@ -1,0 +1,39 @@
+
+
+
+/* ========================================== */
+/*          sign in & sign up page only       */
+/* ========================================== */
+.form-horizontal h2 img { max-width: 250px; }
+
+.modalTitleBorder{ padding: 10px 0; border-top: 2px solid #a9abad; border-bottom: 2px solid #a9abad; }
+
+.g-recaptcha>div>div { 
+	margin: 0 auto; 
+}
+
+/* ========================================= responsive =======================================*/
+
+      @media (max-width: 920px) and (min-width: 768px) {
+ 
+       }
+
+      @media (max-width: 767px) {
+
+      }
+
+      @media (max-width: 920px) {
+ 
+      }
+
+
+/* ========================================= content web =======================================*/
+
+/* ========================================= footer Block =======================================*/
+
+
+
+/* ========================================== */
+/*              extend bootstrap              */
+/* ========================================== */
+

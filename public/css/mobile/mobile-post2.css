@@ -1,0 +1,204 @@
+
+
+
+/* ========================================== */
+/*          detail post/comment page only                */
+/* ========================================== */
+.rowTop p, .rowTop a { font-size: 16px; font-weight: bold; }
+
+.postWrapper { border-bottom: none; }
+.postWrapper .titlePost { margin-left: 0; }
+
+.actionNavMenu ul { margin: 0; padding: 0; border-bottom: 1px solid #ccc; }
+.actionNavMenu ul li  { list-style: none; float: left; padding-left: 6%; }
+.actionNavMenu ul li:first-child { padding-left: 0; }
+.actionNavMenu ul li a { font-size: 15px; font-weight: bold; }
+.actionNavMenu ul li a:hover { border-bottom: 3px solid #be1e2d; }
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+  border: none;
+  border-bottom: 3px solid #be1e2d;
+}
+
+.nav>li>a { padding: 0; }
+
+.nav-tabs>li>a:hover { border: none; }
+.nav>li>a:focus, .nav>li>a:hover{ background-color: transparent; }
+
+.actionNavMenu ul li a span img { width: 15px; height: auto; margin-top: -3px; display: none; }
+
+.leftCol { width: 50px; height: auto; float: left; padding: 10px 0; padding-left: 0;}
+.leftCol img { width: 100%; height: auto; max-height: 150px; }
+.myPostWrap .rightCol { padding: 10px 0; border: 1px solid #ccc; margin-top: 10px; margin-left: 60px;}
+
+.rightCol .delcomment { font-size: 16px; color: #000; }
+.rightCol .formPost { position: relative; }
+
+.rightCol .fileinput-button {
+    position: absolute;
+    right: 0;
+    top: -10px;
+    overflow: hidden;
+    padding: 3px 5px 0px 6px;   
+    border-radius: 0; 
+    -webkit-border-radius: 0; 
+    -moz-border-radius: 0; 
+    -o-border-radius: 0; 
+}
+.rightCol .fileinput-button input.fileToUpload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.myPostWrap .rightCol textarea, 
+.otherPostWrap .rightCol.formReply textarea { 
+  border: none; 
+  box-shadow: none; 
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none; 
+  -o-box-shadow: none; 
+  background-color: transparent; 
+  padding: 0 10px;
+}
+
+.myPostWrap .rightCol hr, 
+.otherPostWrap .rightCol.formReply hr { 
+  margin: 5px 0; 
+}
+
+.myPostWrap .rightCol .submitBtn, 
+.otherPostWrap .rightCol.formReply .submitBtn { 
+  padding: 3px 12px;
+  margin-top: 10px; 
+  font-weight: bold; 
+  border-radius: 0; 
+  -webkit-border-radius: 0; 
+  -moz-border-radius: 0; 
+  -o-border-radius: 0; 
+  margin-right: 3px;
+}
+
+.myPostWrap .rightCol .comentType,
+.otherPostWrap .rightCol.formReply .comentType { 
+  margin: 0; 
+  padding: 0; 
+}
+
+.myPostWrap .rightCol .comentType li,
+.otherPostWrap .rightCol.formReply .comentType li { 
+  list-style: none; 
+  float: left; 
+  padding-left: 20%; 
+}
+
+.myPostWrap .rightCol .comentType .comment-type-box,
+.otherPostWrap .rightCol.formReply .comentType .comment-type-box { 
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+}
+
+.attack-bg {
+  background: url('../../images/icon_attack_grey.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.defense-bg {
+  background: url('../../images/icon_defense_grey.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.assist-bg {
+  background: url('../../images/icon_assist_grey.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.attack-bg-hover {
+  background: url('../../images/icon_attack_red.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.defense-bg-hover {
+  background: url('../../images/icon_defense_red.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.assist-bg-hover {
+  background: url('../../images/icon_assist_red.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+
+.myPostWrap .rightCol .comentType li:first-child,
+.otherPostWrap .rightCol.formReply .comentType li:first-child{ 
+  padding-left: 0; 
+}
+
+.myPostWrap .rightCol .comentType li a img,
+.otherPostWrap .rightCol.formReply .comentType li a img { 
+  width: 15px; 
+  height: auto; 
+}
+
+.otherPostWrap .rightCol { padding: 10px 0; text-align: left; margin-left: 60px; }
+.otherPostWrap .rightCol .userName { font-weight: bold; }
+.otherPostWrap .rightCol .actionType img { width: 15px; height: auto; }
+
+.otherPostWrap .replyThis { margin-left: 20px; }
+.leftCol.replys { width: 30px; }
+.rightCol.replys { margin-left: 40px; }
+
+.loadMore { color:#09f; ; font-weight: bold; }
+.replyToWho { color:#09f; }
+
+.otherPostWrap .rightCol.formReply { padding: 10px 0; border: 1px solid #ccc; margin-top: 10px; }
+.otherPostWrap  .leftCol.formProfpict { padding-top: 0; }
+.otherPostWrap p.imgWrapReply { max-width: 90%;  max-height: 200px;  overflow: hidden; }
+
+
+
+/* ========================================= responsive =======================================*/
+
+      @media (max-width: 920px) and (min-width: 768px) {
+ 
+      }
+
+      @media (max-width: 767px) {
+
+      }
+
+      @media (max-width: 920px) {
+ 
+      }
+
+
+/* ========================================= content web =======================================*/
+
+/* ========================================= footer Block =======================================*/
+
+
+
+/* ========================================== */
+/*              extend bootstrap              */
+/* ========================================== */
+

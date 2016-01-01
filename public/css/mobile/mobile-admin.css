@@ -1,0 +1,98 @@
+
+
+
+/* ========================================== */
+/*         		 admin page only		      */
+/* ========================================== */
+.maxW300 { max-width: 300px; }
+.select2-container { width: 100% !important; }
+
+.mobileScreen { display: none; }
+.largeScreen { display: block; }
+
+.mobileScreenMenu { 
+	text-align: left; 
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 8px 15px 8px;
+    margin: 0 15px;	
+    background-image: url('../../images/submenu0.png');
+    background-repeat: no-repeat;
+    background-position: 95% 50%;
+}
+.mobileScreenMenuList { 
+	margin: 0; 
+	padding: 0; 
+	padding: 8px 5px 8px; 
+	margin: 0 15px; 
+	display: none; 
+	border: 1px solid #ddd; 
+	border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: none;
+}
+.mobileScreenMenuList li { list-style: none; text-align: left; margin-bottom: 10px;}
+.mobileScreenMenuList li a { padding: 5px 10px; display: block; }
+
+.setBorder {
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;	
+}
+.admArea {
+	border-bottom: 2px solid #666;
+	font-weight: bold;
+}
+/* ========================================= responsive =======================================*/
+
+      @media (max-width: 920px) and (min-width: 768px) {
+ 
+       }
+
+      @media (max-width: 767px) {
+		.mobileScreen { display: block; }
+		.largeScreen { display: none; }
+
+
+
+      }
+
+      @media (max-width: 920px) {
+ 
+      }
+
+
+/* ========================================= content web =======================================*/
+.listBlockTeam { 
+	display: block; 
+	float: none; 
+    padding: 5px 10px;
+	box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.3);
+    -O-box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.3);
+    -ms-box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.3);
+}
+.imageBoxWrap { 
+	width: 70%; 
+	height: auto; 
+	max-height: 200px;
+	margin: 0 auto 15px; 
+	overflow: hidden;
+}
+.btn-action {
+	display: block;
+    width: 50%;
+    float: left;
+    text-align: center;	
+}
+
+/* ========================================= footer Block =======================================*/
+
+
+
+/* ========================================== */
+/*              extend bootstrap              */
+/* ========================================== */
+
