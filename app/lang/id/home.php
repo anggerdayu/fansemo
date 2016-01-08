@@ -2,7 +2,7 @@
 
 return array(
 	'otherflag' => 'EN',
-	'toptitle' => 'Tifosiwar.com - indonesia',
+	'toptitle' => 'Tifosiwar | meme bola',
 	'topbarsignin' => 'Masuk',
 	'topbarsignup' => 'Daftar',
 	'topbarupload' => 'Unggah',

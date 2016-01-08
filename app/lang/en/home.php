@@ -2,7 +2,7 @@
 
 return array(
 	'otherflag' => 'ID',
-	'toptitle' => 'Tifosiwar.com - english',
+	'toptitle' => 'Tifosiwar | meme bola',
 	'topbarsignin' => 'Sign In',
 	'topbarsignup' => 'Sign Up',
 	'topbarupload' => 'Upload',
