@@ -22,8 +22,9 @@ class HomeController extends BaseController {
 		$data['banners'] = Banner::orderBy('id')->get();
 		$data['freshpost'] = Post::orderBy('created_at','desc')->take(5)->get();
 		$data['featuredpost'] = FeaturedPost::orderBy('id','desc')->take(10)->with('post')->get();
-		$data['trendingpost'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
-							->groupBy('posts.id')->orderBy('total','desc')->take(6)->remember(20)->get();
+		$data['trendingpost'] = Post::select('posts.*')->join('trending_posts', 'posts.id', '=', 'trending_posts.post_id')->orderBy('trending_posts.id')->take(6)->remember(20)->get();
+		//$data['trendingpost'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
+							// ->groupBy('posts.id')->orderBy('total','desc')->take(6)->remember(20)->get();
 
 		return View::make('main2')->with($data);	
 	}
