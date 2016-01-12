@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="meme bola, meme sepakbola, meme soccer">
-    <meta name="keywords" content="meme bola, meme sepakbola, meme soccer">
+    <meta name="keywords" content="meme bola, meme sepakbola, meme soccer, berita sepakbola, sepakbola lucu">
     <meta name="author" content="meme bola">
     <link rel="icon" href="favicon.ico">
     

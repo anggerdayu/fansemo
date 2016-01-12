@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="meme bola, meme sepakbola, meme soccer">
+    <meta name="keywords" content="meme bola, meme sepakbola, meme soccer, berita sepakbola, sepakbola lucu">
+    <meta name="author" content="meme bola">
     <link rel="icon" href="favicon.ico">
 
 <script type="text/javascript">
