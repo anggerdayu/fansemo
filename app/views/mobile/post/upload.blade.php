@@ -147,9 +147,8 @@ $(function () {
            {    
                 if(data.status=='success'){
                     //new add event
-                    $('.alertPost').removeClass('hide');
-                    // $('#submit').addClass('disabled');
-                    // location.reload();
+                     window.location.href= '{{url("post")}}/'+data.slug;
+                    // $('.alertPost').removeClass('hide');
                 }else{
                     $('#alert').html(data);
                 }
