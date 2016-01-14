@@ -61,10 +61,14 @@ class HomeControllerMobile extends BaseController {
 	}
 
 	public function trending(){
+		// crawl posts
+		$this->crawlPosts();
+
 		$data['page'] = 'trending';
 		$data['pagetype'] = 'trending';
-		$data['images'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
-							->groupBy('posts.id')->orderBy('total','desc');
+		// $data['images'] = Post::select('posts.*',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
+		// 					->groupBy('posts.id')->orderBy('total','desc');
+		$data['images'] = Post::select('posts.*')->join('trending_posts', 'posts.id', '=', 'trending_posts.post_id')->orderBy('trending_posts.id');
 		if(Auth::user()){
 			$data['images'] = $data['images']->with(array('votes' => function($query){
 														$query->where('user_id', Auth::id());
@@ -72,8 +76,41 @@ class HomeControllerMobile extends BaseController {
 		}else{
 			$data['images'] = $data['images']->take(12)->get();
 		}
-		$data['others'] = Post::orderBy(DB::raw('RAND()'))->take(10)->get();
 		return View::make('mobile.scrollpost')->with($data);	
+	}
+
+
+	public function crawlPosts(){
+		// get last post
+		$lastpost = TrendingPost::orderBy('created_at')->take(1)->first(); 
+		$crawl = false;
+		if($lastpost){
+			// check if created_at == today no crawl
+			$datetime = explode(' ',$lastpost->created_at);
+			$date = $datetime[0];
+			$currentdate = date('Y-m-d');
+			if($date != $currentdate) $crawl = true;
+		}else{
+			// crawl today's posts
+			$crawl = true;
+		}
+
+		if($crawl){
+			$yesterday = date('Y-m-d',strtotime("-1 days"));
+			$yesterdayTrending = Post::select('posts.id',DB::raw('count(votes.id) as total'))->leftJoin('votes', 'posts.id', '=', 'votes.post_id')
+							->where('posts.created_at','like',$yesterday.'%')->groupBy('posts.id')->orderBy('total','desc')->get();
+			if(!empty($yesterdayTrending[0])){
+
+				foreach ($yesterdayTrending as $key => $value) {
+					//checking avoid double post
+					$check = TrendingPost::where('post_id',$value->id)->first();
+					if(empty($check))
+						$insert[] = array('post_id'=>$value->id, 'total_votes'=>$value->total);
+				}
+				if(!empty($insert))
+					TrendingPost::insert($insert);
+			}
+		}
 	}
 
 	public function post()
