@@ -87,17 +87,17 @@ class UserControllerMobile extends BaseController {
 		    return Redirect::to('signup')->withInput(Input::all())->withErrors($validator);
 		}else{
             $captcha= Input::get('g-recaptcha-response');
-            if(!$captcha)
+            if(!$captcha){
                 Session::flash('alert_captcha','Please check the the captcha form');
                 return Redirect::to('signup');
-
+            }
             $captchaResponse =file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=6LfoDA8TAAAAALdH7bSRKE0ve2ORX57YzwTVoWZT&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
             $captchaResponse = json_decode($captchaResponse, true);
 
-            if($captchaResponse['success']==false)
+            if($captchaResponse['success']==false){
                 Session::flash('alert_captcha',"Sorry, you are a spammer. We can't let you in");
                 return Redirect::to('signup');
-
+            }
 			$password = Input::get('password');
 			$email = Input::get('email');
 			$username = Input::get('username');
