@@ -201,7 +201,7 @@ class UserControllerMobile extends BaseController {
 	        // This was a callback request from facebook, get the token
 	        $token = $fb->requestAccessToken( $code );
 	        // Send a request with it
-	        $result = json_decode( $fb->request( '/me' ), true );
+	        $result = json_decode( $fb->request( '/me?fields=email' ), true );
 	        if(!isset($result["email"])){
                 Session::flash('warning','Your facebook account doesn\'t have a valid email, Try to change another account to register');
                 return Redirect::to('/');
@@ -281,7 +281,7 @@ class UserControllerMobile extends BaseController {
 	        // This was a callback request from facebook, get the token
 	        $token = $fb->requestAccessToken( $code );
 	        // Send a request with it
-	        $result = json_decode( $fb->request( '/me' ), true );
+	        $result = json_decode( $fb->request( '/me?fields=email' ), true );
 	        if(!isset($result["email"])){
                 Session::flash('warning','Your facebook account doesn\'t have a valid email, Try to change another account to register');
                 return Redirect::to('/');
