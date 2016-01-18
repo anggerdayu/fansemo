@@ -68,8 +68,12 @@ class UserControllerMobile extends BaseController {
 		}
     }
 
-    public function signup(){
-        $data['page'] = 'signup';
+    public function signup($param=null){
+    	if(empty($param)){
+	        $data['page'] = 'signup';
+    	}else{
+    		$data['page'] = 'regSosmed';
+    	}
         return View::make('mobile.signup')->with($data);
     }
 
@@ -213,9 +217,9 @@ class UserControllerMobile extends BaseController {
 	        	Session::flash('warning','This user was already registered');
 	        	return Redirect::to('/');
 	        }else{
-	        	Session::flash('regSosmed','true');
-	        	Session::flash('regemail', $result['email']);
-	        	return Redirect::to('/');
+	        	// Session::flash('regSosmed','true');
+	        	Session::put('regemail', $result['email']);
+	        	return Redirect::to('signup/insert-username');
 	        }
 
 	        // $message = 'Your unique facebook user id is: ' . $result['id'] . ' and your name is ' . $result['name'];
@@ -256,8 +260,8 @@ class UserControllerMobile extends BaseController {
 	        	return Redirect::to('/');
 	        }else{
 	        	Session::flash('regSosmed','true');
-	        	Session::flash('regemail', $result['email']);
-	        	return Redirect::to('/');
+	        	Session::put('regemail', $result['email']);
+	        	return Redirect::to('signup/insert-username');
 	        }
 	    }
 	    // if not ask for permission first
@@ -346,9 +350,15 @@ class UserControllerMobile extends BaseController {
 	public function regSosmed(){
 		$username = Input::get('username');
 		$email = Input::get('email');
-		if(empty($username)) return 'Username is required';
+		if(empty($username)){
+			Session::flash('warning','Username is required');
+			return Redirect::to('signup/insert-username');
+		}
 		$checkuser = User::where('username',$username)->first();
-		if(!empty($checkuser)) return 'Username was already exist, please change another username';
+		if(!empty($checkuser)){
+			Session::flash('warning','Username was already exist, please change another username');
+			return Redirect::to('signup/insert-username');
+		} 
 
 		// insert user
 		$user = new User;
@@ -357,8 +367,12 @@ class UserControllerMobile extends BaseController {
 		$user->status = 'member';
         $user->verified = 1;
 		$user->save();
+		
+		//remove session regemail
+		Session::forget('regemail');
+
 		Session::flash('warning','Congratulations, your username is registered');
-		return 'success';
+		return Redirect::to('/');
 	}
 
     public function forgotpass(){

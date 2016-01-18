@@ -143,7 +143,8 @@ Route::group(array('domain' => 'm.tifosiwar.com'), function()
         Route::post('/commentlike','VoteControllerMobile@likeCommentPost');
         Route::post('/commentdislike','VoteControllerMobile@dislikeCommentPost');
         Route::post('/getnextcomments','PostControllerMobile@ajaxloadcomment');
-        
+        Route::post('/RegSosmed','UserControllerMobile@regSosmed');
+
         // Direct Sign / Singup page & Do Login / Signup
         Route::get('/signin',function(){
             //add to session url prev
@@ -153,7 +154,7 @@ Route::group(array('domain' => 'm.tifosiwar.com'), function()
             return View::make('mobile.signin', $data);
         });
 
-        Route::get('/signup', 'UserControllerMobile@signup');
+        Route::get('/signup/{param?}', 'UserControllerMobile@signup');
         Route::post('/register', 'UserControllerMobile@register');
         Route::post('/login', 'UserControllerMobile@doLogin');
         Route::get('/logout', 'UserControllerMobile@doLogout');

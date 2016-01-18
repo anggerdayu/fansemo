@@ -14,7 +14,7 @@
     <div class="row mb50">
     <div class="col-md-12">
       
-
+    @if($page=='signup')
     <form class="form-horizontal" method="post" action="{{url('register')}}">
       <fieldset>
 
@@ -74,7 +74,33 @@
       </fieldset>
     </form>
     <p class="text-center"><b>Already a member ? <a href="{{ url('signin') }}" class="su-signin clr-red">Sign in.</a></b></p>
+    @endif
 
+    @if($page=='regSosmed')
+      <form class="form-horizontal" method="post" action="{{url('RegSosmed')}}">
+      <fieldset>
+
+        <h2 class="text-center"><img src="{{asset('images/newlogo.png')}}" width="177" title="tifosiwar" alt="tifosiwar"></h2>
+        <h4 class="modalTitleBorder"><b>Join us to become a <span class="clr-red">fans club member</span></b></h4>
+
+          <p class="mt30">Please input your username for this website</p>
+
+          <!-- Text Username-->
+          <div class="form-group pl15 pr15">
+            <input type="hidden" name="email" value="{{Session::get('regemail')}}">
+            <label for="Username">USERNAME :</label>  
+            <input id="Username" name="username" type="text" placeholder="Username"  class="form-control input-md">
+          </div>
+          <p class="text-danger regSocialError">{{Session::get('warning')}}</p>
+          <!-- Button -->
+          <div class="form-group">
+            <label for="submit"></label>
+            <button id="submit" name="submit" class="btn btn-default">Submit</button>
+          </div>
+         
+      </fieldset>
+    </form>
+    @endif
     </div><!-- col-md-12 -->
     </div><!-- row -->
   </div><!-- /.container -->
