@@ -10,7 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-Route::group(array('domain' => 'tifosiwar.com'), function()
+Route::group(array('domain' => 'www.tifosiwar.com'), function()
 { 
     Route::group(array('before' => 'lang'), function()
     {
