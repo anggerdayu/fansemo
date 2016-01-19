@@ -105,3 +105,9 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+Route::filter('cekUserAgent', function() {
+	if (Agent::isMobile()) {
+		return Redirect::to('http://m.tifosiwar.com');
+	}
+});
