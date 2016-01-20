@@ -132,7 +132,7 @@ class PostControllerMobile extends BaseController {
 	}
 
 	public function ajaxGetNextPage($type,$page){
-		$skip = $page * 12;
+		$skip = $page * 7;
 		switch ($type) {
 			case 'fresh':
 				$images = Post::orderBy('created_at','desc');
@@ -159,7 +159,7 @@ class PostControllerMobile extends BaseController {
 														$query->where('user_id', Auth::id());
     												}));
 		}
-		$images = $images->skip($skip)->take(12)->get();
+		$images = $images->skip($skip)->take(7)->get();
 		$result = '';
 		if($images->count() > 0){
 			foreach ($images as $img) {
@@ -222,14 +222,9 @@ class PostControllerMobile extends BaseController {
 	}
 
     public function ajaxGetNextPageFeatured($type,$page){
-        $skip = $page * 12;
+        $skip = $page * 7;
         $images = FeaturedPost::orderBy('id','desc');
-        // if(Auth::user()){ 
-        //     $images = $images->with(array('votes' => function($query){
-        //                                                 $query->where('user_id', Auth::id());
-        //                                             }));
-        // }
-        $images = $images->skip($skip)->take(12)->with('post')->get();
+        $images = $images->skip($skip)->take(7)->with('post')->get();
         
         $result = '';
         if($images->count() > 0){
@@ -239,13 +234,24 @@ class PostControllerMobile extends BaseController {
                 $defense = Comment::where('post_id',$img->post->id)->where('type','defense')->count();
 
                 if(Auth::user()){
-                    $like = Vote::where('post_id',$featuredpost->post->id)->where('user_id', Auth::user()->id)->where('type','like')->count();
-                    $dislike = Vote::where('post_id',$featuredpost->post->id)->where('user_id', Auth::user()->id)->where('type','dislike')->count();
-                    if(!empty($like)) $like = "like actv"; else "like";
+                  if(Auth::user()->status == 'management'){
+                    $check_type = Vote::where('post_id',$img->post->id)->where('user_id', Auth::user()->id)->orderBy('id','DESC')->first();
+                    if($check->type == 'like'){
+                      $like = "like actv";
+                      $dislike = "dislike";
+                    }else{
+                      $like = "like";
+                      $dislike = "dislike actv";
+                    }
+                  }else{
+                    $like = Vote::where('post_id',$img->post->id)->where('user_id', Auth::user()->id)->where('type','like')->count();
+                    $dislike = Vote::where('post_id',$img->post->id)->where('user_id', Auth::user()->id)->where('type','dislike')->count();
+                    if(!empty($like)) $like = "like actv"; else $like = "like";
                     if(!empty($dislike)) $dislike = "dislike actv"; else $dislike = "dislike"; 
+                  }
                     $btn_like_dislike ='
-                      <li><a href="javascript:void(0)" class="$like" data-id="'.$img->id.'"><i class="fa fa-thumbs-up"></i></a></li>
-                      <li><a href="javascript:void(0)" class="$dislike" data-id="'.$img->id.'"><i class="fa fa-thumbs-down"></i></a></li>';
+                      <li><a href="javascript:void(0)" class="'.$like.'" data-id="'.$img->id.'"><i class="fa fa-thumbs-up"></i></a></li>
+                      <li><a href="javascript:void(0)" class="'.$dislike.'" data-id="'.$img->id.'"><i class="fa fa-thumbs-down"></i></a></li>';
                 }else{
                     $btn_like_dislike='
                       <li><a href="'.url('signin').'"><i class="fa fa-thumbs-up"></i></a></li>

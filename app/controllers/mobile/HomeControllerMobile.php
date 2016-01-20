@@ -33,14 +33,8 @@ class HomeControllerMobile extends BaseController {
         $data['page'] = 'featured';
         $data['pagetype'] = 'featured';
         $data['images'] = FeaturedPost::orderBy('id','desc');
-        if(Auth::user()){
-            // $data['images'] = $data['images']->with(array('votes'=> function($query){
-            //                                         $query->where('user_id',Auth::id());
-            //                                         }))->take(12)->get();
-            $data['images'] = $data['images']->take(12)->with('post')->get();
-        }else{
-            $data['images'] = $data['images']->take(12)->with('post')->get();
-        }
+        $data['images'] = $data['images']->take(7)->with('post')->get();
+
         return View::make('mobile.scrollpost_featured')->with($data);
     }
 
@@ -53,9 +47,9 @@ class HomeControllerMobile extends BaseController {
 		if(Auth::user()){
 			$data['images'] = $data['images']->with(array('votes' => function($query){
 														$query->where('user_id', Auth::id());
-    												}))->take(12)->get();
+    												}))->take(7)->get();
 		}else{
-			$data['images'] = $data['images']->take(12)->get();
+			$data['images'] = $data['images']->take(7)->get();
 		}
 		return View::make('mobile.scrollpost')->with($data);
 	}
@@ -72,9 +66,9 @@ class HomeControllerMobile extends BaseController {
 		if(Auth::user()){
 			$data['images'] = $data['images']->with(array('votes' => function($query){
 														$query->where('user_id', Auth::id());
-    												}))->take(12)->get();
+    												}))->take(7)->get();
 		}else{
-			$data['images'] = $data['images']->take(12)->get();
+			$data['images'] = $data['images']->take(7)->get();
 		}
 		return View::make('mobile.scrollpost')->with($data);	
 	}

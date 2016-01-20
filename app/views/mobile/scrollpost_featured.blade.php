@@ -29,8 +29,20 @@ $(document).ready(function(){
         <ul class="clearfix actionBtn">
         <?php
         if(Auth::user()){
-           $like = Vote::where('post_id',$img->post->id)->where('user_id', Auth::user()->id)->where('type','like')->count();
-           $dislike = Vote::where('post_id',$img->post->id)->where('user_id', Auth::user()->id)->where('type','dislike')->count();
+          if(Auth::user()->status == 'management'){
+           $check_type = Vote::where('post_id',$img->post->id)->where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+           if($check_type->type == 'like'){
+              $like = 1;
+              $dislike = 0;
+           }else{
+              $like = 0;
+              $dislike = 1;
+           }
+           
+         }else{
+          $like = Vote::where('post_id',$img->post->id)->where('user_id', Auth::user()->id)->where('type','like')->first();
+          $dislike = Vote::where('post_id',$img->post->id)->where('user_id', Auth::user()->id)->where('type','dislike')->first();
+         }
         ?>
           <li><a href="javascript:void(0)" class="@if(!empty($like)){{'like actv'}}@else{{'like'}}@endif" data-id="{{ $img->post->id }}"><i class="fa fa-thumbs-up"></i></a></li>
           <li><a href="javascript:void(0)" class="@if(!empty($dislike)){{'dislike actv'}}@else{{'dislike'}}@endif" data-id="{{ $img->post->id }}"><i class="fa fa-thumbs-down"></i></a></li>
