@@ -66,7 +66,7 @@
                   </a>
               </li>
               <li>
-                  <a class="menu" href="{{url('featured')}}">
+                  <a class="menu" href="http://m.fansemo.dev/featured">
                 <ul>
                       <li><i class="fa fa-futbol-o"></i></li>
                       <li><p class="mb0">Featured</p></li>

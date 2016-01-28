@@ -15,7 +15,7 @@ foreach ($domain as $value) {
 
 Route::group(array('domain' => $value), function()
 { 
-    Route::group(array('before' => 'lang|cekUserAgent'), function()
+    Route::group(array('before' => 'cekUserAgent|lang'), function()
     {
         Route::get('/', 'HomeController@index');
         Route::get('/fresh', 'HomeController@fresh');

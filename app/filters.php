@@ -87,6 +87,12 @@ Route::filter('lang', function()
 	}
 });
 
+Route::filter('cekUserAgent', function() {
+	if (Agent::isMobile() || Agent::isTablet() || Agent::is('iPhone') ||  Agent::isPhone() ) {
+		return Redirect::to('http://m.tifosiwar.com');
+	}
+});
+
 /*
 |--------------------------------------------------------------------------
 | CSRF Protection Filter
@@ -106,8 +112,3 @@ Route::filter('csrf', function()
 	}
 });
 
-Route::filter('cekUserAgent', function() {
-	if (Agent::isMobile()) {
-		return Redirect::to('http://m.tifosiwar.com');
-	}
-});
