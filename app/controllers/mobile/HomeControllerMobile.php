@@ -30,10 +30,13 @@ class HomeControllerMobile extends BaseController {
 
     public function featured(){
         // featured post
-        $data['page'] = 'featured';
-        $data['pagetype'] = 'featured';
-        $data['images'] = FeaturedPost::orderBy('id','desc')->take(7)->with('post')->get();
-
+        try{
+        	$data['page'] = 'featured';
+	        $data['pagetype'] = 'featured';
+	        $data['images'] = FeaturedPost::orderBy('id','desc')->take(7)->with('post')->get();
+        }catch(\Exception $e){
+        	print_r($e);
+        }
         return View::make('mobile.scrollpost_featured')->with($data);
     }
 
